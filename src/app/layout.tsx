@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Nunito_Sans } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 
 const fontNunitoSans = Nunito_Sans({
   variable: '--font-nunito-sans',
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: LayoutProps) {
       <body className={`${fontNunitoSans.variable} min-h-screen flex flex-col antialiased`}>
         {children}
       </body>
+      <Footer />
     </html>
   )
 }
