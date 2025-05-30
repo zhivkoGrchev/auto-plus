@@ -5,7 +5,7 @@
 :root {
   --background: var(--color-neutral-50);
   --foreground: var(--color-neutral-950);
-  --header-background: var(--color-gray-800);
+  --header-background: var(--color-cyan-600);
   --accent: var(--color-gray-500);
   --primary: var(--color-gray-200);
   --secondary: var(--color-gray-300);
