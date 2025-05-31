@@ -1,3 +1,4 @@
+import { APP_NAME } from '@/constants'
 import Link from 'next/link'
 import {
   FaFacebook,
@@ -13,7 +14,7 @@ export const Footer = () => (
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Company Info */}
         <div>
-          <h3 className="text-xl font-bold mb-4">Auto Plus</h3>
+          <h3 className="text-xl font-bold mb-4">{APP_NAME}</h3>
           <p className="mb-4">
             The complete cloud solution for used car dealerships and vehicle
             parks.
@@ -104,7 +105,9 @@ export const Footer = () => (
 
       {/* Bottom Bar */}
       <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-        <p>© {new Date().getFullYear()} Auto Plus. All rights reserved.</p>
+        <p>
+          © {new Date().getFullYear()} {APP_NAME}. All rights reserved.
+        </p>
       </div>
     </div>
   </footer>

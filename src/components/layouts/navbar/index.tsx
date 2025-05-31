@@ -1,9 +1,10 @@
+import { APP_NAME } from '@/constants'
 import Link from 'next/link'
 
 export const Navbar = () => (
   <nav className="container mx-auto flex justify-between items-center p-4">
     <Link href="/" className="text-white text-2xl font-bold">
-      Auto Plus
+      {APP_NAME}
     </Link>
     <div className="flex space-x-4">
       <Link

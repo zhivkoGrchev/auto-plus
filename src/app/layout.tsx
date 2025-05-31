@@ -1,3 +1,4 @@
+import { APP_NAME } from '@/constants'
 import type { Metadata } from 'next'
 import { Nunito_Sans } from 'next/font/google'
 import { Header } from '@/components/layouts/header'
@@ -11,7 +12,10 @@ const fontNunitoSans = Nunito_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'Auto Plus',
+  title: {
+    template: `%s | ${APP_NAME}`,
+    default: APP_NAME,
+  },
   description: 'This is the best place for your Cars',
 }
 
