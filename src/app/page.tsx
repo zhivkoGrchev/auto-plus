@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export default function HomePage() {
   return (
-    <div className="bg-cyan-50 flex flex-col justify-center items-center grow basis-full">
+    <div className="bg-image text-cyan-50 flex flex-col items-center grow basis-full min-h-screen pt-50">
       <div className="mb-2 text-4xl font-bold">Die Cloud-Plattform für Gebrauchtwagenhändler & Autoparks</div>
       <div className="mb-10 text-xl">
         „Verwalten Sie Ihren Bestand, automatisieren Sie Verkäufe und steigern Sie Ihren Umsatz – alles in einem sicheren System.“
