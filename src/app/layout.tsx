@@ -11,18 +11,20 @@ const fontNunitoSans = Nunito_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'auto-plus.de',
+  title: 'Auto Plus',
   description: 'This is the best place for your Cars',
 }
 
 export default function RootLayout({ children }: LayoutProps) {
   return (
-    <html lang="en">
-      <body className={`${fontNunitoSans.variable} min-h-screen flex flex-col antialiased`}>
+    <html lang='en'>
+      <body
+        className={`${fontNunitoSans.variable} min-h-screen flex flex-col antialiased`}
+      >
         <Header>
           <Navbar />
         </Header>
-        <main className="flex grow">{children}</main>
+        <main className='flex grow'>{children}</main>
         <Footer />
       </body>
     </html>

@@ -1,5 +1,11 @@
 import Link from 'next/link'
-import { FaFacebook, FaTwitter, FaLinkedin, FaPhone, FaEnvelope } from 'react-icons/fa'
+import {
+  FaFacebook,
+  FaTwitter,
+  FaLinkedin,
+  FaPhone,
+  FaEnvelope,
+} from 'react-icons/fa'
 
 export const Footer = () => (
   <footer className="bg-cyan-700 text-white py-12">
@@ -7,8 +13,11 @@ export const Footer = () => (
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Company Info */}
         <div>
-          <h3 className="text-xl font-bold mb-4">AutoPark Pro</h3>
-          <p className="mb-4">The complete cloud solution for used car dealerships and vehicle parks.</p>
+          <h3 className="text-xl font-bold mb-4">Auto Plus</h3>
+          <p className="mb-4">
+            The complete cloud solution for used car dealerships and vehicle
+            parks.
+          </p>
           <div className="flex space-x-4">
             <a href="#" className="hover:text-blue-400">
               <FaFacebook size={20} />
@@ -41,11 +50,6 @@ export const Footer = () => (
                 Case Studies
               </Link>
             </li>
-            <li>
-              <Link href="/api-docs" className="hover:text-blue-400">
-                API Documentation
-              </Link>
-            </li>
           </ul>
         </div>
 
@@ -53,11 +57,6 @@ export const Footer = () => (
         <div>
           <h4 className="text-lg font-semibold mb-4">Support</h4>
           <ul className="space-y-2">
-            <li>
-              <Link href="/contact" className="hover:text-blue-400">
-                Contact Us
-              </Link>
-            </li>
             <li>
               <Link href="/faq" className="hover:text-blue-400">
                 FAQ
@@ -86,14 +85,18 @@ export const Footer = () => (
             </div>
             <div className="flex items-center">
               <FaEnvelope className="mr-2" />
-              <a href="mailto:support@autoparkpro.com" className="hover:text-blue-400">
-                support@autoparkpro.com
+              <a
+                href="mailto:support@auto-plus.de"
+                className="hover:text-blue-400"
+              >
+                support@auto-plus.de
               </a>
             </div>
           </div>
           <div className="mt-4 p-3 bg-gray-800 rounded-lg">
             <p className="text-sm">
-              <strong>Cloud Hosted:</strong> Securely deployed on AWS with 99.9% uptime
+              <strong>Cloud Hosted:</strong> Securely deployed on AWS with 99.9%
+              uptime
             </p>
           </div>
         </div>
@@ -101,8 +104,7 @@ export const Footer = () => (
 
       {/* Bottom Bar */}
       <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-        <p>© {new Date().getFullYear()} AutoPark Pro. All rights reserved.</p>
-        <p className="mt-2">ISO 27001 Certified | GDPR Compliant</p>
+        <p>© {new Date().getFullYear()} Auto Plus. All rights reserved.</p>
       </div>
     </div>
   </footer>
