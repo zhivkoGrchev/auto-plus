@@ -1,4 +1,10 @@
-import { LoaderCircle, LucideProps } from 'lucide-react'
 import { clsx } from 'clsx/lite'
+import { LuLoaderCircle } from 'react-icons/lu'
 
-export const Spinner = ({ className, ...props }: LucideProps) => <LoaderCircle className={clsx('animate-spin', className)} {...props} />
+type SpinnerProps = React.SVGAttributes<SVGElement> & {
+  className?: string;
+}
+
+export const Spinner = ({ className, ...props }: SpinnerProps) => (
+  <LuLoaderCircle className={clsx('animate-spin', className)} {...props} />
+)
