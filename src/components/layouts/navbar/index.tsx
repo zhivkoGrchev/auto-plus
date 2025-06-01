@@ -10,13 +10,11 @@ export const Navbar = () => (
     <div className="flex space-x-4">
       <Link
         href="/login"
-        className="ml-12 bg-white text-gray-800 px-4 py-1 rounded-md font-medium hover:bg-gray-100 transition-colors"
+        className="ml-12 bg-white text-gray-800 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors flex items-center justify-center"
       >
         Login
       </Link>
-      <div className="mb-[2px] flex items-center">
-        <LocaleSwitcher />
-      </div>
+      <LocaleSwitcher />
     </div>
   </nav>
 )

@@ -1,6 +1,6 @@
 'use client';
 
-import {HiCheck, HiLanguage} from 'react-icons/hi2'
+import {HiCheck} from 'react-icons/hi2';
 import {Select} from 'radix-ui';
 import clsx from 'clsx';
 import {useTransition} from 'react';
@@ -33,13 +33,13 @@ export default function LocaleSwitcherSelect({
         <Select.Trigger
           aria-label={label}
           className={clsx(
-            'rounded-sm p-2 transition-colors hover:bg-slate-200',
+            'bg-white rounded-md px-4 py-2 flex items-center text-base transition-colors',
             isPending && 'pointer-events-none opacity-60'
           )}
         >
-          <Select.Icon>
-            <HiLanguage className="h-6 w-6 text-slate-600 transition-colors group-hover:text-slate-900" />
-          </Select.Icon>
+          <span>
+            {defaultValue.toUpperCase()}
+          </span>
         </Select.Trigger>
         <Select.Portal>
           <Select.Content
