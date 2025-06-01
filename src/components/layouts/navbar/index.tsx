@@ -4,7 +4,7 @@ import LocaleSwitcher from '@/components/translation/LocaleSwitcher'
 import { useTranslations } from 'next-intl'
 
 export const Navbar = () => {
-  const t = useTranslations('Navbar');
+  const t = useTranslations('Navbar')
 
   return (
     <nav className="container mx-auto flex justify-between items-center p-4">

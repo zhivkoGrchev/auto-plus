@@ -1,13 +1,7 @@
 import { APP_NAME } from '@/types/global-constants'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
-import {
-  FaFacebook,
-  FaTwitter,
-  FaLinkedin,
-  FaPhone,
-  FaEnvelope,
-} from 'react-icons/fa'
+import { FaFacebook, FaTwitter, FaLinkedin, FaPhone, FaEnvelope } from 'react-icons/fa'
 
 export const Footer = () => {
   const t = useTranslations('Footer')
@@ -21,12 +15,15 @@ export const Footer = () => {
             <h3 className="text-xl font-bold mb-4">{APP_NAME}</h3>
             <p className="mb-4">{t('companyDescription')}</p>
             <div className="flex space-x-4">
+              {/* biome-ignore lint/a11y/useValidAnchor: <explanation> */}
               <a href="#" className="hover:text-blue-400">
                 <FaFacebook size={20} />
               </a>
+              {/* biome-ignore lint/a11y/useValidAnchor: <explanation> */}
               <a href="#" className="hover:text-blue-400">
                 <FaTwitter size={20} />
               </a>
+              {/* biome-ignore lint/a11y/useValidAnchor: <explanation> */}
               <a href="#" className="hover:text-blue-400">
                 <FaLinkedin size={20} />
               </a>
@@ -87,10 +84,7 @@ export const Footer = () => {
               </div>
               <div className="flex items-center">
                 <FaEnvelope className="mr-2" />
-                <a
-                  href="mailto:support@auto-plus.de"
-                  className="hover:text-blue-400"
-                >
+                <a href="mailto:support@auto-plus.de" className="hover:text-blue-400">
                   {t('email')}
                 </a>
               </div>
