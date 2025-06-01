@@ -1,4 +1,4 @@
-import { APP_NAME } from '@/constants'
+import { APP_NAME } from '@/types/global-constants'
 import Link from 'next/link'
 import {
   FaFacebook,

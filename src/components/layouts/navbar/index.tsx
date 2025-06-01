@@ -1,5 +1,6 @@
-import { APP_NAME } from '@/constants'
+import { APP_NAME } from '@/types/global-constants'
 import Link from 'next/link'
+import LocaleSwitcher from '@/components/translation/LocaleSwitcher'
 
 export const Navbar = () => (
   <nav className="container mx-auto flex justify-between items-center p-4">
@@ -13,6 +14,9 @@ export const Navbar = () => (
       >
         Login
       </Link>
+      <div className="mb-[2px] flex items-center">
+        <LocaleSwitcher />
+      </div>
     </div>
   </nav>
 )

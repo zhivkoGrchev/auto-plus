@@ -1,0 +1,12 @@
+{
+  "HomePage": {
+    "title": "The cloud platform for used car dealers & car parks",
+    "description": "Manage your inventory, automate sales and increase your turnover. your turnover - all in one secure system.",
+    "startDemo": "Start now - Free demo"
+  },
+  "LocaleSwitcher": {
+    "de": "Deutsch",
+    "en": "English",
+    "label": "Language"
+  }
+}
