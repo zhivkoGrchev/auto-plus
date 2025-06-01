@@ -8,5 +8,28 @@
     "de": "Deutsch",
     "en": "English",
     "label": "Sprache"
+  },
+  "Navbar": {
+    "login": "Anmelden"
+  },
+  "Footer": {
+    "companyDescription": "Die komplette Cloud-Lösung für Gebrauchtwagenhändler und Fahrzeugparks.",
+    "quickLinks": "Schnellzugriff",
+    "features": "Funktionen",
+    "pricing": "Preise",
+    "caseStudies": "Fallstudien",
+    "support": "Support",
+    "faq": "FAQ",
+    "privacyPolicy": "Datenschutzrichtlinie",
+    "termsOfService": "Nutzungsbedingungen",
+    "contact": "Kontakt",
+    "phoneNumber": "+49 123 456 7890",
+    "email": "support@auto-plus.de",
+    "cloudHosted": "Cloud-Hosting",
+    "cloudDescription": "Sicher auf AWS bereitgestellt mit 99,9% Verfügbarkeit",
+    "allRightsReserved": "Alle Rechte vorbehalten."
+  },
+  "Metadata": {
+    "description": "Der beste Ort für Ihre Autos"
   }
 }

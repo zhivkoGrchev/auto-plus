@@ -8,5 +8,28 @@
     "de": "Deutsch",
     "en": "English",
     "label": "Language"
+  },
+  "Navbar": {
+    "login": "Login"
+  },
+  "Footer": {
+    "companyDescription": "The complete cloud solution for used car dealerships and vehicle parks.",
+    "quickLinks": "Quick Links",
+    "features": "Features",
+    "pricing": "Pricing",
+    "caseStudies": "Case Studies",
+    "support": "Support",
+    "faq": "FAQ",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "contact": "Contact",
+    "phoneNumber": "+49 123 456 7890",
+    "email": "support@auto-plus.de",
+    "cloudHosted": "Cloud Hosted",
+    "cloudDescription": "Securely deployed on AWS with 99.9% uptime",
+    "allRightsReserved": "All rights reserved."
+  },
+  "Metadata": {
+    "description": "This is the best place for your Cars"
   }
 }
