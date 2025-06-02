@@ -1,7 +1,7 @@
 'use server'
 
 import { cookies } from 'next/headers'
-import { type Locale, defaultLocale } from '@/types/config-locale'
+import { type Locale, defaultLocale } from '@/lib/config/locale'
 
 // Locale is read from a cookie.
 // We can also read it from database.

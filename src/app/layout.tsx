@@ -1,4 +1,4 @@
-import { APP_NAME } from '@/types/global-constants'
+import { APP_NAME } from '@/lib/constants'
 import type { Metadata } from 'next'
 import { Nunito_Sans } from 'next/font/google'
 import { Header } from '@/components/layouts/header'

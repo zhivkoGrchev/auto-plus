@@ -1,4 +1,4 @@
-import { APP_NAME } from '@/types/global-constants'
+import { APP_NAME } from '@/lib/constants'
 import Link from 'next/link'
 import LocaleSwitcher from '@/components/translation/LocaleSwitcher'
 import { useTranslations } from 'next-intl'

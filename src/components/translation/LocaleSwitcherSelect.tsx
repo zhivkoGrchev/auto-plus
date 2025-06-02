@@ -4,7 +4,7 @@ import { HiCheck } from 'react-icons/hi2'
 import { Select } from 'radix-ui'
 import clsx from 'clsx'
 import { useTransition } from 'react'
-import type { Locale } from '@/types/config-locale'
+import type { Locale } from '@/lib/config/locale'
 import { setUserLocale } from '@/services/locale'
 
 type Props = {

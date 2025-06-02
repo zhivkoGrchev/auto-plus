@@ -1,4 +1,4 @@
-import { APP_NAME } from '@/types/global-constants'
+import { APP_NAME } from '@/lib/constants'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { FaFacebook, FaTwitter, FaLinkedin, FaPhone, FaEnvelope } from 'react-icons/fa'

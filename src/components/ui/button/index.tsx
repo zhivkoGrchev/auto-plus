@@ -1,8 +1,8 @@
-import { type ButtonHTMLAttributes } from 'react'
+import type { ButtonHTMLAttributes } from 'react'
 import { clsx } from 'clsx/lite'
 import { Slot } from '@/components/shared/slot'
-import type { ButtonVariant, ButtonVariants } from '@/types/button'
-import type { Sizes as ButtonSizes, Size as ButtonSize } from '@/types/sizes'
+import type { ButtonVariant, ButtonVariants } from '@/lib/types/button'
+import type { Sizes as ButtonSizes, Size as ButtonSize } from '@/lib/types/sizes'
 
 const styles: ButtonVariants & ButtonSizes = {
   PRIMARY: 'bg-primary hover:bg-primary/50 border-accent',
