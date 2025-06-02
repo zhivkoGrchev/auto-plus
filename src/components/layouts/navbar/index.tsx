@@ -1,18 +1,25 @@
-import { APP_NAME } from '@/constants'
+import { APP_NAME } from '@/lib/constants'
 import Link from 'next/link'
+import LocaleSwitcher from '@/components/translation/LocaleSwitcher'
+import { useTranslations } from 'next-intl'
 
-export const Navbar = () => (
-  <nav className="container mx-auto flex justify-between items-center p-4">
-    <Link href="/" className="text-white text-2xl font-bold">
-      {APP_NAME}
-    </Link>
-    <div className="flex space-x-4">
-      <Link
-        href="/login"
-        className="ml-12 bg-white text-gray-800 px-4 py-1 rounded-md font-medium hover:bg-gray-100 transition-colors"
-      >
-        Login
+export const Navbar = () => {
+  const t = useTranslations('Navbar')
+
+  return (
+    <nav className="container mx-auto flex justify-between items-center p-4">
+      <Link href="/" className="text-white text-2xl font-bold">
+        {APP_NAME}
       </Link>
-    </div>
-  </nav>
-)
+      <div className="flex space-x-4">
+        <Link
+          href="/login"
+          className="ml-12 bg-white text-gray-800 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors flex items-center justify-center"
+        >
+          {t('login')}
+        </Link>
+        <LocaleSwitcher />
+      </div>
+    </nav>
+  )
+}
