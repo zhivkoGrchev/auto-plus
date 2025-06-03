@@ -28,7 +28,7 @@ export default function LocaleSwitcherSelect({ defaultValue, items, label }: Pro
       <Select.Root defaultValue={defaultValue} onValueChange={onChange}>
         <Select.Trigger
           aria-label={label}
-          className={clsx('bg-white rounded-md px-4 py-2 flex items-center text-base transition-colors', isPending && 'pointer-events-none opacity-60')}
+          className={clsx('bg-cyan-50 rounded-md px-4 py-2 flex items-center text-base transition-colors', isPending && 'pointer-events-none opacity-60')}
         >
           <span>{defaultValue.toUpperCase()}</span>
         </Select.Trigger>
