@@ -22,7 +22,7 @@ export const Navbar = () => {
       <div className="flex space-x-4">
         <Link
           href="/login"
-          className="ml-12 bg-cyan-50 text-gray-800 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors flex items-center justify-center"
+          className="ml-12 bg-cyan-50 text-cyan-900 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors flex items-center justify-center"
         >
           {t('login')}
         </Link>
