@@ -1,8 +1,9 @@
 {
-  "HomePage": {
+  "Hero": {
     "title": "Die Cloud-Plattform für Gebrauchtwagenhändler & Autoparks",
     "description": "Verwalten Sie Ihren Bestand, automatisieren Sie Verkäufe und steigern. Sie Ihren Umsatz - alles in einem sicheren System.",
-    "startDemo": "Jetzt starten - Kostenlose Demo"
+    "startDemo": "Jetzt starten - Kostenlose Demo",
+    "imgAlt": "Ein Auto, das in einer Garage geparkt ist"
   },
   "LocaleSwitcher": {
     "de": "Deutsch",
