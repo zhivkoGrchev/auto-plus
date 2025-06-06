@@ -7,7 +7,7 @@ export const Footer = () => {
   const t = useTranslations('Footer')
 
   return (
-    <footer className="bg-cyan-700 text-white py-12">
+    <footer className="bg-cyan-700 text-neutral-50 dark:bg-cyan-950 py-12">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
@@ -89,7 +89,7 @@ export const Footer = () => {
                 </a>
               </div>
             </div>
-            <div className="mt-4 p-3 bg-gray-800 rounded-lg">
+            <div className="mt-4 p-3 bg-gray-800 dark:bg-gray-600 rounded-lg">
               <p className="text-sm">
                 <strong>{t('cloudHosted')}:</strong> {t('cloudDescription')}
               </p>
@@ -98,7 +98,7 @@ export const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
+        <div className="border-t border-gray-800 dark:border-gray-600 mt-8 pt-8 text-center text-sm text-gray-400">
           <p>
             © {new Date().getFullYear()} {APP_NAME}. {t('allRightsReserved')}
           </p>

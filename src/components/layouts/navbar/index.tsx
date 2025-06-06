@@ -2,6 +2,7 @@ import { APP_NAME } from '@/lib/constants'
 import Link from 'next/link'
 import Image from 'next/image'
 import LocaleSwitcher from '@/components/translation/LocaleSwitcher'
+import { ThemeSwitcher } from '@/components/theme/theme-switcher'
 import { useTranslations } from 'next-intl'
 
 export const Navbar = () => {
@@ -22,11 +23,12 @@ export const Navbar = () => {
       <div className="flex space-x-4">
         <Link
           href="/login"
-          className="ml-12 bg-cyan-50 text-cyan-900 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors flex items-center justify-center"
+          className="ml-12 px-4 py-2 rounded-md font-medium bg-background hover:bg-background/50 transition-colors flex items-center justify-center"
         >
           {t('login')}
         </Link>
         <LocaleSwitcher />
+        <ThemeSwitcher />
       </div>
     </nav>
   )
