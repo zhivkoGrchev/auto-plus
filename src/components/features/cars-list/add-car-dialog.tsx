@@ -1,6 +1,7 @@
 import { Dialog } from 'radix-ui'
 import { FaCheck, FaImage, FaPlus } from 'react-icons/fa'
 import { MdClose } from 'react-icons/md'
+import { Select } from '@/components/ui/select'
 
 export const AddCarDialog = () => (
   <Dialog.Root>
@@ -23,21 +24,55 @@ export const AddCarDialog = () => (
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
             <fieldset className="flex items-center gap-2">
-              <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="marke">
-                Marke
+              <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="make">
+                Make
               </label>
-              <input
-                className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
-                id="marke"
+              <Select
+                id="make"
+                placeholder="Select a make"
+                label="Make"
+                items={[
+                  { text: 'Audi', value: 'audi' },
+                  { text: 'Bmw', value: 'bmw' },
+                  { text: 'Volkswagen', value: 'vw' },
+                  { text: 'Mersedes-Benz', value: 'mersedes' },
+                  { text: 'Porsche', value: 'porsche' },
+                  { text: 'Opel', value: 'opel' },
+                  { text: 'Ford', value: 'ford' },
+                  { text: 'Skoda', value: 'skoda' },
+                ]}
               />
             </fieldset>
             <fieldset className="flex items-center gap-2">
               <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="model">
                 Model
               </label>
-              <input
-                className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
+              <Select
                 id="model"
+                placeholder="Select a model"
+                label="Model"
+                items={[
+                  { text: 'Model 1', value: 'model_1' },
+                  { text: 'Model 2', value: 'model_2' },
+                  { text: 'Model 3', value: 'model_3' },
+                  { text: 'Model 4', value: 'model_4' },
+                  { text: 'Model 5', value: 'model_5' },
+                  { text: 'Model 6', value: 'model_6' },
+                  { text: 'Model 7', value: 'model_7' },
+                  { text: 'Model 8', value: 'model_8' },
+                  { text: 'Model 9', value: 'model_9' },
+                  { text: 'Model 10', value: 'model_10' },
+                  { text: 'Model 11', value: 'model_11' },
+                  { text: 'Model 12', value: 'model_12' },
+                  { text: 'Model 13', value: 'model_13' },
+                  { text: 'Model 14', value: 'model_14' },
+                  { text: 'Model 15', value: 'model_15' },
+                  { text: 'Model 16', value: 'model_16' },
+                  { text: 'Model 17', value: 'model_17' },
+                  { text: 'Model 18', value: 'model_18' },
+                  { text: 'Model 19', value: 'model_19' },
+                  { text: 'Model 20', value: 'model_20' },
+                ]}
               />
             </fieldset>
             <fieldset className="flex items-center gap-2">
@@ -45,7 +80,7 @@ export const AddCarDialog = () => (
                 Year
               </label>
               <input
-                className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
+                className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
                 id="year"
               />
             </fieldset>
@@ -54,7 +89,7 @@ export const AddCarDialog = () => (
                 Color
               </label>
               <input
-                className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
+                className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
                 id="color"
               />
             </fieldset>
@@ -62,18 +97,29 @@ export const AddCarDialog = () => (
               <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="transmission">
                 Transmission
               </label>
-              <input
-                className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
+              <Select
                 id="transmission"
+                placeholder="Select a transmission"
+                label="Transmission"
+                items={[
+                  { text: 'Automatik', value: 'automatik' },
+                  { text: 'Halbautomatik', value: 'halbautomatik' },
+                  { text: 'Schaltgetriebe', value: 'schaltgetriebe' },
+                ]}
               />
             </fieldset>
             <fieldset className="flex items-center gap-2">
               <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="fuel_type">
                 Fuel Type
               </label>
-              <input
-                className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
+              <Select
                 id="fuel_type"
+                placeholder="Select a Fuel type"
+                label="Fuel Type"
+                items={[
+                  { text: 'Benzin', value: 'benzin' },
+                  { text: 'Diesel', value: 'diesel' },
+                ]}
               />
             </fieldset>
             <fieldset className="flex items-center gap-2">
@@ -81,7 +127,7 @@ export const AddCarDialog = () => (
                 Mileage
               </label>
               <input
-                className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
+                className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
                 id="mileage"
               />
             </fieldset>
@@ -90,7 +136,7 @@ export const AddCarDialog = () => (
                 VIN
               </label>
               <input
-                className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
+                className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
                 id="vin"
               />
             </fieldset>
@@ -99,7 +145,7 @@ export const AddCarDialog = () => (
                 Price
               </label>
               <input
-                className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
+                className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
                 id="price"
               />
               <span className="text-neutral-700 dark:text-neutral-300">€</span>
@@ -109,7 +155,7 @@ export const AddCarDialog = () => (
                 Description
               </label>
               <textarea
-                className="inline-flex grow resize-none rounded border border-cyan-900 dark:border-cyan-600 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
+                className="inline-flex grow resize-none rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
                 id="description"
                 rows={3}
               />
