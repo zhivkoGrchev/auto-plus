@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -12,4 +6,65 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+enum FuelType {
+  diesel
+  gasoline
+  gas
+  electric
+  hybrid
+}
+
+enum Transmission {
+  manual
+  automatic
+}
+
+enum DriveType {
+  x2
+  x4
+}
+
+model Car {
+  id           String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  makeId       String       @db.Uuid
+  modelId      String       @db.Uuid
+  year         Int
+  color        String
+  fuelType     FuelType
+  transmission Transmission
+  driveType    DriveType
+  power        Float
+  seats        Int
+  doors        Int
+  description  String?
+  kilometers   Float
+  price        Float
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  make  CarMake  @relation(fields: [makeId], references: [id])
+  model CarModel @relation(fields: [modelId], references: [id])
+}
+
+model CarMake {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cars      Car[]
+  carModels CarModel[]
+}
+
+model CarModel {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String
+  makeId    String   @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  make CarMake @relation(fields: [makeId], references: [id])
+  cars Car[]
 }
