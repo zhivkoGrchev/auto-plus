@@ -21,26 +21,18 @@ enum Transmission {
   automatic
 }
 
-enum DriveType {
-  x2
-  x4
-}
-
 model Car {
   id           String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   makeId       String       @db.Uuid
   modelId      String       @db.Uuid
   year         Int
   color        String
-  fuelType     FuelType
   transmission Transmission
-  driveType    DriveType
-  power        Float
-  seats        Int
-  doors        Int
-  description  String?
-  kilometers   Float
+  fuelType     FuelType
+  mileage      Float
+  vin          String
   price        Float
+  description  String?
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
 
