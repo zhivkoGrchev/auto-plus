@@ -47,6 +47,16 @@ npx prisma migrate dev
 
 This will create and apply migrations in the development environment.
 
+### Seeding the Database
+
+To seed the database with initial data for `CarMake` and `CarModel` models, run the following command:
+
+```bash
+npx tsx ./prisma/seed/main.ts
+```
+
+This script will populate the database with predefined car makes and models.
+
 ### Modifying the Database Without Creating a New Migration
 
 In development mode, you can modify the database schema directly without creating a new migration:
