@@ -1,0 +1,21 @@
+services:
+  database:
+    container_name: autoplus_database
+    image: postgres:17-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DATABASE: ${DATABASE_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - autoplus
+    ports:
+      - 5432:5432
+
+volumes:
+  postgres_data:
+
+networks:
+  autoplus:
