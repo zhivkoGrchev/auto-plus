@@ -1,4 +1,4 @@
-import { PrismaClient } from '@/generated/prisma'
+import { PrismaClient } from '@/lib/generated/prisma'
 import data from './data'
 
 async function main() {
