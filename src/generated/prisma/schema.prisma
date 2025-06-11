@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum FuelType {
+  diesel
+  gasoline
+  gas
+  electric
+  hybrid
+}
+
+enum Transmission {
+  manual
+  automatic
+}
+
+model Car {
+  id           String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  makeId       String       @db.Uuid
+  modelId      String       @db.Uuid
+  year         Int
+  color        String
+  transmission Transmission
+  fuelType     FuelType
+  mileage      Float
+  vin          String
+  price        Float
+  description  String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  make  CarMake  @relation(fields: [makeId], references: [id])
+  model CarModel @relation(fields: [modelId], references: [id])
+}
+
+model CarMake {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cars      Car[]
+  carModels CarModel[]
+}
+
+model CarModel {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String
+  makeId    String   @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  make CarMake @relation(fields: [makeId], references: [id])
+  cars Car[]
+}
