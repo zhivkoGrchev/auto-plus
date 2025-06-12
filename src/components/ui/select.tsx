@@ -1,59 +1,74 @@
-import { Select as SelectPrimitive } from 'radix-ui'
+'use client'
+
+import * as SelectPrimitive from '@radix-ui/react-select'
 import { FaCheck, FaChevronDown, FaChevronUp } from 'react-icons/fa'
+import { clsx } from 'clsx/lite'
 
-export interface SelectItem {
-  text: string
-  value: string
-}
+export const Select = SelectPrimitive.Root
+export const SelectGroup = SelectPrimitive.Group
+export const SelectValue = SelectPrimitive.Value
 
-export interface SelectProps {
-  id: string
-  placeholder: string
-  label: string
-  items: SelectItem[]
-}
+export const SelectTrigger = ({ className, children, ...props }: SelectPrimitive.SelectTriggerProps) => (
+  <SelectPrimitive.Trigger
+    className={clsx(
+      'h-9 px-3 py-2 flex justify-between items-center grow rounded-md border whitespace-nowrap text-sm disabled:cursor-not-allowed disabled:opacity-50 data-[placeholder]:text-foreground/50 [&>span]:line-clamp-1',
+      className
+    )}
+    {...props}
+  >
+    {children}
+    <SelectPrimitive.Icon asChild>
+      <FaChevronDown className="size-4 opacity-50" />
+    </SelectPrimitive.Icon>
+  </SelectPrimitive.Trigger>
+)
 
-export const Select = ({ id, placeholder, label, items }: SelectProps) => {
-  return (
-    <SelectPrimitive.Root>
-      <SelectPrimitive.Trigger
-        className="inline-flex justify-between items-center gap-2 grow px-4 py-2 rounded-md border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 text-foreground outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600 data-[placeholder]:text-foreground/50"
-        aria-label={label}
+export const SelectContent = ({ className, children, position = 'popper', ...props }: SelectPrimitive.SelectContentProps) => (
+  <SelectPrimitive.Portal>
+    <SelectPrimitive.Content
+      className={clsx(
+        'relative z-50 max-h-96 rounded-md border overflow-hidden',
+        position === 'popper' &&
+          'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
+        className
+      )}
+      position={position}
+      {...props}
+    >
+      <SelectPrimitive.ScrollUpButton className={clsx('p-1 flex justify-center items-center cursor-default', className)} {...props}>
+        <FaChevronUp className="size-4 text-foreground/50" />
+      </SelectPrimitive.ScrollUpButton>
+      <SelectPrimitive.Viewport
+        className={clsx('p-1', position === 'popper' && 'w-full min-w-[var(--radix-select-trigger-width)] h-[var(--radix-select-trigger-height)]')}
       >
-        <SelectPrimitive.Value id={id} placeholder={placeholder} />
-        <SelectPrimitive.Icon className="">
-          <FaChevronDown />
-        </SelectPrimitive.Icon>
-      </SelectPrimitive.Trigger>
-      <SelectPrimitive.Portal>
-        <SelectPrimitive.Content
-          className="overflow-hidden rounded-md border border-cyan-900 dark:border-cyan-600 bg-cyan-100 dark:bg-cyan-900"
-          position="popper"
-          sideOffset={4}
-          align="end"
-        >
-          <SelectPrimitive.ScrollUpButton className="flex h-[25px] cursor-default items-center justify-center bg-white text-violet-400">
-            <FaChevronUp />
-          </SelectPrimitive.ScrollUpButton>
-          <SelectPrimitive.Viewport className="p-2">
-            {items.map((item: SelectItem) => (
-              <SelectPrimitive.Item
-                key={item.value}
-                className="relative flex select-none items-center rounded-md px-8 py-2 text-[13px] outline-none leading-none text-foreground data-[disabled]:pointer-events-none data-[highlighted]:bg-cyan-200 dark:data-[highlighted]:bg-cyan-800 data-[disabled]:text-foreground/50"
-                value={item.value}
-              >
-                <SelectPrimitive.ItemText>{item.text}</SelectPrimitive.ItemText>
-                <SelectPrimitive.ItemIndicator className="absolute left-2 inline-flex justify-center items-center">
-                  <FaCheck />
-                </SelectPrimitive.ItemIndicator>
-              </SelectPrimitive.Item>
-            ))}
-          </SelectPrimitive.Viewport>
-          <SelectPrimitive.ScrollDownButton className="flex h-[25px] cursor-default items-center justify-center bg-white text-violet-400">
-            <FaChevronDown />
-          </SelectPrimitive.ScrollDownButton>
-        </SelectPrimitive.Content>
-      </SelectPrimitive.Portal>
-    </SelectPrimitive.Root>
-  )
-}
+        {children}
+      </SelectPrimitive.Viewport>
+      <SelectPrimitive.ScrollDownButton className={clsx('p-1 flex justify-center items-center cursor-default', className)} {...props}>
+        <FaChevronDown className="size-4 text-foreground/50" />
+      </SelectPrimitive.ScrollDownButton>
+    </SelectPrimitive.Content>
+  </SelectPrimitive.Portal>
+)
+
+export const SelectItem = ({ className, children, ...props }: SelectPrimitive.SelectItemProps) => (
+  <SelectPrimitive.Item
+    className={clsx(
+      'relative w-full pl-2 pr-8 py-1.5 flex items-center rounded-md outline-none text-sm leading-none data-[disabled]:opacity-50 data-[disabled]:pointer-events-none cursor-default select-none',
+      className
+    )}
+    {...props}
+  >
+    <SelectPrimitive.ItemIndicator className="absolute right-2 size-4 flex justify-center items-center">
+      <FaCheck className="size-4" />
+    </SelectPrimitive.ItemIndicator>
+    <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+  </SelectPrimitive.Item>
+)
+
+export const SelectLabel = ({ className, ...props }: SelectPrimitive.SelectLabelProps) => (
+  <SelectPrimitive.Label className={clsx('px-2 py-1.5 text-sm font-semibold', className)} {...props} />
+)
+
+export const SelectSeparator = ({ className, ...props }: SelectPrimitive.SelectSeparatorProps) => (
+  <SelectPrimitive.Separator className={clsx('-mx-1 my-1 h-px bg-foreground/50', className)} {...props} />
+)

@@ -1,7 +1,7 @@
 import { Dialog } from 'radix-ui'
 import { FaCheck, FaImage, FaPlus } from 'react-icons/fa'
 import { MdClose } from 'react-icons/md'
-import { Select } from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 export const AddCarDialog = () => (
   <Dialog.Root>
@@ -27,53 +27,71 @@ export const AddCarDialog = () => (
               <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="make">
                 Make
               </label>
-              <Select
-                id="make"
-                placeholder="Select a make"
-                label="Make"
-                items={[
-                  { text: 'Audi', value: 'audi' },
-                  { text: 'Bmw', value: 'bmw' },
-                  { text: 'Volkswagen', value: 'vw' },
-                  { text: 'Mersedes-Benz', value: 'mersedes' },
-                  { text: 'Porsche', value: 'porsche' },
-                  { text: 'Opel', value: 'opel' },
-                  { text: 'Ford', value: 'ford' },
-                  { text: 'Skoda', value: 'skoda' },
-                ]}
-              />
+              <Select>
+                <SelectTrigger
+                  className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 text-foreground outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
+                  aria-label="Make"
+                >
+                  <SelectValue id="make" placeholder="Select a make" />
+                </SelectTrigger>
+                <SelectContent className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 dark:bg-cyan-900">
+                  {[
+                    { text: 'Audi', value: 'audi' },
+                    { text: 'Bmw', value: 'bmw' },
+                    { text: 'Volkswagen', value: 'vw' },
+                    { text: 'Mersedes-Benz', value: 'mersedes' },
+                    { text: 'Porsche', value: 'porsche' },
+                    { text: 'Opel', value: 'opel' },
+                    { text: 'Ford', value: 'ford' },
+                    { text: 'Skoda', value: 'skoda' },
+                  ].map((item) => (
+                    <SelectItem key={item.value} value={item.value} className="data-[highlighted]:bg-cyan-200 dark:data-[highlighted]:bg-cyan-800">
+                      {item.text}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </fieldset>
             <fieldset className="flex items-center gap-2">
               <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="model">
                 Model
               </label>
-              <Select
-                id="model"
-                placeholder="Select a model"
-                label="Model"
-                items={[
-                  { text: 'Model 1', value: 'model_1' },
-                  { text: 'Model 2', value: 'model_2' },
-                  { text: 'Model 3', value: 'model_3' },
-                  { text: 'Model 4', value: 'model_4' },
-                  { text: 'Model 5', value: 'model_5' },
-                  { text: 'Model 6', value: 'model_6' },
-                  { text: 'Model 7', value: 'model_7' },
-                  { text: 'Model 8', value: 'model_8' },
-                  { text: 'Model 9', value: 'model_9' },
-                  { text: 'Model 10', value: 'model_10' },
-                  { text: 'Model 11', value: 'model_11' },
-                  { text: 'Model 12', value: 'model_12' },
-                  { text: 'Model 13', value: 'model_13' },
-                  { text: 'Model 14', value: 'model_14' },
-                  { text: 'Model 15', value: 'model_15' },
-                  { text: 'Model 16', value: 'model_16' },
-                  { text: 'Model 17', value: 'model_17' },
-                  { text: 'Model 18', value: 'model_18' },
-                  { text: 'Model 19', value: 'model_19' },
-                  { text: 'Model 20', value: 'model_20' },
-                ]}
-              />
+              <Select>
+                <SelectTrigger
+                  className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 text-foreground outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
+                  aria-label="Model"
+                >
+                  <SelectValue id="model" placeholder="Select a model" />
+                </SelectTrigger>
+                <SelectContent className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 dark:bg-cyan-900">
+                  {[
+                    { text: 'Model 1', value: 'model_1' },
+                    { text: 'Model 2', value: 'model_2' },
+                    { text: 'Model 3', value: 'model_3' },
+                    { text: 'Model 4', value: 'model_4' },
+                    { text: 'Model 5', value: 'model_5' },
+                    { text: 'Model 6', value: 'model_6' },
+                    { text: 'Model 7', value: 'model_7' },
+                    { text: 'Model 8', value: 'model_8' },
+                    { text: 'Model 9', value: 'model_9' },
+                    { text: 'Model 10', value: 'model_10' },
+                    { text: 'Model 11', value: 'model_11' },
+                    { text: 'Model 12', value: 'model_12' },
+                    { text: 'Model 13', value: 'model_13' },
+                    { text: 'Model 14', value: 'model_14' },
+                    { text: 'Model 15', value: 'model_15' },
+                    { text: 'Model 16', value: 'model_16' },
+                    { text: 'Model 17', value: 'model_17' },
+                    { text: 'Model 18', value: 'model_18' },
+                    { text: 'Model 19', value: 'model_19' },
+                    { text: 'Model 20', value: 'model_20' },
+                  ].map((item) => (
+                    <SelectItem key={item.value} value={item.value} className="data-[highlighted]:bg-cyan-200 dark:data-[highlighted]:bg-cyan-800">
+                      {item.text}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </fieldset>
             <fieldset className="flex items-center gap-2">
               <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="year">
@@ -97,30 +115,48 @@ export const AddCarDialog = () => (
               <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="transmission">
                 Transmission
               </label>
-              <Select
-                id="transmission"
-                placeholder="Select a transmission"
-                label="Transmission"
-                items={[
-                  { text: 'Automatik', value: 'automatik' },
-                  { text: 'Halbautomatik', value: 'halbautomatik' },
-                  { text: 'Schaltgetriebe', value: 'schaltgetriebe' },
-                ]}
-              />
+              <Select>
+                <SelectTrigger
+                  className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 text-foreground outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
+                  aria-label="Transmission"
+                >
+                  <SelectValue id="transmission" placeholder="Select a transmission" />
+                </SelectTrigger>
+                <SelectContent className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 dark:bg-cyan-900">
+                  {[
+                    { text: 'Automatik', value: 'automatik' },
+                    { text: 'Halbautomatik', value: 'halbautomatik' },
+                    { text: 'Schaltgetriebe', value: 'schaltgetriebe' },
+                  ].map((item) => (
+                    <SelectItem key={item.value} value={item.value} className="data-[highlighted]:bg-cyan-200 dark:data-[highlighted]:bg-cyan-800">
+                      {item.text}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </fieldset>
             <fieldset className="flex items-center gap-2">
               <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="fuel_type">
                 Fuel Type
               </label>
-              <Select
-                id="fuel_type"
-                placeholder="Select a Fuel type"
-                label="Fuel Type"
-                items={[
-                  { text: 'Benzin', value: 'benzin' },
-                  { text: 'Diesel', value: 'diesel' },
-                ]}
-              />
+              <Select>
+                <SelectTrigger
+                  className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 text-foreground outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
+                  aria-label="Fuel Type"
+                >
+                  <SelectValue id="fuel_type" placeholder="Select a Fuel Type" />
+                </SelectTrigger>
+                <SelectContent className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 dark:bg-cyan-900">
+                  {[
+                    { text: 'Diesel', value: 'diesel' },
+                    { text: 'Benzin', value: 'Benzin' },
+                  ].map((item) => (
+                    <SelectItem key={item.value} value={item.value} className="data-[highlighted]:bg-cyan-200 dark:data-[highlighted]:bg-cyan-800">
+                      {item.text}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </fieldset>
             <fieldset className="flex items-center gap-2">
               <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="mileage">
