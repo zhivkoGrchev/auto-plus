@@ -23,7 +23,7 @@ enum Transmission {
 
 model Car {
   id           String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  makeId       String       @db.Uuid
+  brandId      String       @db.Uuid
   modelId      String       @db.Uuid
   year         Int
   color        String
@@ -36,11 +36,11 @@ model Car {
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
 
-  make  CarMake  @relation(fields: [makeId], references: [id])
+  brand CarBrand @relation(fields: [brandId], references: [id])
   model CarModel @relation(fields: [modelId], references: [id])
 }
 
-model CarMake {
+model CarBrand {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name      String
   createdAt DateTime @default(now())
@@ -53,10 +53,10 @@ model CarMake {
 model CarModel {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name      String
-  makeId    String   @db.Uuid
+  brandId   String   @db.Uuid
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  make CarMake @relation(fields: [makeId], references: [id])
-  cars Car[]
+  brand CarBrand @relation(fields: [brandId], references: [id])
+  cars  Car[]
 }

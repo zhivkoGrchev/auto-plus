@@ -5,23 +5,27 @@ async function main() {
   const prisma = new PrismaClient()
   try {
     await prisma.carModel.deleteMany({})
-    await prisma.carMake.deleteMany({})
+    await prisma.carBrand.deleteMany({})
 
-    for (const model of data.carModels) {
-      const carMake = await prisma.carMake.create({
+    for (const carBrand of data.carBrands) {
+      // Create the car brand
+      const brandCreated = await prisma.carBrand.create({
         data: {
-          name: model.make.name,
+          name: carBrand.name,
         },
       })
 
-      await prisma.carModel.create({
-        data: {
-          name: model.name,
-          make: {
-            connect: { id: carMake.id },
+      // Create the car models for the brand
+      for (const name of carBrand.carModels) {
+        await prisma.carModel.create({
+          data: {
+            name,
+            brand: {
+              connect: { id: brandCreated.id },
+            },
           },
-        },
-      })
+        })
+      }
     }
 
     console.log('Seeding completed successfully.')
