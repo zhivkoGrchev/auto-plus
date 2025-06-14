@@ -3,7 +3,7 @@ import { Transmission } from './generated/prisma'
 import { FuelType } from './generated/prisma'
 
 export const insertCarSchema = z.object({
-  makeId: z.string().min(1, 'Make ID is required'),
+  brandId: z.string().min(1, 'Brand ID is required'),
   modelId: z.string().min(1, 'Model ID is required'),
   year: z.number().int().min(1886, 'Year must be 1886 or later').max(new Date().getFullYear(), 'Year cannot be in the future'),
   color: z.string().min(1, 'Color is required'),

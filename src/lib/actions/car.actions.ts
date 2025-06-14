@@ -36,7 +36,7 @@ export async function createCar(formData: FormData): Promise<void> {
   const prisma = new PrismaClient()
   try {
     const parsedData = insertCarSchema.parse({
-      makeId: formData.get('makeId'),
+      brandId: formData.get('brandId'),
       modelId: formData.get('modelId'),
       year: Number(formData.get('year')),
       color: formData.get('color'),
