@@ -1,13 +1,13 @@
 'use server'
 import { PrismaClient } from '../generated/prisma'
-import type { CarMake, CarModel } from '../generated/prisma'
+import type { CarBrand, CarModel } from '../generated/prisma'
 import { toJson } from '../utils'
 
-export async function getCarMakes(): Promise<CarMake[]> {
+export async function getCarBrands(): Promise<CarBrand[]> {
   const prisma = new PrismaClient()
   try {
-    const carMakes = await prisma.carMake.findMany({})
-    return toJson(carMakes)
+    const carBrands = await prisma.carBrand.findMany({})
+    return toJson(carBrands)
   } catch (error) {
     console.error('Error fetching car makes:', error)
     throw error
@@ -15,17 +15,17 @@ export async function getCarMakes(): Promise<CarMake[]> {
     await prisma.$disconnect()
   }
 }
-export async function getCarModelsByMake(makeId: string): Promise<CarModel[]> {
+export async function getCarModelsByBrand(brandId: string): Promise<CarModel[]> {
   const prisma = new PrismaClient()
   try {
     const carModels = await prisma.carModel.findMany({
       where: {
-        makeId,
+        brandId,
       },
     })
     return toJson(carModels)
   } catch (error) {
-    console.error('Error fetching car models by make:', error)
+    console.error('Error fetching car models by brand:', error)
     throw error
   } finally {
     await prisma.$disconnect()

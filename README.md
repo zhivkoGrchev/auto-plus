@@ -49,7 +49,7 @@ This will create and apply migrations in the development environment.
 
 ### Seeding the Database
 
-To seed the database with initial data for `CarMake` and `CarModel` models, run the following command:
+To seed the database with initial data for `CarBrand` and `CarModel` models, run the following command:
 
 ```bash
 npx tsx ./prisma/seed/main.ts
