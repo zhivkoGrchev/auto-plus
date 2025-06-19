@@ -16,7 +16,7 @@ export default function Hero() {
         <h1 className="text-cyan-50 text-4xl">{t('title')}</h1>
         <h2 className="mb-10 text-cyan-50 text-2xl">{t('description')}</h2>
         <Link
-          href="/demo"
+          href="/dashboard"
           className="ml-12 mt-5 bg-cyan-600 dark:bg-cyan-900 px-4 py-1 rounded-md font-medium hover:bg-cyan-400 dark:hover:bg-cyan-700 transition-colors"
         >
           {t('startDemo')}
