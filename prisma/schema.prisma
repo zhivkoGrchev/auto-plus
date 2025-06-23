@@ -30,7 +30,7 @@ model Car {
   transmission Transmission
   fuelType     FuelType
   mileage      Float
-  vin          String
+  vin          String?
   price        Float
   description  String?
   createdAt    DateTime     @default(now())

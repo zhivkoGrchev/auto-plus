@@ -4,7 +4,7 @@ import { AddCarDialog, CarsList } from '@/components/features/cars-list'
 
 export default function Dashboard() {
   return (
-    <Tabs.Root className="flex flex-col grow p-4" defaultValue="add-car">
+    <Tabs.Root className="flex flex-col grow p-4" defaultValue="cars-list">
       <Tabs.List className="flex justify-center gap-4">
         <Tabs.Trigger className="p-2 border-b-2 border-cyan-800 dark:border-cyan-500" value="cars-list">
           Cars List

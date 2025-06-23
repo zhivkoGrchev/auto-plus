@@ -1,29 +1,25 @@
 'use client'
 
-import { ChangeEvent, useState, useTransition } from 'react'
+import { type ChangeEvent, useState, useTransition } from 'react'
 import { Dialog } from 'radix-ui'
 import { FaCheck, FaImage, FaPlus, FaSpinner } from 'react-icons/fa'
 import { MdClose } from 'react-icons/md'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { getCarBrands, getCarModelsByBrand } from '@/lib/actions/car.actions'
-import { Car, CarBrand, CarModel, FuelType, Transmission } from '@/lib/generated/prisma'
-
-interface AddCarData extends Omit<Car, 'id' | 'createdAt' | 'updatedAt'> {
-  description: string
-  brands: CarBrand[]
-  models: CarModel[]
-}
+import { FuelType, Transmission } from '@/lib/generated/prisma'
+import { createCar } from '@/lib/actions/car.actions'
+import type AddCarData from '@/lib/interfaces/add-car-data'
 
 const initialData: AddCarData = {
   brandId: '',
   modelId: '',
-  year: 0,
+  year: null,
   color: '',
   transmission: Transmission.automatic,
   fuelType: FuelType.gasoline,
-  mileage: 0,
-  vin: '',
-  price: 0.0,
+  mileage: null,
+  vin: null,
+  price: null,
   description: '',
   brands: [],
   models: [],
@@ -59,10 +55,18 @@ export const AddCarDialog = () => {
     setCarData((prev) => ({ ...prev, [name]: name === 'year' || name === 'mileage' || name === 'price' ? Number(value) : value }))
   }
 
+  const handleSubmit = async (e: any) => {
+    e.preventDefault()
+    await createCar(carData)
+  }
+
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        <button className="inline-flex justify-center items-center gap-2 px-4 py-2 rounded-md bg-cyan-600 dark:bg-cyan-900 hover:bg-cyan-400 dark:hover:bg-cyan-700 transition-colors outline-none outline-offset-2 focus-visible:outline-2 focus-visible:outline-neutral-900 dark:focus-visible:outline-neutral-600 font-medium select-none">
+        <button
+          type="button"
+          className="inline-flex justify-center items-center gap-2 px-4 py-2 rounded-md bg-cyan-600 dark:bg-cyan-900 hover:bg-cyan-400 dark:hover:bg-cyan-700 transition-colors outline-none outline-offset-2 focus-visible:outline-2 focus-visible:outline-neutral-900 dark:focus-visible:outline-neutral-600 font-medium select-none"
+        >
           <FaPlus /> Add car
         </button>
       </Dialog.Trigger>
@@ -142,7 +146,8 @@ export const AddCarDialog = () => {
                 <input
                   className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
                   id="year"
-                  value={carData.year}
+                  name="year"
+                  value={carData.year === null || carData.year === 0 ? '' : carData.year}
                   onChange={handleInputChange}
                 />
               </fieldset>
@@ -153,6 +158,7 @@ export const AddCarDialog = () => {
                 <input
                   className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
                   id="color"
+                  name="color"
                   value={carData.color}
                   onChange={handleInputChange}
                 />
@@ -204,7 +210,8 @@ export const AddCarDialog = () => {
                 <input
                   className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
                   id="mileage"
-                  value={carData.mileage}
+                  name="mileage"
+                  value={carData.mileage === null || carData.mileage === 0 ? '' : carData.mileage}
                   onChange={handleInputChange}
                 />
               </fieldset>
@@ -215,7 +222,8 @@ export const AddCarDialog = () => {
                 <input
                   className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
                   id="vin"
-                  value={carData.vin}
+                  name="vin"
+                  value={carData.vin === null ? '' : carData.vin}
                   onChange={handleInputChange}
                 />
               </fieldset>
@@ -226,7 +234,8 @@ export const AddCarDialog = () => {
                 <input
                   className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
                   id="price"
-                  value={carData.price}
+                  name="price"
+                  value={carData.price === null || carData.price === 0 ? '' : carData.price}
                   onChange={handleInputChange}
                 />
                 <span className="text-neutral-700 dark:text-neutral-300">€</span>
@@ -238,6 +247,7 @@ export const AddCarDialog = () => {
                 <textarea
                   className="inline-flex grow resize-none rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
                   id="description"
+                  name="description"
                   rows={3}
                   value={carData.description}
                   onChange={handleInputChange}
@@ -246,13 +256,18 @@ export const AddCarDialog = () => {
             </div>
             <div className="mt-6 flex justify-end">
               <Dialog.Close asChild>
-                <button className="inline-flex justify-center items-center gap-2 px-4 py-2 rounded-md bg-cyan-600 dark:bg-cyan-900 hover:bg-cyan-400 dark:hover:bg-cyan-700 transition-colors outline-none outline-offset-2 focus-visible:outline-2 focus-visible:outline-neutral-900 dark:focus-visible:outline-neutral-600 font-medium select-none">
+                <button
+                  type="submit"
+                  onClick={handleSubmit}
+                  className="inline-flex justify-center items-center gap-2 px-4 py-2 rounded-md bg-cyan-600 dark:bg-cyan-900 hover:bg-cyan-400 dark:hover:bg-cyan-700 transition-colors outline-none outline-offset-2 focus-visible:outline-2 focus-visible:outline-neutral-900 dark:focus-visible:outline-neutral-600 font-medium select-none"
+                >
                   <FaCheck /> Save
                 </button>
               </Dialog.Close>
             </div>
             <Dialog.Close asChild>
               <button
+                type="button"
                 className="absolute right-2 top-2 inline-flex justify-center items-center rounded-full focus:outline-none appearance-none text-red-700 dark:text-red-500"
                 aria-label="Close"
               >

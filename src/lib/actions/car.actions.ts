@@ -1,8 +1,9 @@
 'use server'
-import { prisma }  from '@/db'
+import { prisma } from '@/db'
 import type { CarBrand, CarModel } from '../generated/prisma'
 import { toJson } from '../utils'
 import { insertCarSchema } from '../validators'
+import type AddCarData from '../interfaces/add-car-data'
 
 export async function getCarBrands(): Promise<CarBrand[]> {
   try {
@@ -30,20 +31,11 @@ export async function getCarModelsByBrand(brandId: string): Promise<CarModel[]> 
     await prisma.$disconnect()
   }
 }
-export async function createCar(formData: FormData): Promise<void> {
+export async function createCar(carData: AddCarData): Promise<void> {
   try {
-    const parsedData = insertCarSchema.parse({
-      brandId: formData.get('brandId'),
-      modelId: formData.get('modelId'),
-      year: Number(formData.get('year')),
-      color: formData.get('color'),
-      transmission: formData.get('transmission'),
-      fuelType: formData.get('fuelType'),
-      mileage: Number(formData.get('mileage')),
-      vin: formData.get('vin'),
-      price: Number(formData.get('price')),
-      description: formData.get('description') || undefined,
-    })
+    const parsedData = insertCarSchema.parse(carData)
+
+    console.log('Parsed Car Data:', parsedData)
 
     await prisma.car.create({
       data: parsedData,

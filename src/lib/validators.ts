@@ -10,11 +10,7 @@ export const insertCarSchema = z.object({
   transmission: z.enum([Transmission.automatic, Transmission.manual]),
   fuelType: z.enum([FuelType.diesel, FuelType.gasoline, FuelType.gas, FuelType.electric, FuelType.hybrid]),
   mileage: z.number().int().nonnegative('Mileage cannot be negative').max(1_000_000, 'Mileage cannot exceed 1,000,000'),
-  vin: z
-    .string()
-    .min(17, 'VIN must be exactly 17 characters')
-    .max(17, 'VIN must be exactly 17 characters')
-    .regex(/^[A-HJ-NPR-Z0-9]+$/, 'VIN must be alphanumeric and cannot contain I, O, or Q'),
+  vin: z.string().optional(),
   price: z.number().positive('Price must be a positive number').max(1_000_000, 'Price cannot exceed 1,000,000'),
   description: z.string().optional(),
 })
