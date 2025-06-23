@@ -15,8 +15,8 @@ const initialData: AddCarData = {
   modelId: '',
   year: null,
   color: '',
-  transmission: Transmission.automatic,
-  fuelType: FuelType.gasoline,
+  transmission: null,
+  fuelType: null,
   mileage: null,
   vin: null,
   price: null,
@@ -27,8 +27,11 @@ const initialData: AddCarData = {
 
 export const AddCarDialog = () => {
   const [carData, setCarData] = useState<AddCarData>(initialData)
+  const [errors, setErrors] = useState<Record<string, string[]>>({})
+  const [isPendingSubmit, startTransitionSubmit] = useTransition()
   const [isPendingBrands, startTransitionBrands] = useTransition()
   const [isPendingModels, startTransitionModels] = useTransition()
+
   const handleOpenBrands = (isOpen: boolean) =>
     isOpen &&
     startTransitionBrands(async () => {
@@ -39,6 +42,7 @@ export const AddCarDialog = () => {
         console.error('Error receiving data')
       }
     })
+
   const handleOpenModels = (isOpen: boolean) =>
     isOpen &&
     carData.brandId &&
@@ -50,6 +54,7 @@ export const AddCarDialog = () => {
         console.error('Error receiving data')
       }
     })
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setCarData((prev) => ({ ...prev, [name]: name === 'year' || name === 'mileage' || name === 'price' ? Number(value) : value }))
@@ -57,7 +62,27 @@ export const AddCarDialog = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
-    await createCar(carData)
+
+    // Clear previous errors
+    setErrors({})
+
+    startTransitionSubmit(async () => {
+      const result = await createCar(carData)
+
+      if (!result.success && result.errors) {
+        setErrors(result.errors)
+      } else {
+        // Reset form and close dialog on success
+        setCarData(initialData)
+        // Note: You might need a different approach to close the dialog
+        // since this depends on your Dialog implementation
+      }
+    })
+  }
+
+  // Helper to display field errors
+  const getFieldError = (fieldName: string) => {
+    return errors[fieldName] ? errors[fieldName][0] : null
   }
 
   return (
@@ -82,62 +107,76 @@ export const AddCarDialog = () => {
                 <input type="file" className="hidden" accept="image/*" />
               </label>
             </div>
+            {/* Form-level errors */}
+            {errors.form && (
+              <div className="mb-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded">
+                {errors.form.map((error, index) => (
+                  <p key={index}>{error}</p>
+                ))}
+              </div>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
-              <fieldset className="flex items-center gap-2">
-                <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="brandId">
-                  Brand
-                </label>
-                <Select
-                  value={carData.brandId}
-                  onValueChange={(brandId) => setCarData((prev) => ({ ...prev, brandId, modelId: '', models: [] }))}
-                  onOpenChange={handleOpenBrands}
-                >
-                  <SelectTrigger
-                    className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 text-foreground outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
-                    aria-label="Brand"
+              <fieldset className="flex flex-col">
+                <div className="flex items-center gap-2">
+                  <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="brandId">
+                    Brand
+                  </label>
+                  <Select
+                    value={carData.brandId}
+                    onValueChange={(brandId) => setCarData((prev) => ({ ...prev, brandId, modelId: '', models: [] }))}
+                    onOpenChange={handleOpenBrands}
                   >
-                    <SelectValue id="brandId" placeholder="Select a brand" />
-                  </SelectTrigger>
-                  <SelectContent className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 dark:bg-cyan-900">
-                    {isPendingBrands ? (
-                      <span className="p-2 flex justify-center items-center">
-                        <FaSpinner className="animate-spin" />
-                      </span>
-                    ) : (
-                      carData.brands.map((item) => (
-                        <SelectItem key={item.id} value={item.id} className="data-[highlighted]:bg-cyan-200 dark:data-[highlighted]:bg-cyan-800">
-                          {item.name}
-                        </SelectItem>
-                      ))
-                    )}
-                  </SelectContent>
-                </Select>
+                    <SelectTrigger
+                      className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 text-foreground outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
+                      aria-label="Brand"
+                    >
+                      <SelectValue id="brandId" placeholder="Select a brand" />
+                    </SelectTrigger>
+                    <SelectContent className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 dark:bg-cyan-900">
+                      {isPendingBrands ? (
+                        <span className="p-2 flex justify-center items-center">
+                          <FaSpinner className="animate-spin" />
+                        </span>
+                      ) : (
+                        carData.brands.map((item) => (
+                          <SelectItem key={item.id} value={item.id} className="data-[highlighted]:bg-cyan-200 dark:data-[highlighted]:bg-cyan-800">
+                            {item.name}
+                          </SelectItem>
+                        ))
+                      )}
+                    </SelectContent>
+                  </Select>
+                </div>
+                {getFieldError('brandId') && <p className="ml-26 mt-1 text-sm text-red-600">{getFieldError('brandId')}</p>}
               </fieldset>
-              <fieldset className="flex items-center gap-2">
-                <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="modelId">
-                  Model
-                </label>
-                <Select value={carData.modelId} onValueChange={(modelId) => setCarData((prev) => ({ ...prev, modelId }))} onOpenChange={handleOpenModels}>
-                  <SelectTrigger
-                    className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 text-foreground outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
-                    aria-label="Model"
-                  >
-                    <SelectValue id="modelId" placeholder="Select a model" />
-                  </SelectTrigger>
-                  <SelectContent className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 dark:bg-cyan-900">
-                    {isPendingModels ? (
-                      <span className="p-2 flex justify-center items-center">
-                        <FaSpinner className="animate-spin" />
-                      </span>
-                    ) : (
-                      carData.models.map((item) => (
-                        <SelectItem key={item.id} value={item.id} className="data-[highlighted]:bg-cyan-200 dark:data-[highlighted]:bg-cyan-800">
-                          {item.name}
-                        </SelectItem>
-                      ))
-                    )}
-                  </SelectContent>
-                </Select>
+              <fieldset className="flex flex-col">
+                <div className="flex items-center gap-2">
+                  <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="modelId">
+                    Model
+                  </label>
+                  <Select value={carData.modelId} onValueChange={(modelId) => setCarData((prev) => ({ ...prev, modelId }))} onOpenChange={handleOpenModels}>
+                    <SelectTrigger
+                      className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 text-foreground outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
+                      aria-label="Model"
+                    >
+                      <SelectValue id="modelId" placeholder="Select a model" />
+                    </SelectTrigger>
+                    <SelectContent className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 dark:bg-cyan-900">
+                      {isPendingModels ? (
+                        <span className="p-2 flex justify-center items-center">
+                          <FaSpinner className="animate-spin" />
+                        </span>
+                      ) : (
+                        carData.models.map((item) => (
+                          <SelectItem key={item.id} value={item.id} className="data-[highlighted]:bg-cyan-200 dark:data-[highlighted]:bg-cyan-800">
+                            {item.name}
+                          </SelectItem>
+                        ))
+                      )}
+                    </SelectContent>
+                  </Select>
+                </div>
+                {getFieldError('modelId') && <p className="ml-26 mt-1 text-sm text-red-600">{getFieldError('modelId')}</p>}
               </fieldset>
               <fieldset className="flex items-center gap-2">
                 <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="year">
@@ -151,37 +190,43 @@ export const AddCarDialog = () => {
                   onChange={handleInputChange}
                 />
               </fieldset>
-              <fieldset className="flex items-center gap-2">
-                <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="color">
-                  Color
-                </label>
-                <input
-                  className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
-                  id="color"
-                  name="color"
-                  value={carData.color}
-                  onChange={handleInputChange}
-                />
+              <fieldset className="flex flex-col">
+                <div className="flex items-center gap-2">
+                  <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="color">
+                    Color
+                  </label>
+                  <input
+                    className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
+                    id="color"
+                    name="color"
+                    value={carData.color}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                {getFieldError('color') && <p className="ml-26 mt-1 text-sm text-red-600">{getFieldError('color')}</p>}
               </fieldset>
-              <fieldset className="flex items-center gap-2">
-                <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="transmission">
-                  Transmission
-                </label>
-                <Select>
-                  <SelectTrigger
-                    className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 text-foreground outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
-                    aria-label="Transmission"
-                  >
-                    <SelectValue id="transmission" placeholder="Select a transmission" />
-                  </SelectTrigger>
-                  <SelectContent className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 dark:bg-cyan-900">
-                    {Object.keys(Transmission).map((item) => (
-                      <SelectItem key={item} value={item} className="data-[highlighted]:bg-cyan-200 dark:data-[highlighted]:bg-cyan-800">
-                        {item}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+              <fieldset className="flex flex-col">
+                <div className="flex items-center gap-2">
+                  <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="transmission">
+                    Transmission
+                  </label>
+                  <Select>
+                    <SelectTrigger
+                      className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 text-foreground outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
+                      aria-label="Transmission"
+                    >
+                      <SelectValue id="transmission" placeholder="Select a transmission" />
+                    </SelectTrigger>
+                    <SelectContent className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 dark:bg-cyan-900">
+                      {Object.keys(Transmission).map((item) => (
+                        <SelectItem key={item} value={item} className="data-[highlighted]:bg-cyan-200 dark:data-[highlighted]:bg-cyan-800">
+                          {item}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                {getFieldError('transmission') && <p className="ml-26 mt-1 text-sm text-red-600">{getFieldError('transmission')}</p>}
               </fieldset>
               <fieldset className="flex items-center gap-2">
                 <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="fuelType">
