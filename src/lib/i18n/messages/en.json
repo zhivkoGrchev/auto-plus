@@ -32,5 +32,10 @@
   },
   "Metadata": {
     "description": "This is the best place for your Cars"
+  },
+  "AddCarDialog": {
+    "addCar": "Add Car",
+    "title": "Add a new car",
+    "description": "Fill in the details of the car here. Click save when you&apos;re done."
   }
 }

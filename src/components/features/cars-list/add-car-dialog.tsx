@@ -1,6 +1,7 @@
 'use client'
 
 import { type ChangeEvent, useState, useTransition } from 'react'
+import { useTranslations } from 'next-intl'
 import { Dialog } from 'radix-ui'
 import { FaCheck, FaImage, FaPlus, FaSpinner } from 'react-icons/fa'
 import { MdClose } from 'react-icons/md'
@@ -13,13 +14,13 @@ import type AddCarData from '@/lib/interfaces/add-car-data'
 const initialData: AddCarData = {
   brandId: '',
   modelId: '',
-  year: null,
+  year: 0,
   color: '',
   transmission: null,
   fuelType: null,
-  mileage: null,
-  vin: null,
-  price: null,
+  mileage: 0,
+  vin: '',
+  price: 0,
   description: '',
   brands: [],
   models: [],
@@ -31,6 +32,8 @@ export const AddCarDialog = () => {
   const [isPendingSubmit, startTransitionSubmit] = useTransition()
   const [isPendingBrands, startTransitionBrands] = useTransition()
   const [isPendingModels, startTransitionModels] = useTransition()
+  const [isOpen, setIsOpen] = useState(false)
+  const t = useTranslations('AddCarDialog')
 
   const handleOpenBrands = (isOpen: boolean) =>
     isOpen &&
@@ -63,6 +66,8 @@ export const AddCarDialog = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
+    console.log('Submitting car data:', carData)
+
     // Clear previous errors
     setErrors({})
 
@@ -72,10 +77,8 @@ export const AddCarDialog = () => {
       if (!result.success && result.errors) {
         setErrors(result.errors)
       } else {
-        // Reset form and close dialog on success
         setCarData(initialData)
-        // Note: You might need a different approach to close the dialog
-        // since this depends on your Dialog implementation
+        setIsOpen(false)
       }
     })
   }
@@ -86,20 +89,20 @@ export const AddCarDialog = () => {
   }
 
   return (
-    <Dialog.Root>
+    <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
       <Dialog.Trigger asChild>
         <button
           type="button"
           className="inline-flex justify-center items-center gap-2 px-4 py-2 rounded-md bg-cyan-600 dark:bg-cyan-900 hover:bg-cyan-400 dark:hover:bg-cyan-700 transition-colors outline-none outline-offset-2 focus-visible:outline-2 focus-visible:outline-neutral-900 dark:focus-visible:outline-neutral-600 font-medium select-none"
         >
-          <FaPlus /> Add car
+          <FaPlus /> {t('addCar')}
         </button>
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 flex justify-center items-center bg-neutral-800/70 dark:bg-neutral-500/70 data-[state=open]:animate-overlayShow">
           <Dialog.Content className="relative max-w-7xl p-4 gap-4 rounded-md bg-cyan-50 dark:bg-cyan-950 data-[state=open]:animate-contentShow">
-            <Dialog.Title className="m-0 text-xl font-bold">Add a new car</Dialog.Title>
-            <Dialog.Description className="mb-6">Fill in the details of the car here. Click save when you&apos;re done.</Dialog.Description>
+            <Dialog.Title className="m-0 text-xl font-bold">{t('title')}</Dialog.Title>
+            <Dialog.Description className="mb-6">{t('description')}</Dialog.Description>
             <div className="flex flex-col items-center mb-6">
               <label className="flex flex-col justify-center items-center size-32 gap-2 border-2 border-dashed border-neutral-700 dark:border-neutral-300 rounded-md cursor-pointer bg-cyan-100 hover:bg-cyan-200 dark:bg-cyan-900 dark:hover:bg-cyan-800">
                 <FaImage className="size-8 text-neutral-700 dark:text-neutral-300" />
@@ -178,17 +181,20 @@ export const AddCarDialog = () => {
                 </div>
                 {getFieldError('modelId') && <p className="ml-26 mt-1 text-sm text-red-600">{getFieldError('modelId')}</p>}
               </fieldset>
-              <fieldset className="flex items-center gap-2">
-                <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="year">
-                  Year
-                </label>
-                <input
-                  className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
-                  id="year"
-                  name="year"
-                  value={carData.year === null || carData.year === 0 ? '' : carData.year}
-                  onChange={handleInputChange}
-                />
+              <fieldset className="flex flex-col">
+                <div className="flex items-center gap-2">
+                  <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="year">
+                    Year
+                  </label>
+                  <input
+                    className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
+                    id="year"
+                    name="year"
+                    value={carData.year === null || carData.year === 0 ? '' : carData.year}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                {getFieldError('year') && <p className="ml-26 mt-1 text-sm text-red-600">{getFieldError('year')}</p>}
               </fieldset>
               <fieldset className="flex flex-col">
                 <div className="flex items-center gap-2">
@@ -210,7 +216,10 @@ export const AddCarDialog = () => {
                   <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="transmission">
                     Transmission
                   </label>
-                  <Select>
+                  <Select
+                    value={carData.transmission || ''}
+                    onValueChange={(transmission) => setCarData((prev) => ({ ...prev, transmission: transmission as Transmission }))}
+                  >
                     <SelectTrigger
                       className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 text-foreground outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
                       aria-label="Transmission"
@@ -228,38 +237,44 @@ export const AddCarDialog = () => {
                 </div>
                 {getFieldError('transmission') && <p className="ml-26 mt-1 text-sm text-red-600">{getFieldError('transmission')}</p>}
               </fieldset>
-              <fieldset className="flex items-center gap-2">
-                <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="fuelType">
-                  Fuel Type
-                </label>
-                <Select>
-                  <SelectTrigger
-                    className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 text-foreground outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
-                    aria-label="Fuel Type"
-                  >
-                    <SelectValue id="fuelType" placeholder="Select a Fuel Type" />
-                  </SelectTrigger>
-                  <SelectContent className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 dark:bg-cyan-900">
-                    {Object.keys(FuelType).map((item) => (
-                      <SelectItem key={item} value={item} className="data-[highlighted]:bg-cyan-200 dark:data-[highlighted]:bg-cyan-800">
-                        {item}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+              <fieldset className="flex flex-col">
+                <div className="flex items-center gap-2">
+                  <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="fuelType">
+                    Fuel Type
+                  </label>
+                  <Select value={carData.fuelType || ''} onValueChange={(fuelType) => setCarData((prev) => ({ ...prev, fuelType: fuelType as FuelType }))}>
+                    <SelectTrigger
+                      className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 text-foreground outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
+                      aria-label="Fuel Type"
+                    >
+                      <SelectValue id="fuelType" placeholder="Select a Fuel Type" />
+                    </SelectTrigger>
+                    <SelectContent className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 dark:bg-cyan-900">
+                      {Object.keys(FuelType).map((item) => (
+                        <SelectItem key={item} value={item} className="data-[highlighted]:bg-cyan-200 dark:data-[highlighted]:bg-cyan-800">
+                          {item}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                {getFieldError('fuelType') && <p className="ml-26 mt-1 text-sm text-red-600">{getFieldError('fuelType')}</p>}
               </fieldset>
-              <fieldset className="flex items-center gap-2">
-                <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="mileage">
-                  Mileage
-                </label>
-                <input
-                  className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
-                  id="mileage"
-                  name="mileage"
-                  value={carData.mileage === null || carData.mileage === 0 ? '' : carData.mileage}
-                  onChange={handleInputChange}
-                />
-              </fieldset>
+              <fieldset className="flex flex-col">
+                <div className="flex items-center gap-2">
+                  <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="mileage">
+                    Mileage
+                  </label>
+                  <input
+                    className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
+                    id="mileage"
+                    name="mileage"
+                    value={carData.mileage === null || carData.mileage === 0 ? '' : carData.mileage}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                {getFieldError('mileage') && <p className="ml-26 mt-1 text-sm text-red-600">{getFieldError('mileage')}</p>}
+              </fieldset>{' '}
               <fieldset className="flex items-center gap-2">
                 <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="vin">
                   VIN
@@ -272,19 +287,22 @@ export const AddCarDialog = () => {
                   onChange={handleInputChange}
                 />
               </fieldset>
-              <fieldset className="flex items-center gap-2">
-                <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="price">
-                  Price
-                </label>
-                <input
-                  className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
-                  id="price"
-                  name="price"
-                  value={carData.price === null || carData.price === 0 ? '' : carData.price}
-                  onChange={handleInputChange}
-                />
-                <span className="text-neutral-700 dark:text-neutral-300">€</span>
-              </fieldset>
+              <fieldset className="flex flex-col">
+                <div className="flex items-center gap-2">
+                  <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="price">
+                    Price
+                  </label>
+                  <input
+                    className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
+                    id="price"
+                    name="price"
+                    value={carData.price === null || carData.price === 0 ? '' : carData.price}
+                    onChange={handleInputChange}
+                  />
+                  <span className="text-neutral-700 dark:text-neutral-300">€</span>
+                </div>
+                {getFieldError('price') && <p className="ml-26 mt-1 text-sm text-red-600">{getFieldError('price')}</p>}
+              </fieldset>{' '}
               <fieldset className="flex gap-2">
                 <label className="w-24 py-2 text-right text-neutral-700 dark:text-neutral-300" htmlFor="description">
                   Description
@@ -300,15 +318,14 @@ export const AddCarDialog = () => {
               </fieldset>
             </div>
             <div className="mt-6 flex justify-end">
-              <Dialog.Close asChild>
-                <button
-                  type="submit"
-                  onClick={handleSubmit}
-                  className="inline-flex justify-center items-center gap-2 px-4 py-2 rounded-md bg-cyan-600 dark:bg-cyan-900 hover:bg-cyan-400 dark:hover:bg-cyan-700 transition-colors outline-none outline-offset-2 focus-visible:outline-2 focus-visible:outline-neutral-900 dark:focus-visible:outline-neutral-600 font-medium select-none"
-                >
-                  <FaCheck /> Save
-                </button>
-              </Dialog.Close>
+              <button
+                type="button"
+                onClick={handleSubmit}
+                disabled={isPendingSubmit}
+                className="inline-flex justify-center items-center gap-2 px-4 py-2 rounded-md bg-cyan-600 dark:bg-cyan-900 hover:bg-cyan-400 dark:hover:bg-cyan-700 transition-colors outline-none outline-offset-2 focus-visible:outline-2 focus-visible:outline-neutral-900 dark:focus-visible:outline-neutral-600 font-medium select-none disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaCheck />} Save
+              </button>
             </div>
             <Dialog.Close asChild>
               <button
