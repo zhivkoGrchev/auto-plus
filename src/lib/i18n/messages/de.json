@@ -32,5 +32,10 @@
   },
   "Metadata": {
     "description": "Der beste Ort für Ihre Autos"
+  },
+  "AddCarDialog": {
+    "addCar": "Auto hinzufügen",
+    "title": "Auto hinzufügen",
+    "description": "Füllen Sie hier die Details des Autos aus. Klicken Sie auf Speichern, wenn Sie fertig sind."
   }
 }
