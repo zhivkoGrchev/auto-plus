@@ -36,6 +36,7 @@
   "AddCarDialog": {
     "addCar": "Add Car",
     "title": "Add a new car",
-    "description": "Fill in the details of the car here. Click save when you&apos;re done."
+    "description": "Fill in the details of the car here. Click save when you&apos;re done.",
+    "brand": "Brand"
   }
 }
