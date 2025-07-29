@@ -1,16 +1,17 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import { FaRegMoon, FaRegSun } from 'react-icons/fa'
-import { Toggle } from 'radix-ui'
+import { useEffect, useState } from "react";
+import { FaRegMoon } from "react-icons/fa";
+import { BsSun } from "react-icons/bs";
+import { Toggle } from "radix-ui";
 
 export const ThemeSwitcher = () => {
-  const [isDarkTheme, setDarkTheme] = useState<boolean>(false)
-  useEffect(() => setDarkTheme(localStorage.theme === 'dark'), [])
+  const [isDarkTheme, setDarkTheme] = useState<boolean>(false);
+  useEffect(() => setDarkTheme(localStorage.theme === "dark"), []);
   useEffect(() => {
-    document.body.classList.toggle('dark', isDarkTheme)
-    localStorage.theme = isDarkTheme ? 'dark' : 'light'
-  }, [isDarkTheme])
+    document.body.classList.toggle("dark", isDarkTheme);
+    localStorage.theme = isDarkTheme ? "dark" : "light";
+  }, [isDarkTheme]);
 
   return (
     <Toggle.Root
@@ -18,7 +19,7 @@ export const ThemeSwitcher = () => {
       pressed={isDarkTheme}
       onPressedChange={setDarkTheme}
     >
-      {isDarkTheme ? <FaRegMoon /> : <FaRegSun />}
+      {isDarkTheme ? <BsSun /> : <FaRegMoon />}
     </Toggle.Root>
-  )
-}
+  );
+};
