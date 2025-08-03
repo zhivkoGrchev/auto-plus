@@ -37,6 +37,25 @@
     "addCar": "Add Car",
     "title": "Add a new car",
     "description": "Fill in the details of the car here. Click save when you&apos;re done.",
-    "brand": "Brand"
+    "uploadImage": "Upload Image",
+    "brand": "Brand",
+    "selectBrand": "Select a brand",
+    "model": "Model",
+    "selectModel": "Select a model",
+    "year": "First registration",
+    "color": "Body color",
+    "transmission": "Transmission",
+    "selectTransmission": "Select a transmission",
+    "fuelType": "Fuel Type",
+    "selectFuelType": "Select a Fuel Type",
+    "mileage": "Mileage",
+    "vin": "VIN",
+    "price": "Price",
+    "desc": "Description",
+    "save": "Save"
+  },
+  "Dashboard": {
+    "myCars": "My Cars",
+    "myParks": "My Car Lots"
   }
 }
