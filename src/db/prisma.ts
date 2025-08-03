@@ -6,7 +6,7 @@ import ws from 'ws'
 function createPrismaClient() {
   const isProduction = process.env.NODE_ENV === 'production'
   const isVercel = process.env.VERCEL === '1'
-  const useNeonAdapter = isProduction || isVercel || true // Adjust this condition based on your environment
+  const useNeonAdapter = isProduction || isVercel
   
   if (useNeonAdapter) {
     // Use Neon adapter for production/serverless environments
