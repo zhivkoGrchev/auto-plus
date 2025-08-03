@@ -1,6 +1,7 @@
 'use server'
-import { prisma } from '@/db'
-import type { CarBrand, CarModel, Car } from '../generated/prisma'
+import { prisma } from '@/db/prisma'
+import type { CarBrand, CarModel } from '@prisma/client'
+import type { CarExtended } from '../interfaces/car-extended'
 import { toJson } from '../utils'
 import { createInsertCarSchema } from '../validators'
 import type AddCarData from '../interfaces/add-car-data'
@@ -72,7 +73,7 @@ export async function createCar(carData: AddCarData): Promise<{ success: boolean
   }
 }
 
-export async function getAllCars(): Promise<Car[]> {
+export async function getAllCars(): Promise<CarExtended[]> {
   try {
     const cars = await prisma.car.findMany({
       include: {
@@ -94,8 +95,8 @@ export async function getAllCars(): Promise<Car[]> {
 
 // Optional: Add pagination support for better performance with large datasets
 export async function getCarsWithPagination(
-  page: number = 1,
-  pageSize: number = 10
+  page = 1,
+  pageSize = 10
 ): Promise<{
   cars: Car[]
   totalCount: number
@@ -137,7 +138,7 @@ export async function getCarsWithPagination(
 }
 
 // Optional: Add search functionality
-export async function searchCars(searchTerm: string): Promise<Car[]> {
+export async function searchCars(searchTerm: string): Promise<CarExtended[]> {
   try {
     const cars = await prisma.car.findMany({
       where: {
