@@ -37,6 +37,25 @@
     "addCar": "Auto hinzufügen",
     "title": "Auto hinzufügen",
     "description": "Füllen Sie hier die Details des Autos aus. Klicken Sie auf Speichern, wenn Sie fertig sind.",
-    "brand": "Marke"
+    "uploadImage": "Bild hochladen",
+    "brand": "Marke",
+    "selectBrand": "Wählen Sie eine Marke",
+    "model": "Modell",
+    "selectModel": "Wählen Sie ein Modell",
+    "year": "Erstzulassung",
+    "color": "Karosseriefarbe",
+    "transmission": "Getriebe",
+    "selectTransmission": "Wählen Sie ein Getriebe",
+    "fuelType": "Kraftstoffart",
+    "selectFuelType": "Wählen Sie eine Kraftstoffart",
+    "mileage": "Kilometerstand",
+    "vin": "FIN",
+    "price": "Preis",
+    "desc": "Beschreibung",
+    "save": "Speichern"
+  },
+  "Dashboard": {
+    "myCars": "Meine Autos",
+    "myParks": "Meine Autoplätze"
   }
 }

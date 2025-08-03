@@ -109,7 +109,7 @@ export const AddCarDialog = () => {
             <div className="flex flex-col items-center mb-6">
               <label className="flex flex-col justify-center items-center size-32 gap-2 border-2 border-dashed border-neutral-700 dark:border-neutral-300 rounded-md cursor-pointer bg-cyan-100 hover:bg-cyan-200 dark:bg-cyan-900 dark:hover:bg-cyan-800">
                 <FaImage className="size-8 text-neutral-700 dark:text-neutral-300" />
-                <span className="text-xs text-neutral-700 dark:text-neutral-300">Upload Image</span>
+                <span className="text-xs text-neutral-700 dark:text-neutral-300">{t('uploadImage')}</span>
                 <input type="file" className="hidden" accept="image/*" />
               </label>
             </div>
@@ -143,7 +143,7 @@ export const AddCarDialog = () => {
                       className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 text-foreground outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
                       aria-label="Brand"
                     >
-                      <SelectValue id="brandId" placeholder="Select a brand" />
+                      <SelectValue id="brandId" placeholder={t('selectBrand')} />
                     </SelectTrigger>
                     <SelectContent className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 dark:bg-cyan-900">
                       {isPendingBrands ? (
@@ -165,14 +165,14 @@ export const AddCarDialog = () => {
               <fieldset className="flex flex-col">
                 <div className="flex items-center gap-2">
                   <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="modelId">
-                    Model
+                    {t('model')}
                   </label>
                   <Select value={carData.modelId} onValueChange={(modelId) => setCarData((prev) => ({ ...prev, modelId }))} onOpenChange={handleOpenModels}>
                     <SelectTrigger
                       className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 text-foreground outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
                       aria-label="Model"
                     >
-                      <SelectValue id="modelId" placeholder="Select a model" />
+                      <SelectValue id="modelId" placeholder={t('selectModel')} />
                     </SelectTrigger>
                     <SelectContent className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 dark:bg-cyan-900">
                       {isPendingModels ? (
@@ -194,7 +194,7 @@ export const AddCarDialog = () => {
               <fieldset className="flex flex-col">
                 <div className="flex items-center gap-2">
                   <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="year">
-                    Year
+                    {t('year')}
                   </label>
                   <input
                     className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
@@ -209,7 +209,7 @@ export const AddCarDialog = () => {
               <fieldset className="flex flex-col">
                 <div className="flex items-center gap-2">
                   <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="color">
-                    Color
+                    {t('color')}
                   </label>
                   <input
                     className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
@@ -224,7 +224,7 @@ export const AddCarDialog = () => {
               <fieldset className="flex flex-col">
                 <div className="flex items-center gap-2">
                   <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="transmission">
-                    Transmission
+                    {t('transmission')}
                   </label>
                   <Select
                     value={carData.transmission || ''}
@@ -239,7 +239,7 @@ export const AddCarDialog = () => {
                       className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 text-foreground outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
                       aria-label="Transmission"
                     >
-                      <SelectValue id="transmission" placeholder="Select a transmission" />
+                      <SelectValue id="transmission" placeholder={t('selectTransmission')} />
                     </SelectTrigger>
                     <SelectContent className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 dark:bg-cyan-900">
                       {Object.keys(Transmission).map((item) => (
@@ -255,7 +255,7 @@ export const AddCarDialog = () => {
               <fieldset className="flex flex-col">
                 <div className="flex items-center gap-2">
                   <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="fuelType">
-                    Fuel Type
+                    {t('fuelType')}
                   </label>
                   <Select
                     value={carData.fuelType || ''}
@@ -270,7 +270,7 @@ export const AddCarDialog = () => {
                       className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 text-foreground outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
                       aria-label="Fuel Type"
                     >
-                      <SelectValue id="fuelType" placeholder="Select a Fuel Type" />
+                      <SelectValue id="fuelType" placeholder={t('selectFuelType')} />
                     </SelectTrigger>
                     <SelectContent className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 dark:bg-cyan-900">
                       {Object.keys(FuelType).map((item) => (
@@ -286,7 +286,7 @@ export const AddCarDialog = () => {
               <fieldset className="flex flex-col">
                 <div className="flex items-center gap-2">
                   <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="mileage">
-                    Mileage
+                    {t('mileage')}
                   </label>
                   <input
                     className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
@@ -300,7 +300,7 @@ export const AddCarDialog = () => {
               </fieldset>{' '}
               <fieldset className="flex items-center gap-2">
                 <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="vin">
-                  VIN
+                  {t('vin')}
                 </label>
                 <input
                   className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
@@ -313,7 +313,7 @@ export const AddCarDialog = () => {
               <fieldset className="flex flex-col">
                 <div className="flex items-center gap-2">
                   <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="price">
-                    Price
+                    {t('price')}
                   </label>
                   <input
                     className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
@@ -328,7 +328,7 @@ export const AddCarDialog = () => {
               </fieldset>{' '}
               <fieldset className="flex gap-2">
                 <label className="w-24 py-2 text-right text-neutral-700 dark:text-neutral-300" htmlFor="description">
-                  Description
+                  {t('desc')}
                 </label>
                 <textarea
                   className="inline-flex grow resize-none rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
@@ -347,7 +347,7 @@ export const AddCarDialog = () => {
                 disabled={isPendingSubmit}
                 className="inline-flex justify-center items-center gap-2 px-4 py-2 rounded-md bg-cyan-600 dark:bg-cyan-900 hover:bg-cyan-400 dark:hover:bg-cyan-700 transition-colors outline-none outline-offset-2 focus-visible:outline-2 focus-visible:outline-neutral-900 dark:focus-visible:outline-neutral-600 font-medium select-none disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaCheck />} Save
+                {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaCheck />} {t('save')}
               </button>
             </div>
             <Dialog.Close asChild>
