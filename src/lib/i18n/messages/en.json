@@ -57,5 +57,16 @@
   "Dashboard": {
     "myCars": "My Cars",
     "myParks": "My Car Lots"
+  },
+  "Validations": {
+    "brand": "Brand is required",
+    "model": "Model is required",
+    "yearMin": "Year must be at least 1886",
+    "yearMax": "Year cannot be in the future",
+    "color": "Color is required",
+    "transmission": "Transmission is required",
+    "fuelType": "Fuel Type is required",
+    "mileage": "Mileage is required",
+    "price": "Price is required"
   }
 }

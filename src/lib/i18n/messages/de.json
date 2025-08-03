@@ -57,5 +57,16 @@
   "Dashboard": {
     "myCars": "Meine Autos",
     "myParks": "Meine Autoplätze"
+  },
+  "Validations": {
+    "brand": "Marke ist erforderlich",
+    "model": "Modell ist erforderlich",
+    "yearMin": "Das Jahr muss mindestens 1886 sein",
+    "yearMax": "Das Jahr darf nicht in der Zukunft liegen",
+    "color": "Farbe ist erforderlich",
+    "transmission": "Getriebe ist erforderlich",
+    "fuelType": "Kraftstoffart ist erforderlich",
+    "mileage": "Kilometerstand ist erforderlich",
+    "price": "Preis ist erforderlich"
   }
 }

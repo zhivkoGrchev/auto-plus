@@ -2,7 +2,7 @@
 import { prisma } from '@/db'
 import type { CarBrand, CarModel, Car } from '../generated/prisma'
 import { toJson } from '../utils'
-import { insertCarSchema } from '../validators'
+import { createInsertCarSchema } from '../validators'
 import type AddCarData from '../interfaces/add-car-data'
 import { ZodError } from 'zod'
 
@@ -34,7 +34,8 @@ export async function getCarModelsByBrand(brandId: string): Promise<CarModel[]> 
 }
 export async function createCar(carData: AddCarData): Promise<{ success: boolean; errors?: Record<string, string[]> }> {
   try {
-    const parsedData = insertCarSchema.parse(carData)
+    const schema = await createInsertCarSchema()
+    const parsedData = schema.parse(carData)
 
     console.log('Parsed Car Data:', parsedData)
 
