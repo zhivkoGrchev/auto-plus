@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { getAllCars } from "@/lib/actions/car.actions";
-import type { Car } from "@/lib/generated/prisma";
+import { CarExtended } from "@/lib/interfaces/car-extended";
 
 export { AddCarDialog } from "./add-car-dialog";
 
 export const CarsList = () => {
-  const [cars, setCars] = useState<Car[]>([]);
+  const [cars, setCars] = useState<CarExtended[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
