@@ -1,7 +1,8 @@
 'use server'
-import { prisma } from '@/db'
-import type { CarBrand, CarModel } from '../generated/prisma'
-import { CarExtended } from '../interfaces/car-extended'
+
+import { prisma } from '@/db/prisma'
+import type { CarBrand, CarModel } from '@prisma/client'
+import type { CarExtended } from '../interfaces/car-extended'
 import { toJson } from '../utils'
 import { createInsertCarSchema } from '../validators'
 import type AddCarData from '../interfaces/add-car-data'
@@ -93,8 +94,8 @@ export async function getAllCars(): Promise<CarExtended[]> {
 }
 
 export async function getCarsWithPagination(
-  page: number = 1,
-  pageSize: number = 10
+  page = 1,
+  pageSize = 10
 ): Promise<{
   cars: CarExtended[]
   totalCount: number

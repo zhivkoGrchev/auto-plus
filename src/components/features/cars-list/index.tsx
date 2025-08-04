@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getAllCars } from "@/lib/actions/car.actions";
-import { CarExtended } from "@/lib/interfaces/car-extended";
+import type { CarExtended } from "@/lib/interfaces/car-extended";
 
 export { AddCarDialog } from "./add-car-dialog";
 

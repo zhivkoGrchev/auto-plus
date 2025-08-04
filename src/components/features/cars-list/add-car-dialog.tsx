@@ -7,7 +7,7 @@ import { FaCheck, FaImage, FaPlus, FaSpinner } from 'react-icons/fa'
 import { MdClose } from 'react-icons/md'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { getCarBrands, getCarModelsByBrand } from '@/lib/actions/car.actions'
-import { FuelType, Transmission } from '@/lib/generated/prisma'
+import { FuelType, Transmission } from '@prisma/client'
 import { createCar } from '@/lib/actions/car.actions'
 import type AddCarData from '@/lib/interfaces/add-car-data'
 

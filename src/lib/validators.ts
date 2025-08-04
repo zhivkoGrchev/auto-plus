@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { Transmission } from './generated/prisma'
-import { FuelType } from './generated/prisma'
+import { Transmission } from '@prisma/client'
+import { FuelType } from '@prisma/client'
 import { getTranslations } from 'next-intl/server'
 
 export const createInsertCarSchema = async () => {
