@@ -28,7 +28,7 @@ export const CarsList = () => {
   if (loading) return <div>Loading cars...</div>;
 
   return (
-    <div className="grid gap-4">
+    <div className="container mx-auto px-4">
       {cars.map((car) => (
         <div key={car.id} className="p-4 border rounded-lg">
           <h3 className="font-semibold">

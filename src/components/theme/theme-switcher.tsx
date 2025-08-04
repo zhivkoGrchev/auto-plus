@@ -19,7 +19,7 @@ export const ThemeSwitcher = () => {
       pressed={isDarkTheme}
       onPressedChange={setDarkTheme}
     >
-      {isDarkTheme ? <BsSun /> : <FaRegMoon />}
+      {isDarkTheme ? <FaRegMoon /> : <BsSun />}
     </Toggle.Root>
   );
 };

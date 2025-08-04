@@ -94,12 +94,14 @@ export const AddCarDialog = () => {
   return (
     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
       <Dialog.Trigger asChild>
-        <button
-          type="button"
-          className="inline-flex justify-center items-center gap-2 px-4 py-2 rounded-md bg-cyan-600 dark:bg-cyan-900 hover:bg-cyan-400 dark:hover:bg-cyan-700 transition-colors outline-none outline-offset-2 focus-visible:outline-2 focus-visible:outline-neutral-900 dark:focus-visible:outline-neutral-600 font-medium select-none"
-        >
-          <FaPlus /> {t('addCar')}
-        </button>
+        <div className="container mx-auto px-4 mb-4 flex justify-end">
+          <button
+            type="button"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-cyan-600 dark:bg-cyan-900 hover:bg-cyan-400 dark:hover:bg-cyan-700 transition-colors outline-none outline-offset-2 focus-visible:outline-2 focus-visible:outline-neutral-900 dark:focus-visible:outline-neutral-600 font-medium select-none"
+          >
+            <FaPlus /> {t('addCar')}
+          </button>
+        </div>
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 flex justify-center items-center bg-neutral-800/70 dark:bg-neutral-500/70 data-[state=open]:animate-overlayShow">
@@ -239,12 +241,14 @@ export const AddCarDialog = () => {
                       className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 text-foreground outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
                       aria-label="Transmission"
                     >
-                      <SelectValue id="transmission" placeholder={t('selectTransmission')} />
+                      <SelectValue id="transmission" placeholder={t('selectTransmission')}>
+                        {carData.transmission ? t(carData.transmission) : t('selectTransmission')}
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 dark:bg-cyan-900">
                       {Object.keys(Transmission).map((item) => (
                         <SelectItem key={item} value={item} className="data-[highlighted]:bg-cyan-200 dark:data-[highlighted]:bg-cyan-800">
-                          {item}
+                          {t(item)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -275,7 +279,7 @@ export const AddCarDialog = () => {
                     <SelectContent className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 dark:bg-cyan-900">
                       {Object.keys(FuelType).map((item) => (
                         <SelectItem key={item} value={item} className="data-[highlighted]:bg-cyan-200 dark:data-[highlighted]:bg-cyan-800">
-                          {item}
+                          {t(item)}
                         </SelectItem>
                       ))}
                     </SelectContent>
