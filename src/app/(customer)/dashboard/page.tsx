@@ -9,10 +9,10 @@ export default function Dashboard() {
   return (
     <Tabs.Root className="flex flex-col grow p-4" defaultValue="cars-list">
       <Tabs.List className="flex justify-center gap-4">
-        <Tabs.Trigger className="p-2 border-b-2 border-cyan-800 dark:border-cyan-500" value="cars-list">
+        <Tabs.Trigger className="p-2 border-b-2 data-[state=active]:border-cyan-800 dark:data-[state=active]:border-cyan-400 border-transparent data-[state=active]:text-cyan-800 dark:data-[state=active]:text-cyan-400 text-neutral-600 dark:text-neutral-400" value="cars-list">
           {t('myCars')}
         </Tabs.Trigger>
-        <Tabs.Trigger className="p-2 border-b-2 border-cyan-800 dark:border-cyan-500" value="profile">
+        <Tabs.Trigger className="p-2 border-b-2 data-[state=active]:border-cyan-800 dark:data-[state=active]:border-cyan-400 border-transparent data-[state=active]:text-cyan-800 dark:data-[state=active]:text-cyan-400 text-neutral-600 dark:text-neutral-400" value="profile">
           {t('myParks')}
         </Tabs.Trigger>
       </Tabs.List>
