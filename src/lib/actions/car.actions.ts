@@ -1,4 +1,5 @@
 'use server'
+
 import { prisma } from '@/db/prisma'
 import type { CarBrand, CarModel } from '@prisma/client'
 import type { CarExtended } from '../interfaces/car-extended'
@@ -18,6 +19,7 @@ export async function getCarBrands(): Promise<CarBrand[]> {
     await prisma.$disconnect()
   }
 }
+
 export async function getCarModelsByBrand(brandId: string): Promise<CarModel[]> {
   try {
     const carModels = await prisma.carModel.findMany({
@@ -33,6 +35,7 @@ export async function getCarModelsByBrand(brandId: string): Promise<CarModel[]> 
     await prisma.$disconnect()
   }
 }
+
 export async function createCar(carData: AddCarData): Promise<{ success: boolean; errors?: Record<string, string[]> }> {
   try {
     const schema = await createInsertCarSchema()
@@ -47,9 +50,7 @@ export async function createCar(carData: AddCarData): Promise<{ success: boolean
     return { success: true }
   } catch (error) {
     console.error('Error creating car:', error)
-    // Handle Zod validation errors
     if (error instanceof ZodError) {
-      // Format Zod errors into a more usable structure
       const formattedErrors: Record<string, string[]> = {}
 
       for (const err of error.errors) {
@@ -63,7 +64,6 @@ export async function createCar(carData: AddCarData): Promise<{ success: boolean
       return { success: false, errors: formattedErrors }
     }
 
-    // For other errors, return a generic error
     return {
       success: false,
       errors: { form: ['An unexpected error occurred. Please try again.'] },
@@ -81,7 +81,7 @@ export async function getAllCars(): Promise<CarExtended[]> {
         model: true,
       },
       orderBy: {
-        createdAt: 'desc', // Most recent cars first
+        createdAt: 'desc',
       },
     })
     return toJson(cars)
@@ -93,12 +93,11 @@ export async function getAllCars(): Promise<CarExtended[]> {
   }
 }
 
-// Optional: Add pagination support for better performance with large datasets
 export async function getCarsWithPagination(
   page = 1,
   pageSize = 10
 ): Promise<{
-  cars: Car[]
+  cars: CarExtended[]
   totalCount: number
   totalPages: number
   currentPage: number
@@ -137,7 +136,6 @@ export async function getCarsWithPagination(
   }
 }
 
-// Optional: Add search functionality
 export async function searchCars(searchTerm: string): Promise<CarExtended[]> {
   try {
     const cars = await prisma.car.findMany({
