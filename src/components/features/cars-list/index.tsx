@@ -30,7 +30,7 @@ export const CarsList = () => {
   return (
     <div className="container mx-auto px-4">
       {cars.map((car) => (
-        <div key={car.id} className="p-4 border rounded-lg">
+        <div key={car.id} className="p-4 mb-4 border rounded-lg">
           <h3 className="font-semibold">
             {car.brand.name} {car.model.name}
           </h3>

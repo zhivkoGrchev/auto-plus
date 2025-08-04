@@ -93,16 +93,16 @@ export const AddCarDialog = () => {
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
-      <Dialog.Trigger asChild>
-        <div className="container mx-auto px-4 mb-4 flex justify-end">
+      <div className="container mx-auto px-4 mb-4 flex justify-end">
+        <Dialog.Trigger asChild>
           <button
             type="button"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-cyan-600 dark:bg-cyan-900 hover:bg-cyan-400 dark:hover:bg-cyan-700 transition-colors outline-none outline-offset-2 focus-visible:outline-2 focus-visible:outline-neutral-900 dark:focus-visible:outline-neutral-600 font-medium select-none"
+            className="inline-flex items-center cursor-pointer gap-2 px-4 py-2 rounded-md bg-cyan-600 dark:bg-cyan-900 hover:bg-cyan-400 dark:hover:bg-cyan-700 transition-colors outline-none outline-offset-2 focus-visible:outline-2 focus-visible:outline-neutral-900 dark:focus-visible:outline-neutral-600 font-medium select-none"
           >
             <FaPlus /> {t('addCar')}
           </button>
-        </div>
-      </Dialog.Trigger>
+        </Dialog.Trigger>
+      </div>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 flex justify-center items-center bg-neutral-800/70 dark:bg-neutral-500/70 data-[state=open]:animate-overlayShow">
           <Dialog.Content className="relative max-w-7xl p-4 gap-4 rounded-md bg-cyan-50 dark:bg-cyan-950 data-[state=open]:animate-contentShow">
