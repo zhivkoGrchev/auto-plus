@@ -2,7 +2,7 @@
 
 import { headers } from 'next/headers'
 import { auth } from '@/lib/auth'
-import { prisma } from '@/db'
+import { prisma } from '@/db/prisma'
 import type { SignInData, SignUpData } from '../types/auth'
 import type { User } from '../generated/prisma'
 
