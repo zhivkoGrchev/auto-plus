@@ -6,8 +6,9 @@ import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { FaSpinner } from 'react-icons/fa'
 import { authClient } from '@/lib/auth/client'
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover.custom'
 import { useAuthContext } from '../features/auth/context'
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
+import { Button } from '../ui/button'
 
 export const AuthTool = () => {
   const t = useTranslations('Navbar')
@@ -26,30 +27,29 @@ export const AuthTool = () => {
 
   if (isPendingFetch) {
     return (
-      <span className="flex items-center justify-center gap-2 ml-12 px-4 py-2 rounded-md bg-background hover:bg-background/50 font-medium transition-colors">
+      <Button variant="outline" disabled>
         <FaSpinner className="animate-spin" /> Loading ...
-      </span>
+      </Button>
     )
   }
 
   return currentUser ? (
     <Popover>
-      <PopoverTrigger className="flex items-center justify-center gap-2 ml-12 px-4 py-2 rounded-md bg-background hover:bg-background/50 font-medium transition-colors">
-        {currentUser.name}
+      <PopoverTrigger asChild>
+        <Button variant="outline">{currentUser.name}</Button>
       </PopoverTrigger>
-      <PopoverContent className="flex flex-col justify-center items-center gap-2 p-4 rounded-md bg-background">
+      <PopoverContent className="flex flex-col items-center gap-2">
         <h3 className="text-lg font-bold">
           {currentUser.name} - {currentUser.email}
         </h3>
-        <button onClick={handleSignOut}>Sign Out</button>
+        <Button variant="destructive" onClick={handleSignOut}>
+          Sign out
+        </Button>
       </PopoverContent>
     </Popover>
   ) : (
-    <Link
-      className="flex items-center justify-center gap-2 ml-12 px-4 py-2 rounded-md bg-background hover:bg-background/50 font-medium transition-colors"
-      href="/auth/sign-in"
-    >
-      {t('login')}
-    </Link>
+    <Button variant="outline" asChild>
+      <Link href="/auth/sign-in">{t('login')}</Link>
+    </Button>
   )
 }

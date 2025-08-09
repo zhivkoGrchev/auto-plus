@@ -7,6 +7,9 @@ import { ZodError } from 'zod'
 import { signUp } from '@/lib/actions/auth.actions'
 import { formSignUpSchema } from '@/lib/validators/auth'
 import type { SignUpData } from '@/lib/types/auth'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Button } from '@/components/ui/button'
 
 const initialFormData: SignUpData = {
   name: '',
@@ -67,59 +70,30 @@ export const SignUp = () => {
             ))}
           </div>
         )}
-        <fieldset className="flex flex-col">
-          <div className="flex items-center gap-2">
-            <label className="text-neutral-700 dark:text-neutral-300" htmlFor="name">
-              Name
-            </label>
-            <input
-              className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-            />
-          </div>
-          {formErrors['name'] && <p className="ml-26 mt-1 text-sm text-red-600">{formErrors['name'][0]}</p>}
+        <fieldset className="flex flex-col gap-2">
+          <Label className="mx-2" htmlFor="name">
+            Name
+          </Label>
+          <Input id="name" name="name" value={formData.name} onChange={handleInputChange} />
+          {formErrors['name'] && <sub className="mx-2 text-red-600">{formErrors['name'][0]}</sub>}
         </fieldset>
-        <fieldset className="flex flex-col">
-          <div className="flex items-center gap-2">
-            <label className="text-neutral-700 dark:text-neutral-300" htmlFor="email">
-              E-Mail
-            </label>
-            <input
-              className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-            />
-          </div>
-          {formErrors['email'] && <p className="ml-26 mt-1 text-sm text-red-600">{formErrors['email'][0]}</p>}
+        <fieldset className="flex flex-col gap-2">
+          <Label className="mx-2" htmlFor="email">
+            E-Mail
+          </Label>
+          <Input id="email" name="email" value={formData.email} onChange={handleInputChange} />
+          {formErrors['email'] && <sub className=" mx-2 text-red-600">{formErrors['email'][0]}</sub>}
         </fieldset>
-        <fieldset className="flex flex-col">
-          <div className="flex items-center gap-2">
-            <label className="text-neutral-700 dark:text-neutral-300" htmlFor="password">
-              Password
-            </label>
-            <input
-              className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleInputChange}
-            />
-          </div>
-          {formErrors['password'] && <p className="ml-26 mt-1 text-sm text-red-600">{formErrors['password'][0]}</p>}
+        <fieldset className="flex flex-col gap-2">
+          <Label className="mx-2" htmlFor="password">
+            Password
+          </Label>
+          <Input id="password" name="password" value={formData.password} onChange={handleInputChange} />
+          {formErrors['password'] && <sub className="mx-2 text-red-600">{formErrors['password'][0]}</sub>}
         </fieldset>
-        <button
-          type="button"
-          onClick={handleSubmit}
-          disabled={isPendingSubmit}
-          className="inline-flex justify-center items-center gap-2 px-4 py-2 rounded-md bg-cyan-600 dark:bg-cyan-900 hover:bg-cyan-400 dark:hover:bg-cyan-700 transition-colors outline-none outline-offset-2 focus-visible:outline-2 focus-visible:outline-neutral-900 dark:focus-visible:outline-neutral-600 font-medium select-none disabled:opacity-50 disabled:cursor-not-allowed"
-        >
+        <Button type="button" onClick={handleSubmit} disabled={isPendingSubmit}>
           {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaCheck />} Sign up
-        </button>
+        </Button>
         <Link className="text-left" href="/auth/sign-in">
           I have an account
         </Link>

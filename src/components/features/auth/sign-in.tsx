@@ -4,11 +4,13 @@ import Link from 'next/link'
 import { type ChangeEvent, type MouseEvent, useState, useTransition } from 'react'
 import { FaCheck, FaSignInAlt, FaSpinner } from 'react-icons/fa'
 import { ZodError } from 'zod'
-import { Input } from '@/components/ui/input.custom'
 import { useAuthContext } from './context'
 import { signIn } from '@/lib/actions/auth.actions'
 import { formSignInSchema } from '@/lib/validators/auth'
 import type { SignInData } from '@/lib/types/auth'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 
 const initialFormData: SignInData = {
   email: '',
@@ -70,32 +72,19 @@ export const SignIn = () => {
             ))}
           </div>
         )}
-        <fieldset className="flex flex-col">
-          <div className="flex items-center gap-2">
-            <label className="text-neutral-700 dark:text-neutral-300" htmlFor="email">
-              E-Mail
-            </label>
-            <Input id="email" name="email" value={formData.email} onChange={handleInputChange} />
-          </div>
-          {formErrors['email'] && <p className="ml-26 mt-1 text-sm text-red-600">{formErrors['email'][0]}</p>}
+        <fieldset className="flex flex-col gap-2">
+          <Label htmlFor="email">E-Mail</Label>
+          <Input id="email" name="email" value={formData.email} onChange={handleInputChange} />
+          {formErrors['email'] && <sub className="text-red-600">{formErrors['email'][0]}</sub>}
         </fieldset>
-        <fieldset className="flex flex-col">
-          <div className="flex items-center gap-2">
-            <label className="text-neutral-700 dark:text-neutral-300" htmlFor="password">
-              Password
-            </label>
-            <Input id="password" name="password" value={formData.password} onChange={handleInputChange} />
-          </div>
-          {formErrors['password'] && <p className="ml-26 mt-1 text-sm text-red-600">{formErrors['password'][0]}</p>}
+        <fieldset className="flex flex-col gap-2">
+          <Label htmlFor="password">Password</Label>
+          <Input id="password" name="password" value={formData.password} onChange={handleInputChange} />
+          {formErrors['password'] && <sub className="text-red-600">{formErrors['password'][0]}</sub>}
         </fieldset>
-        <button
-          type="button"
-          onClick={handleSubmit}
-          disabled={isPendingSubmit}
-          className="inline-flex justify-center items-center gap-2 px-4 py-2 rounded-md bg-cyan-600 dark:bg-cyan-900 hover:bg-cyan-400 dark:hover:bg-cyan-700 transition-colors outline-none outline-offset-2 focus-visible:outline-2 focus-visible:outline-neutral-900 dark:focus-visible:outline-neutral-600 font-medium select-none disabled:opacity-50 disabled:cursor-not-allowed"
-        >
+        <Button type="button" onClick={handleSubmit} disabled={isPendingSubmit}>
           {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaCheck />} Sign in
-        </button>
+        </Button>
         <Link className="text-left" href="/auth/sign-up">
           I have not account
         </Link>
