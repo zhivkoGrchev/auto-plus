@@ -16,13 +16,15 @@ export const useAuthContext = () => {
 }
 
 export const AuthContextProvider = ({ value, ...props }: PartialFields<ProviderProps<User>, 'value'>) => {
-  const [currentUser, setCurrentUser] = useState<User | undefined>(value)
+  const [currentUser, setCurrentUser] = useState<User | null>(value || null)
   const [isPendingFetch, startTransitionFetch] = useTransition()
   const fetchCurrentUser = useCallback(async () => {
     startTransitionFetch(async () => {
       const { data, error } = await getCurrentUser()
       if (error) {
         console.error(error.message)
+        setCurrentUser(null)
+        return
       }
       setCurrentUser(data)
     })
