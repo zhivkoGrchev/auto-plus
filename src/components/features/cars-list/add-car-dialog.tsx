@@ -2,13 +2,27 @@
 
 import { type ChangeEvent, type MouseEvent, useState, useTransition } from 'react'
 import { useTranslations } from 'next-intl'
-import { Dialog } from 'radix-ui'
 import { FaCheck, FaImage, FaPlus, FaSpinner } from 'react-icons/fa'
 import { MdClose } from 'react-icons/md'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { getCarBrands, getCarModelsByBrand } from '@/lib/actions/car.actions'
 import { FuelType, Transmission } from '@prisma/client'
-import { createCar } from '@/lib/actions/car.actions'
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { getCarBrands, getCarModelsByBrand, createCar } from '@/lib/actions/car.actions'
 import type AddCarData from '@/lib/interfaces/add-car-data'
 
 const initialData: AddCarData = {
@@ -92,280 +106,214 @@ export const AddCarDialog = () => {
   }
 
   return (
-    <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <div className="container mx-auto px-4 mb-4 flex justify-end">
-        <Dialog.Trigger asChild>
-          <button
-            type="button"
-            className="inline-flex items-center cursor-pointer gap-2 px-4 py-2 rounded-md bg-cyan-600 dark:bg-cyan-900 hover:bg-cyan-400 dark:hover:bg-cyan-700 transition-colors outline-none outline-offset-2 focus-visible:outline-2 focus-visible:outline-neutral-900 dark:focus-visible:outline-neutral-600 font-medium select-none"
-          >
+        <DialogTrigger asChild>
+          <Button type="button">
             <FaPlus /> {t('addCar')}
-          </button>
-        </Dialog.Trigger>
+          </Button>
+        </DialogTrigger>
       </div>
-      <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 flex justify-center items-center bg-neutral-800/70 dark:bg-neutral-500/70 data-[state=open]:animate-overlayShow">
-          <Dialog.Content className="relative max-w-7xl p-4 gap-4 rounded-md bg-cyan-50 dark:bg-cyan-950 data-[state=open]:animate-contentShow">
-            <Dialog.Title className="m-0 text-xl font-bold">{t('title')}</Dialog.Title>
-            <Dialog.Description className="mb-6">{t('description')}</Dialog.Description>
-            <div className="flex flex-col items-center mb-6">
-              <label className="flex flex-col justify-center items-center size-32 gap-2 border-2 border-dashed border-neutral-700 dark:border-neutral-300 rounded-md cursor-pointer bg-cyan-100 hover:bg-cyan-200 dark:bg-cyan-900 dark:hover:bg-cyan-800">
-                <FaImage className="size-8 text-neutral-700 dark:text-neutral-300" />
-                <span className="text-xs text-neutral-700 dark:text-neutral-300">{t('uploadImage')}</span>
-                <input type="file" className="hidden" accept="image/*" />
-              </label>
-            </div>
-            {/* Form-level errors */}
-            {errors.form && (
-              <div className="mb-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded">
-                {errors.form.map((error, index) => (
-                  <p key={index}>{error}</p>
+      <DialogContent className="sm:max-w-[640px]">
+        <DialogHeader>
+          <DialogTitle>{t('title')}</DialogTitle>
+          <DialogDescription>{t('description')}</DialogDescription>
+        </DialogHeader>
+        <div className="flex flex-col items-center mb-6">
+          <Label className="flex flex-col justify-center items-center size-32 gap-2 border-2 border-dashed border-neutral-700 dark:border-neutral-300 rounded-md cursor-pointer bg-cyan-100 hover:bg-cyan-200 dark:bg-cyan-900 dark:hover:bg-cyan-800">
+            <FaImage className="size-8 text-neutral-700 dark:text-neutral-300" />
+            <span className="text-xs text-neutral-700 dark:text-neutral-300">{t('uploadImage')}</span>
+            <input type="file" className="hidden" accept="image/*" />
+          </Label>
+        </div>
+        {/* Form-level errors */}
+        {errors.form && (
+          <div className="mb-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded">
+            {errors.form.map((error, index) => (
+              <p key={index}>{error}</p>
+            ))}
+          </div>
+        )}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+          <fieldset className="flex flex-col gap-2">
+            <Label className="mx-2" htmlFor="brandId">
+              {t('brand')}
+            </Label>
+            <Select
+              value={carData.brandId}
+              onValueChange={(brandId) =>
+                setCarData((prev) => ({
+                  ...prev,
+                  brandId,
+                  modelId: '',
+                  models: [],
+                }))
+              }
+              onOpenChange={handleOpenBrands}
+            >
+              <SelectTrigger className="w-full" aria-label="Brand">
+                <SelectValue id="brandId" placeholder={t('selectBrand')} />
+              </SelectTrigger>
+              <SelectContent>
+                {isPendingBrands ? (
+                  <span className="p-2 flex justify-center items-center">
+                    <FaSpinner className="animate-spin" />
+                  </span>
+                ) : (
+                  carData.brands.map((item) => (
+                    <SelectItem key={item.id} value={item.id}>
+                      {item.name}
+                    </SelectItem>
+                  ))
+                )}
+              </SelectContent>
+            </Select>
+            {getFieldError('brandId') && <sub className="mx-2 text-red-600">{getFieldError('brandId')}</sub>}
+          </fieldset>
+          <fieldset className="flex flex-col gap-2">
+            <Label className="mx-2" htmlFor="modelId">
+              {t('model')}
+            </Label>
+            <Select value={carData.modelId} onValueChange={(modelId) => setCarData((prev) => ({ ...prev, modelId }))} onOpenChange={handleOpenModels}>
+              <SelectTrigger className="w-full" aria-label="Model">
+                <SelectValue id="modelId" placeholder={t('selectModel')} />
+              </SelectTrigger>
+              <SelectContent>
+                {isPendingModels ? (
+                  <span className="p-2 flex justify-center items-center">
+                    <FaSpinner className="animate-spin" />
+                  </span>
+                ) : (
+                  carData.models.map((item) => (
+                    <SelectItem key={item.id} value={item.id}>
+                      {item.name}
+                    </SelectItem>
+                  ))
+                )}
+              </SelectContent>
+            </Select>
+            {getFieldError('modelId') && <sub className="mx-2 text-red-600">{getFieldError('modelId')}</sub>}
+          </fieldset>
+          <fieldset className="flex flex-col gap-2">
+            <Label className="mx-2" htmlFor="year">
+              {t('year')}
+            </Label>
+            <Input
+              className="w-full"
+              id="year"
+              name="year"
+              value={carData.year === null || carData.year === 0 ? '' : carData.year}
+              onChange={handleInputChange}
+            />
+            {getFieldError('year') && <sub className="mx-2 text-red-600">{getFieldError('year')}</sub>}
+          </fieldset>
+          <fieldset className="flex flex-col gap-2">
+            <Label className="mx-2" htmlFor="color">
+              {t('color')}
+            </Label>
+            <Input className="w-full" id="color" name="color" value={carData.color} onChange={handleInputChange} />
+            {getFieldError('color') && <sub className="mx-2 text-red-600">{getFieldError('color')}</sub>}
+          </fieldset>
+          <fieldset className="flex flex-col gap-2">
+            <Label className="mx-2" htmlFor="transmission">
+              {t('transmission')}
+            </Label>
+            <Select
+              value={carData.transmission || ''}
+              onValueChange={(transmission) =>
+                setCarData((prev) => ({
+                  ...prev,
+                  transmission: transmission as Transmission,
+                }))
+              }
+            >
+              <SelectTrigger className="w-full" aria-label="Transmission">
+                <SelectValue id="transmission" placeholder={t('selectTransmission')}>
+                  {carData.transmission ? t(carData.transmission) : t('selectTransmission')}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                {Object.keys(Transmission).map((item) => (
+                  <SelectItem key={item} value={item}>
+                    {t(item)}
+                  </SelectItem>
                 ))}
-              </div>
-            )}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
-              <fieldset className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="brandId">
-                    {t('brand')}
-                  </label>
-                  <Select
-                    value={carData.brandId}
-                    onValueChange={(brandId) =>
-                      setCarData((prev) => ({
-                        ...prev,
-                        brandId,
-                        modelId: '',
-                        models: [],
-                      }))
-                    }
-                    onOpenChange={handleOpenBrands}
-                  >
-                    <SelectTrigger
-                      className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 text-foreground outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
-                      aria-label="Brand"
-                    >
-                      <SelectValue id="brandId" placeholder={t('selectBrand')} />
-                    </SelectTrigger>
-                    <SelectContent className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 dark:bg-cyan-900">
-                      {isPendingBrands ? (
-                        <span className="p-2 flex justify-center items-center">
-                          <FaSpinner className="animate-spin" />
-                        </span>
-                      ) : (
-                        carData.brands.map((item) => (
-                          <SelectItem key={item.id} value={item.id} className="data-[highlighted]:bg-cyan-200 dark:data-[highlighted]:bg-cyan-800">
-                            {item.name}
-                          </SelectItem>
-                        ))
-                      )}
-                    </SelectContent>
-                  </Select>
-                </div>
-                {getFieldError('brandId') && <p className="ml-26 mt-1 text-sm text-red-600">{getFieldError('brandId')}</p>}
-              </fieldset>
-              <fieldset className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="modelId">
-                    {t('model')}
-                  </label>
-                  <Select value={carData.modelId} onValueChange={(modelId) => setCarData((prev) => ({ ...prev, modelId }))} onOpenChange={handleOpenModels}>
-                    <SelectTrigger
-                      className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 text-foreground outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
-                      aria-label="Model"
-                    >
-                      <SelectValue id="modelId" placeholder={t('selectModel')} />
-                    </SelectTrigger>
-                    <SelectContent className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 dark:bg-cyan-900">
-                      {isPendingModels ? (
-                        <span className="p-2 flex justify-center items-center">
-                          <FaSpinner className="animate-spin" />
-                        </span>
-                      ) : (
-                        carData.models.map((item) => (
-                          <SelectItem key={item.id} value={item.id} className="data-[highlighted]:bg-cyan-200 dark:data-[highlighted]:bg-cyan-800">
-                            {item.name}
-                          </SelectItem>
-                        ))
-                      )}
-                    </SelectContent>
-                  </Select>
-                </div>
-                {getFieldError('modelId') && <p className="ml-26 mt-1 text-sm text-red-600">{getFieldError('modelId')}</p>}
-              </fieldset>
-              <fieldset className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="year">
-                    {t('year')}
-                  </label>
-                  <input
-                    className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
-                    id="year"
-                    name="year"
-                    value={carData.year === null || carData.year === 0 ? '' : carData.year}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                {getFieldError('year') && <p className="ml-26 mt-1 text-sm text-red-600">{getFieldError('year')}</p>}
-              </fieldset>
-              <fieldset className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="color">
-                    {t('color')}
-                  </label>
-                  <input
-                    className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
-                    id="color"
-                    name="color"
-                    value={carData.color}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                {getFieldError('color') && <p className="ml-26 mt-1 text-sm text-red-600">{getFieldError('color')}</p>}
-              </fieldset>
-              <fieldset className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="transmission">
-                    {t('transmission')}
-                  </label>
-                  <Select
-                    value={carData.transmission || ''}
-                    onValueChange={(transmission) =>
-                      setCarData((prev) => ({
-                        ...prev,
-                        transmission: transmission as Transmission,
-                      }))
-                    }
-                  >
-                    <SelectTrigger
-                      className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 text-foreground outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
-                      aria-label="Transmission"
-                    >
-                      <SelectValue id="transmission" placeholder={t('selectTransmission')}>
-                        {carData.transmission ? t(carData.transmission) : t('selectTransmission')}
-                      </SelectValue>
-                    </SelectTrigger>
-                    <SelectContent className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 dark:bg-cyan-900">
-                      {Object.keys(Transmission).map((item) => (
-                        <SelectItem key={item} value={item} className="data-[highlighted]:bg-cyan-200 dark:data-[highlighted]:bg-cyan-800">
-                          {t(item)}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                {getFieldError('transmission') && <p className="ml-26 mt-1 text-sm text-red-600">{getFieldError('transmission')}</p>}
-              </fieldset>
-              <fieldset className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="fuelType">
-                    {t('fuelType')}
-                  </label>
-                  <Select
-                    value={carData.fuelType || ''}
-                    onValueChange={(fuelType) =>
-                      setCarData((prev) => ({
-                        ...prev,
-                        fuelType: fuelType as FuelType,
-                      }))
-                    }
-                  >
-                    <SelectTrigger
-                      className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 text-foreground outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
-                      aria-label="Fuel Type"
-                    >
-                      <SelectValue id="fuelType" placeholder={t('selectFuelType')} />
-                    </SelectTrigger>
-                    <SelectContent className="border-cyan-900 dark:border-cyan-600 bg-cyan-100 dark:bg-cyan-900">
-                      {Object.keys(FuelType).map((item) => (
-                        <SelectItem key={item} value={item} className="data-[highlighted]:bg-cyan-200 dark:data-[highlighted]:bg-cyan-800">
-                          {t(item)}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                {getFieldError('fuelType') && <p className="ml-26 mt-1 text-sm text-red-600">{getFieldError('fuelType')}</p>}
-              </fieldset>
-              <fieldset className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="mileage">
-                    {t('mileage')}
-                  </label>
-                  <input
-                    className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
-                    id="mileage"
-                    name="mileage"
-                    value={carData.mileage === null || carData.mileage === 0 ? '' : carData.mileage}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                {getFieldError('mileage') && <p className="ml-26 mt-1 text-sm text-red-600">{getFieldError('mileage')}</p>}
-              </fieldset>{' '}
-              <fieldset className="flex items-center gap-2">
-                <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="vin">
-                  {t('vin')}
-                </label>
-                <input
-                  className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
-                  id="vin"
-                  name="vin"
-                  value={carData.vin === null ? '' : carData.vin}
-                  onChange={handleInputChange}
-                />
-              </fieldset>
-              <fieldset className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <label className="w-24 text-right text-neutral-700 dark:text-neutral-300" htmlFor="price">
-                    {t('price')}
-                  </label>
-                  <input
-                    className="inline-flex grow rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
-                    id="price"
-                    name="price"
-                    value={carData.price === null || carData.price === 0 ? '' : carData.price}
-                    onChange={handleInputChange}
-                  />
-                  <span className="text-neutral-700 dark:text-neutral-300">€</span>
-                </div>
-                {getFieldError('price') && <p className="ml-26 mt-1 text-sm text-red-600">{getFieldError('price')}</p>}
-              </fieldset>{' '}
-              <fieldset className="flex gap-2">
-                <label className="w-24 py-2 text-right text-neutral-700 dark:text-neutral-300" htmlFor="description">
-                  {t('desc')}
-                </label>
-                <textarea
-                  className="inline-flex grow resize-none rounded border border-cyan-900 dark:border-cyan-600 bg-cyan-100 focus:bg-cyan-200 dark:bg-cyan-900 dark:focus:bg-cyan-800 px-4 py-2 outline-offset-2 focus:outline-1 focus:outline-neutral-400 dark:outline-neutral-600"
-                  id="description"
-                  name="description"
-                  rows={3}
-                  value={carData.description}
-                  onChange={handleInputChange}
-                />
-              </fieldset>
-            </div>
-            <div className="mt-6 flex justify-end">
-              <button
-                type="button"
-                onClick={handleSubmit}
-                disabled={isPendingSubmit}
-                className="inline-flex justify-center items-center gap-2 px-4 py-2 rounded-md bg-cyan-600 dark:bg-cyan-900 hover:bg-cyan-400 dark:hover:bg-cyan-700 transition-colors outline-none outline-offset-2 focus-visible:outline-2 focus-visible:outline-neutral-900 dark:focus-visible:outline-neutral-600 font-medium select-none disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaCheck />} {t('save')}
-              </button>
-            </div>
-            <Dialog.Close asChild>
-              <button
-                type="button"
-                className="absolute right-2 top-2 inline-flex justify-center items-center rounded-full focus:outline-none appearance-none text-red-700 dark:text-red-500"
-                aria-label="Close"
-              >
-                <MdClose size="1.5rem" />
-              </button>
-            </Dialog.Close>
-          </Dialog.Content>
-        </Dialog.Overlay>
-      </Dialog.Portal>
-    </Dialog.Root>
+              </SelectContent>
+            </Select>
+            {getFieldError('transmission') && <sub className="mx-2 text-red-600">{getFieldError('transmission')}</sub>}
+          </fieldset>
+          <fieldset className="flex flex-col gap-2">
+            <Label className="mx-2" htmlFor="fuelType">
+              {t('fuelType')}
+            </Label>
+            <Select
+              value={carData.fuelType || ''}
+              onValueChange={(fuelType) =>
+                setCarData((prev) => ({
+                  ...prev,
+                  fuelType: fuelType as FuelType,
+                }))
+              }
+            >
+              <SelectTrigger className="w-full" aria-label="Fuel Type">
+                <SelectValue id="fuelType" placeholder={t('selectFuelType')} />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.keys(FuelType).map((item) => (
+                  <SelectItem key={item} value={item}>
+                    {t(item)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {getFieldError('fuelType') && <sub className="mx-2 text-red-600">{getFieldError('fuelType')}</sub>}
+          </fieldset>
+          <fieldset className="flex flex-col gap-2">
+            <Label className="mx-2" htmlFor="mileage">
+              {t('mileage')}
+            </Label>
+            <Input
+              className="w-full"
+              id="mileage"
+              name="mileage"
+              value={carData.mileage === null || carData.mileage === 0 ? '' : carData.mileage}
+              onChange={handleInputChange}
+            />
+            {getFieldError('mileage') && <sub className="mx-2 text-red-600">{getFieldError('mileage')}</sub>}
+          </fieldset>
+          <fieldset className="flex flex-col gap-2">
+            <Label className="mx-2" htmlFor="vin">
+              {t('vin')}
+            </Label>
+            <Input className="w-full" id="vin" name="vin" value={carData.vin === null ? '' : carData.vin} onChange={handleInputChange} />
+          </fieldset>
+          <fieldset className="flex flex-col gap-2">
+            <Label className="mx-2" htmlFor="price">
+              {t('price')}
+              <span className="ml-1">€</span>
+            </Label>
+            <Input
+              className="w-full"
+              id="price"
+              name="price"
+              value={carData.price === null || carData.price === 0 ? '' : carData.price}
+              onChange={handleInputChange}
+            />
+            {getFieldError('price') && <sub className="mx-2 text-red-600">{getFieldError('price')}</sub>}
+          </fieldset>{' '}
+          <fieldset className="flex flex-col gap-2">
+            <Label className="mx-2" htmlFor="description">
+              {t('desc')}
+            </Label>
+            <Textarea className=" w-full resize-none" id="description" name="description" rows={3} value={carData.description} onChange={handleInputChange} />
+          </fieldset>
+        </div>
+        <DialogFooter>
+          <Button type="button" onClick={handleSubmit} disabled={isPendingSubmit}>
+            {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaCheck />} {t('save')}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }
