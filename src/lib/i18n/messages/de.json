@@ -5,13 +5,13 @@
     "startDemo": "Jetzt starten - Kostenlose Demo",
     "imgAlt": "Ein Auto, das in einer Garage geparkt ist"
   },
-  "LocaleSwitcher": {
+  "AuthTool": {
+    "login": "Anmelden"
+  },
+  "LocaleTool": {
     "de": "Deutsch",
     "en": "English",
     "label": "Sprache"
-  },
-  "Navbar": {
-    "login": "Anmelden"
   },
   "SignInPage": {
     "email": "E-Mail",
