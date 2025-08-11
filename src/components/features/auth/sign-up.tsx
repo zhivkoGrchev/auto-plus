@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { type ChangeEvent, type MouseEvent, useState, useTransition } from 'react'
 import { FaCheck, FaSpinner, FaUserPlus } from 'react-icons/fa'
 import { ZodError } from 'zod'
@@ -21,6 +22,7 @@ export const SignUp = () => {
   const [formData, setFormData] = useState<SignUpData>(initialFormData)
   const [formErrors, setFormErrors] = useState<Record<string, string[]>>({})
   const [isPendingSubmit, startTransitionSubmit] = useTransition()
+  const t = useTranslations('SignUpPage')
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -72,30 +74,32 @@ export const SignUp = () => {
         )}
         <fieldset className="flex flex-col gap-2">
           <Label className="mx-2" htmlFor="name">
-            Name
+            {t('name')}
           </Label>
           <Input id="name" name="name" value={formData.name} onChange={handleInputChange} />
           {formErrors['name'] && <sub className="mx-2 text-red-600">{formErrors['name'][0]}</sub>}
         </fieldset>
         <fieldset className="flex flex-col gap-2">
           <Label className="mx-2" htmlFor="email">
-            E-Mail
+            {t('email')}
           </Label>
           <Input id="email" name="email" value={formData.email} onChange={handleInputChange} />
           {formErrors['email'] && <sub className=" mx-2 text-red-600">{formErrors['email'][0]}</sub>}
         </fieldset>
         <fieldset className="flex flex-col gap-2">
           <Label className="mx-2" htmlFor="password">
-            Password
+            {t('password')}
           </Label>
           <Input id="password" name="password" value={formData.password} onChange={handleInputChange} />
           {formErrors['password'] && <sub className="mx-2 text-red-600">{formErrors['password'][0]}</sub>}
         </fieldset>
         <Button type="button" onClick={handleSubmit} disabled={isPendingSubmit}>
-          {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaCheck />} Sign up
+          {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaCheck />} {t('signUpButton')}
         </Button>
         <Link className="text-left" href="/auth/sign-in">
-          I have an account
+          {t('alreadyHaveAccount')}
+          <br />
+          {t('signIn')}
         </Link>
       </div>
       <FaUserPlus className="w-70 h-auto m-8" />

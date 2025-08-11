@@ -13,6 +13,21 @@
   "Navbar": {
     "login": "Login"
   },
+  "SignInPage": {
+    "email": "E-Mail",
+    "password": "Password",
+    "loginButton": "Sign in",
+    "noAccount": "Don't have an account?",
+    "signUp": "Register now!"
+  },
+  "SignUpPage": {
+    "name": "Name",
+    "email": "E-Mail",
+    "password": "Password",
+    "signUpButton": "Sign up",
+    "alreadyHaveAccount": "Already have an account?",
+    "signIn": "Sign in now!"
+  },
   "Footer": {
     "companyDescription": "The complete cloud solution for used car dealerships and vehicle parks.",
     "quickLinks": "Quick Links",
