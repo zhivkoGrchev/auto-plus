@@ -11,7 +11,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Button } from '../ui/button'
 
 export const AuthTool = () => {
-  const t = useTranslations('Navbar')
+  const t = useTranslations('AuthTool')
   const { currentUser, isPendingFetch, fetchCurrentUser } = useAuthContext()
   const router = useRouter()
 

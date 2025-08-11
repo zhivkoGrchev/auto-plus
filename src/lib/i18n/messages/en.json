@@ -5,13 +5,13 @@
     "startDemo": "Start now - Free demo",
     "imgAlt": "A car parked in a garage"
   },
-  "LocaleSwitcher": {
+  "AuthTool": {
+    "login": "Login"
+  },
+  "LocaleTool": {
     "de": "Deutsch",
     "en": "English",
     "label": "Language"
-  },
-  "Navbar": {
-    "login": "Login"
   },
   "SignInPage": {
     "email": "E-Mail",

@@ -1,7 +1,7 @@
 import { APP_NAME } from '@/lib/constants'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ToolBar } from '@/components/tool-bar'
+import { ToolBar } from '@/components/toolbar'
 
 export const Navbar = () => {
   return (
