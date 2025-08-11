@@ -13,6 +13,21 @@
   "Navbar": {
     "login": "Anmelden"
   },
+  "SignInPage": {
+    "email": "E-Mail",
+    "password": "Passwort",
+    "loginButton": "Anmelden",
+    "noAccount": "Haben Sie kein Konto?",
+    "signUp": "Jetzt registrieren!"
+  },
+  "SignUpPage": {
+    "name": "Name",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "signUpButton": "Registrieren",
+    "alreadyHaveAccount": "Haben Sie bereits ein Konto?",
+    "signIn": "Jetzt anmelden!"
+  },
   "Footer": {
     "companyDescription": "Die komplette Cloud-Lösung für Gebrauchtwagenhändler und Fahrzeugparks.",
     "quickLinks": "Schnellzugriff",

@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { type ChangeEvent, type MouseEvent, useState, useTransition } from 'react'
 import { FaCheck, FaSignInAlt, FaSpinner } from 'react-icons/fa'
 import { ZodError } from 'zod'
@@ -22,6 +23,7 @@ export const SignIn = () => {
   const [formErrors, setFormErrors] = useState<Record<string, string[]>>({})
   const [isPendingSubmit, startTransitionSubmit] = useTransition()
   const { fetchCurrentUser } = useAuthContext()
+  const t = useTranslations('SignInPage')
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -73,20 +75,22 @@ export const SignIn = () => {
           </div>
         )}
         <fieldset className="flex flex-col gap-2">
-          <Label htmlFor="email">E-Mail</Label>
+          <Label htmlFor="email">{t('email')}</Label>
           <Input id="email" name="email" value={formData.email} onChange={handleInputChange} />
           {formErrors['email'] && <sub className="text-red-600">{formErrors['email'][0]}</sub>}
         </fieldset>
         <fieldset className="flex flex-col gap-2">
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password">{t('password')}</Label>
           <Input id="password" name="password" value={formData.password} onChange={handleInputChange} />
           {formErrors['password'] && <sub className="text-red-600">{formErrors['password'][0]}</sub>}
         </fieldset>
         <Button type="button" onClick={handleSubmit} disabled={isPendingSubmit}>
-          {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaCheck />} Sign in
+          {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaCheck />} {t('loginButton')}
         </Button>
         <Link className="text-left" href="/auth/sign-up">
-          I have not account
+          {t('noAccount')}
+          <br />
+          {t('signUp')}
         </Link>
       </div>
       <FaSignInAlt className="w-70 h-auto m-8" />
