@@ -6,7 +6,8 @@
     "imgAlt": "A car parked in a garage"
   },
   "AuthTool": {
-    "login": "Login"
+    "login": "Login",
+    "logout": "Sign out"
   },
   "LocaleTool": {
     "de": "Deutsch",

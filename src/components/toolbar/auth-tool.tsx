@@ -43,7 +43,7 @@ export const AuthTool = () => {
           {currentUser.name} - {currentUser.email}
         </h3>
         <Button variant="destructive" onClick={handleSignOut}>
-          Sign out
+          {t('logout')}
         </Button>
       </PopoverContent>
     </Popover>
