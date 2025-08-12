@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { type ChangeEvent, type MouseEvent, useState, useTransition } from 'react'
 import { FaCheck, FaSpinner, FaUserPlus } from 'react-icons/fa'
@@ -19,6 +20,7 @@ const initialFormData: SignUpData = {
 }
 
 export const SignUp = () => {
+  const router = useRouter()
   const [formData, setFormData] = useState<SignUpData>(initialFormData)
   const [formErrors, setFormErrors] = useState<Record<string, string[]>>({})
   const [isPendingSubmit, startTransitionSubmit] = useTransition()
@@ -45,6 +47,7 @@ export const SignUp = () => {
         }
         setFormData(initialFormData)
         console.log(data)
+        router.push('/auth/sign-in')
       } catch (error) {
         if (error instanceof ZodError) {
           const formattedErrors: Record<string, string[]> = {}

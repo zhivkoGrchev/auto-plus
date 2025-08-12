@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { type ChangeEvent, type MouseEvent, useState, useTransition } from 'react'
 import { FaCheck, FaSignInAlt, FaSpinner } from 'react-icons/fa'
@@ -19,6 +20,7 @@ const initialFormData: SignInData = {
 }
 
 export const SignIn = () => {
+  const router = useRouter()
   const [formData, setFormData] = useState<SignInData>(initialFormData)
   const [formErrors, setFormErrors] = useState<Record<string, string[]>>({})
   const [isPendingSubmit, startTransitionSubmit] = useTransition()
@@ -47,6 +49,7 @@ export const SignIn = () => {
         fetchCurrentUser()
         setFormData(initialFormData)
         console.log(data)
+        router.push('/dashboard')
       } catch (error) {
         if (error instanceof ZodError) {
           const formattedErrors: Record<string, string[]> = {}
@@ -75,14 +78,18 @@ export const SignIn = () => {
           </div>
         )}
         <fieldset className="flex flex-col gap-2">
-          <Label htmlFor="email">{t('email')}</Label>
+          <Label className="mx-2" htmlFor="email">
+            {t('email')}
+          </Label>
           <Input id="email" name="email" value={formData.email} onChange={handleInputChange} />
-          {formErrors['email'] && <sub className="text-red-600">{formErrors['email'][0]}</sub>}
+          {formErrors['email'] && <sub className="mx-2 text-red-600">{formErrors['email'][0]}</sub>}
         </fieldset>
         <fieldset className="flex flex-col gap-2">
-          <Label htmlFor="password">{t('password')}</Label>
+          <Label className="mx-2" htmlFor="password">
+            {t('password')}
+          </Label>
           <Input id="password" name="password" value={formData.password} onChange={handleInputChange} />
-          {formErrors['password'] && <sub className="text-red-600">{formErrors['password'][0]}</sub>}
+          {formErrors['password'] && <sub className="mx-2 text-red-600">{formErrors['password'][0]}</sub>}
         </fieldset>
         <Button type="button" onClick={handleSubmit} disabled={isPendingSubmit}>
           {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaCheck />} {t('loginButton')}
