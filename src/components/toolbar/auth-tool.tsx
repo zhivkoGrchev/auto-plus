@@ -43,13 +43,13 @@ export const AuthTool = () => {
           {currentUser.name} - {currentUser.email}
         </h3>
         <Button variant="destructive" onClick={handleSignOut}>
-          Sign out
+          {t('sign-out')}
         </Button>
       </PopoverContent>
     </Popover>
   ) : (
     <Button variant="outline" asChild>
-      <Link href="/auth/sign-in">{t('login')}</Link>
+      <Link href="/auth/sign-in">{t('sign-in')}</Link>
     </Button>
   )
 }
