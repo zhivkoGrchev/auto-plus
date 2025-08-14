@@ -95,9 +95,9 @@ export const AddCarDialog = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <div className="container mx-auto px-4 mb-4 flex justify-end">
+      <div className="container mx-auto px-4 mb-4 flex justify-start">
         <DialogTrigger asChild>
-          <Button type="button">
+          <Button type="button" variant="outline">
             <FaPlus /> {t('addCar')}
           </Button>
         </DialogTrigger>
