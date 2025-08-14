@@ -3,7 +3,7 @@ import { AddCarDialog, CarsList } from '@/components/features/cars-list'
 import { useTranslations } from 'next-intl'
 import { Profile } from '@/components/features/profile'
 
-export default function Dashboard() {
+export default function AdminPage() {
   const t = useTranslations('Dashboard')
 
   return (
@@ -28,13 +28,13 @@ export default function Dashboard() {
           {t('myWebsite')}
         </Tabs.Trigger>
       </Tabs.List>
-      <Tabs.Content className="flex flex-col p-2 gap-4 grow" value="cars-list">
+      <Tabs.Content className="flex flex-col py-4 gap-4 grow" value="cars-list">
         <div className="flex justify-end">
           <AddCarDialog />
         </div>
         <CarsList />
       </Tabs.Content>
-      <Tabs.Content className="flex flex-col p-2 gap-4 grow" value="profile">
+      <Tabs.Content className="flex flex-col py-4 gap-4 grow" value="profile">
         <Profile />
       </Tabs.Content>
       <Tabs.Content className="flex flex-col p-2 gap-4 grow" value="website">
