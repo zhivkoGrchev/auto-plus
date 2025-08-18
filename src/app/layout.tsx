@@ -1,9 +1,8 @@
 import { APP_NAME } from '@/lib/constants'
 import type { Metadata } from 'next'
 import { Nunito_Sans } from 'next/font/google'
-import { Header } from '@/components/layouts/header'
-import { Navbar } from '@/components/layouts/navbar'
-import { Footer } from '@/components/layouts/footer'
+import { ConditionalHeader } from '@/components/layouts/header/conditional-header'
+import { ConditionalFooter } from '@/components/layouts/footer/conditional-footer'
 import { AuthContextProvider } from '@/components/features/auth/context'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getTranslations } from 'next-intl/server'
@@ -34,11 +33,9 @@ export default async function RootLayout({ children }: LayoutProps) {
       <body className={`${fontNunitoSans.variable} min-h-screen flex flex-col antialiased`}>
         <AuthContextProvider>
           <NextIntlClientProvider>
-            <Header>
-              <Navbar />
-            </Header>
+            <ConditionalHeader />
             <main className="flex grow">{children}</main>
-            <Footer />
+            <ConditionalFooter />
           </NextIntlClientProvider>
         </AuthContextProvider>
       </body>
