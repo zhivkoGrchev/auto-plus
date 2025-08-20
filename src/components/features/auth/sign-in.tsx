@@ -49,7 +49,7 @@ export const SignIn = () => {
         fetchCurrentUser()
         setFormData(initialFormData)
         console.log(data)
-        router.push('/dashboard')
+        router.push('/admin')
       } catch (error) {
         if (error instanceof ZodError) {
           const formattedErrors: Record<string, string[]> = {}
