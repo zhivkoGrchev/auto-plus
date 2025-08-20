@@ -1,8 +1,11 @@
+import { useTranslations } from 'next-intl'
 import WebsiteHeader from './header'
 import WebsiteFooter from './footer'
 import WhatsAppButton from './whatsapp'
 
-export default function HomePage() {
+export default function WebsiteHomePage() {
+  const t = useTranslations('WebsiteHomePage')
+
   const cars = [
     { id: 1, name: 'BMW M3', description: 'A sporty sedan with high performance.', image: 'https://source.unsplash.com/400x250/?bmw,car', price: '€55,000' },
     {
@@ -22,8 +25,8 @@ export default function HomePage() {
 
       <section id="home" className="py-16 text-center">
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-4xl font-extrabold mb-4">Used cars in Gremany</h2>
-          <p className="text-lg text-gray-600">Explore our premium selection of vehicles for every lifestyle.</p>
+          <h2 className="text-4xl font-extrabold mb-4">{t('Title')}</h2>
+          <p className="text-lg text-gray-600">{t('Description')}</p>
         </div>
       </section>
 
@@ -38,7 +41,7 @@ export default function HomePage() {
                 <div className="mt-4 flex justify-between items-center">
                   <span className="text-lg font-semibold">{car.price}</span>
                   <button type="button" className="bg-cyan-900 text-white px-4 py-2 rounded-lg hover:bg-cyan-700 transition">
-                    Details
+                    {t('Details')}
                   </button>
                 </div>
               </div>

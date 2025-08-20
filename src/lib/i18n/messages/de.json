@@ -92,5 +92,27 @@
     "fuelType": "Kraftstoffart ist erforderlich",
     "mileage": "Kilometerstand ist erforderlich",
     "price": "Preis ist erforderlich"
+  },
+  "WebsiteHeader": {
+    "CompanyName": "Name der Firma",
+    "Home": "Start",
+    "About": "Über uns",
+    "Contact": "Kontakt"
+  },
+  "WebsiteHomePage": {
+    "Title": "Gebrauchtwagen in Deutschland",
+    "Description": "Entdecken Sie unsere Auswahl an Fahrzeugen für jeden Lebensstil.",
+    "Details": "Details"
+  },
+  "WebsiteFooter": {
+    "CompanyName": "Name der Firma",
+    "CompanyDescription": "Gebrauchtwagen zu verkaufen. Der beste Ort, um Ihr nächstes Auto zu finden.",
+    "Links": "Schnellzugriff",
+    "Contact": "Kontakt",
+    "Phone": "+49 123 456 7890",
+    "Email": "info@autohausplus.com",
+    "Address": "Saalfeld, Deutschland",
+    "Impressum": "Impressum",
+    "PrivacyPolicy": "Datenschutzrichtlinie"
   }
 }
