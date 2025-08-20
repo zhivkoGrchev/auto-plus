@@ -4,7 +4,7 @@ import { headers } from 'next/headers'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/db/prisma'
 import type { SignInData, SignUpData } from '../types/auth'
-import type { User } from '../generated/prisma'
+import type { User } from '@prisma/client'
 
 export async function getCurrentUser(): Promise<Return<User>> {
   try {
