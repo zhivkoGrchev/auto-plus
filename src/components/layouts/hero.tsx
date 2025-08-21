@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl'
 import heroImg from '/public/images/bg-image.jpg'
 import { Button } from '../ui/button'
 
-export default function Hero() {
+export const Hero = () => {
   const t = useTranslations('Hero')
 
   return (

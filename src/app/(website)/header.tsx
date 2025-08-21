@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { LocaleTool } from '@/components/toolbar/locale-tool'
 import { useTranslations } from 'next-intl'
 
-export default function WebsiteHeader() {
+export const WebsiteHeader = () => {
   const [menuOpen, setMenuOpen] = useState(false)
   const t = useTranslations('WebsiteHeader')
 
@@ -30,7 +30,7 @@ export default function WebsiteHeader() {
 
         {/* Mobile toggle */}
         <button type="button" className="md:hidden text-white text-2xl" onClick={() => setMenuOpen(!menuOpen)}>
-          {menuOpen ? '✖' : '☰'}
+          {menuOpen ? '×' : '☰'}
         </button>
       </div>
 
