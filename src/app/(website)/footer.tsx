@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl'
 
-export default function WebsiteFooter() {
+export const WebsiteFooter = () => {
   const t = useTranslations('WebsiteFooter')
 
   return (
