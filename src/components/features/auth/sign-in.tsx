@@ -1,18 +1,19 @@
 'use client'
 
+import { type ChangeEvent, type MouseEvent, useState, useTransition } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { type ChangeEvent, type MouseEvent, useState, useTransition } from 'react'
-import { FaCheck, FaSignInAlt, FaSpinner } from 'react-icons/fa'
+import { FaGoogle, FaSignInAlt, FaSpinner } from 'react-icons/fa'
 import { ZodError } from 'zod'
-import { useAuthContext } from './context'
 import { signIn } from '@/lib/actions/auth.actions'
+import { useSession } from '@/lib/auth/client'
 import { formSignInSchema } from '@/lib/validators/auth'
-import type { SignInData } from '@/lib/types/auth'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import type { SignInData } from '@/lib/types/auth'
 
 const initialFormData: SignInData = {
   email: '',
@@ -24,7 +25,7 @@ export const SignIn = () => {
   const [formData, setFormData] = useState<SignInData>(initialFormData)
   const [formErrors, setFormErrors] = useState<Record<string, string[]>>({})
   const [isPendingSubmit, startTransitionSubmit] = useTransition()
-  const { fetchCurrentUser } = useAuthContext()
+  const { refetch } = useSession()
   const t = useTranslations('SignInPage')
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -46,9 +47,9 @@ export const SignIn = () => {
           console.log(error.message)
           return
         }
-        fetchCurrentUser()
-        setFormData(initialFormData)
         console.log(data)
+        setFormData(initialFormData)
+        refetch()
         router.push('/admin')
       } catch (error) {
         if (error instanceof ZodError) {
@@ -68,8 +69,12 @@ export const SignIn = () => {
   }
 
   return (
-    <div className="flex rounded-md border border-gray-800 dark:border-gray-600 bg-cyan-50 dark:bg-cyan-950">
-      <div className="flex flex-col gap-4 p-8 justify-center border-r border-gray-800 dark:border-gray-600">
+    <Card className="min-w-md">
+      <CardHeader>
+        <CardTitle>{t('title')}</CardTitle>
+        <CardDescription>{t('description')}</CardDescription>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-4">
         {formErrors.form && (
           <div className="mb-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded-md">
             {formErrors.form.map((error, index) => (
@@ -77,6 +82,12 @@ export const SignIn = () => {
             ))}
           </div>
         )}
+        <Button type="button" onClick={handleSubmit} disabled={true}>
+          <FaGoogle /> {t('loginWithGoogleButton')}
+        </Button>
+        <div className="flex justify-center items-center gap-2 text-nowrap text-muted-foreground before:flex before:border-t before:w-full after:flex after:border-t after:w-full">
+          {t('continue')}
+        </div>
         <fieldset className="flex flex-col gap-2">
           <Label className="mx-2" htmlFor="email">
             {t('email')}
@@ -88,19 +99,20 @@ export const SignIn = () => {
           <Label className="mx-2" htmlFor="password">
             {t('password')}
           </Label>
-          <Input id="password" name="password" value={formData.password} onChange={handleInputChange} />
+          <Input id="password" name="password" type="password" value={formData.password} onChange={handleInputChange} />
           {formErrors['password'] && <sub className="mx-2 text-red-600">{formErrors['password'][0]}</sub>}
         </fieldset>
-        <Button type="button" onClick={handleSubmit} disabled={isPendingSubmit}>
-          {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaCheck />} {t('loginButton')}
+      </CardContent>
+      <CardFooter className="flex flex-col items-stretch gap-4">
+        <Button type="button" onClick={handleSubmit} tabIndex={0} disabled={isPendingSubmit}>
+          {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaSignInAlt />} {t('loginButton')}
         </Button>
-        <Link className="text-left" href="/auth/sign-up">
+        <Link className="text-center" href="/auth/sign-up">
           {t('noAccount')}
           <br />
           {t('signUp')}
         </Link>
-      </div>
-      <FaSignInAlt className="w-70 h-auto m-8" />
-    </div>
+      </CardFooter>
+    </Card>
   )
 }

@@ -15,13 +15,19 @@
     "label": "Language"
   },
   "SignInPage": {
+    "title": "Welcome back!",
+    "description": "Login with your Google Account",
+    "loginWithGoogleButton": "Sign in with Google",
+    "continue": "Or continue with",
     "email": "E-Mail",
     "password": "Password",
-    "loginButton": "Sign in",
+    "loginButton": "Sign in with E-Mail",
     "noAccount": "Don't have an account?",
     "signUp": "Register now!"
   },
   "SignUpPage": {
+    "title": "Sign up",
+    "description": "Create your Account",
     "name": "Name",
     "email": "E-Mail",
     "password": "Password",

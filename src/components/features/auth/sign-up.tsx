@@ -1,17 +1,18 @@
 'use client'
 
+import { type ChangeEvent, type MouseEvent, useState, useTransition } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { type ChangeEvent, type MouseEvent, useState, useTransition } from 'react'
-import { FaCheck, FaSpinner, FaUserPlus } from 'react-icons/fa'
+import { FaSpinner, FaUserPlus } from 'react-icons/fa'
 import { ZodError } from 'zod'
 import { signUp } from '@/lib/actions/auth.actions'
 import { formSignUpSchema } from '@/lib/validators/auth'
-import type { SignUpData } from '@/lib/types/auth'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
+import type { SignUpData } from '@/lib/types/auth'
 
 const initialFormData: SignUpData = {
   name: '',
@@ -45,8 +46,8 @@ export const SignUp = () => {
           console.log(error.message)
           return
         }
-        setFormData(initialFormData)
         console.log(data)
+        setFormData(initialFormData)
         router.push('/auth/sign-in')
       } catch (error) {
         if (error instanceof ZodError) {
@@ -66,8 +67,12 @@ export const SignUp = () => {
   }
 
   return (
-    <div className="flex rounded-md border border-gray-800 dark:border-gray-600 bg-cyan-50 dark:bg-cyan-950">
-      <div className="flex flex-col gap-4 p-8 justify-center border-r border-gray-800 dark:border-gray-600">
+    <Card className="min-w-md">
+      <CardHeader>
+        <CardTitle>{t('title')}</CardTitle>
+        <CardDescription>{t('description')}</CardDescription>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-4">
         {formErrors.form && (
           <div className="mb-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded-md">
             {formErrors.form.map((error, index) => (
@@ -96,16 +101,17 @@ export const SignUp = () => {
           <Input id="password" name="password" value={formData.password} onChange={handleInputChange} />
           {formErrors['password'] && <sub className="mx-2 text-red-600">{formErrors['password'][0]}</sub>}
         </fieldset>
+      </CardContent>
+      <CardFooter className="flex flex-col items-stretch gap-4">
         <Button type="button" onClick={handleSubmit} disabled={isPendingSubmit}>
-          {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaCheck />} {t('signUpButton')}
+          {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaUserPlus />} {t('signUpButton')}
         </Button>
-        <Link className="text-left" href="/auth/sign-in">
+        <Link className="text-center" href="/auth/sign-in">
           {t('alreadyHaveAccount')}
           <br />
           {t('signIn')}
         </Link>
-      </div>
-      <FaUserPlus className="w-70 h-auto m-8" />
-    </div>
+      </CardFooter>
+    </Card>
   )
 }

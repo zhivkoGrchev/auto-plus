@@ -1,4 +1,3 @@
-import { AuthContextProvider } from '@/components/features/auth/context'
 import { Footer } from '@/components/layouts/footer'
 import { Header } from '@/components/layouts/header'
 import { Navbar } from '@/components/layouts/navbar'
@@ -6,7 +5,7 @@ import { Hero } from '@/components/layouts/hero'
 
 export default function HomePage() {
   return (
-    <AuthContextProvider>
+    <>
       <Header>
         <Navbar />
       </Header>
@@ -14,6 +13,6 @@ export default function HomePage() {
         <Hero />
       </main>
       <Footer />
-    </AuthContextProvider>
+    </>
   )
 }
