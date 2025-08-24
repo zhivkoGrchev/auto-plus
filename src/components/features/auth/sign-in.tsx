@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { FaGoogle, FaSignInAlt, FaSpinner } from 'react-icons/fa'
 import { ZodError } from 'zod'
+import { toast } from 'sonner'
 import { signIn } from '@/lib/actions/auth.actions'
 import { useSession } from '@/lib/auth/client'
 import { useSignInSchema } from '@/lib/validators/auth'
@@ -46,10 +47,11 @@ export const SignIn = () => {
         const parsedData = schema.parse(formData)
         const { data, error } = await signIn(parsedData)
         if (error) {
+          toast(error.message)
           console.log(error.message)
           return
         }
-        console.log(data)
+        toast(data)
         setFormData(initialFormData)
         refetch()
         router.push('/admin')

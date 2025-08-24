@@ -4,6 +4,7 @@ import { Nunito_Sans } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getTranslations } from 'next-intl/server'
 import './globals.css'
+import { Toaster } from '@/components/ui/sonner'
 
 const fontNunitoSans = Nunito_Sans({
   variable: '--font-nunito-sans',
@@ -28,7 +29,10 @@ export default async function RootLayout({ children }: LayoutProps) {
   return (
     <html lang={locale}>
       <body className={`${fontNunitoSans.variable} min-h-screen flex flex-col antialiased`}>
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          {children}
+          <Toaster />
+        </NextIntlClientProvider>
       </body>
     </html>
   )

@@ -7,7 +7,8 @@
   },
   "AuthTool": {
     "sign-in": "Anmelden",
-    "sign-out": "Abmelden"
+    "sign-out": "Abmelden",
+    "sign-out-message": "Sie sind abgemeldet"
   },
   "LocaleTool": {
     "de": "Deutsch",
