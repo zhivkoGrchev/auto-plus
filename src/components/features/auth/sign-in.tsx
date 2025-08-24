@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { FaGoogle, FaSignInAlt, FaSpinner } from 'react-icons/fa'
 import { ZodError } from 'zod'
+import { toast } from 'sonner'
 import { signIn } from '@/lib/actions/auth.actions'
 import { useSession } from '@/lib/auth/client'
 import { useSignInSchema } from '@/lib/validators/auth'
@@ -15,7 +16,6 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import type { SignInData } from '@/lib/types/auth'
-import { toast } from 'sonner'
 
 const initialFormData: SignInData = {
   email: '',

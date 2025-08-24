@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { FaSpinner, FaUserPlus } from 'react-icons/fa'
 import { ZodError } from 'zod'
+import { toast } from 'sonner'
 import { signUp } from '@/lib/actions/auth.actions'
 import { useSignUpSchema } from '@/lib/validators/auth'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
@@ -14,7 +15,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import type { SignUpData } from '@/lib/types/auth'
-import { toast } from 'sonner'
 
 const initialFormData: SignUpData = {
   name: '',
