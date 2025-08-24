@@ -15,6 +15,7 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import type { SignInData } from '@/lib/types/auth'
+import { toast } from 'sonner'
 
 const initialFormData: SignInData = {
   email: '',
@@ -46,10 +47,11 @@ export const SignIn = () => {
         const parsedData = schema.parse(formData)
         const { data, error } = await signIn(parsedData)
         if (error) {
+          toast(error.message)
           console.log(error.message)
           return
         }
-        console.log(data)
+        toast(data)
         setFormData(initialFormData)
         refetch()
         router.push('/admin')

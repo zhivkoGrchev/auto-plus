@@ -7,6 +7,7 @@ import { FaSpinner } from 'react-icons/fa'
 import { signOut, useSession } from '@/lib/auth/client'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Button } from '../ui/button'
+import { toast } from 'sonner'
 
 export const AuthTool = () => {
   const t = useTranslations('AuthTool')
@@ -17,6 +18,7 @@ export const AuthTool = () => {
     await signOut({
       fetchOptions: {
         onSuccess: () => {
+          toast(t('sign-out-message'))
           router.push('/auth/sign-in')
         },
       },

@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import type { SignUpData } from '@/lib/types/auth'
+import { toast } from 'sonner'
 
 const initialFormData: SignUpData = {
   name: '',
@@ -45,10 +46,11 @@ export const SignUp = () => {
         const parsedData = schema.parse(formData)
         const { data, error } = await signUp(parsedData)
         if (error) {
+          toast(error.message)
           console.log(error.message)
           return
         }
-        console.log(data)
+        toast(data)
         setFormData(initialFormData)
         router.push('/auth/sign-in')
       } catch (error) {
@@ -102,7 +104,7 @@ export const SignUp = () => {
           <Label className="mx-2" htmlFor="password">
             {t('password')}
           </Label>
-          <Input id="password" name="password" value={formData.password} onChange={handleInputChange} />
+          <Input id="password" name="password" type="password" value={formData.password} onChange={handleInputChange} />
           {formErrors['password'] && <sub className="mx-2 text-red-600">{formErrors['password'][0]}</sub>}
         </fieldset>
       </CardContent>
