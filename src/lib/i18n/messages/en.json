@@ -88,6 +88,11 @@
     "myProfile": "My Profile",
     "myWebsite": "My Website"
   },
+  "AuthValidations": {
+    "name": "Name is required",
+    "email": "Invalid E-Mail",
+    "password": "Password must contain at least 8 characters"
+  },
   "Validations": {
     "brand": "Brand is required",
     "model": "Model is required",

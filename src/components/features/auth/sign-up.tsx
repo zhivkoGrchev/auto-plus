@@ -7,8 +7,9 @@ import { useTranslations } from 'next-intl'
 import { FaSpinner, FaUserPlus } from 'react-icons/fa'
 import { ZodError } from 'zod'
 import { signUp } from '@/lib/actions/auth.actions'
-import { formSignUpSchema } from '@/lib/validators/auth'
+import { useSignUpSchema } from '@/lib/validators/auth'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
@@ -25,6 +26,7 @@ export const SignUp = () => {
   const [formData, setFormData] = useState<SignUpData>(initialFormData)
   const [formErrors, setFormErrors] = useState<Record<string, string[]>>({})
   const [isPendingSubmit, startTransitionSubmit] = useTransition()
+  const schema = useSignUpSchema()
   const t = useTranslations('SignUpPage')
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +42,7 @@ export const SignUp = () => {
     setFormErrors({})
     startTransitionSubmit(async () => {
       try {
-        const parsedData = formSignUpSchema.parse(formData)
+        const parsedData = schema.parse(formData)
         const { data, error } = await signUp(parsedData)
         if (error) {
           console.log(error.message)
@@ -74,11 +76,13 @@ export const SignUp = () => {
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         {formErrors.form && (
-          <div className="mb-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded-md">
-            {formErrors.form.map((error, index) => (
-              <p key={index}>{error}</p>
-            ))}
-          </div>
+          <Alert variant="destructive">
+            <AlertDescription>
+              {formErrors.form.map((error, index) => (
+                <p key={index}>{error}</p>
+              ))}
+            </AlertDescription>
+          </Alert>
         )}
         <fieldset className="flex flex-col gap-2">
           <Label className="mx-2" htmlFor="name">

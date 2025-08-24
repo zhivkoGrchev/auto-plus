@@ -8,8 +8,9 @@ import { FaGoogle, FaSignInAlt, FaSpinner } from 'react-icons/fa'
 import { ZodError } from 'zod'
 import { signIn } from '@/lib/actions/auth.actions'
 import { useSession } from '@/lib/auth/client'
-import { formSignInSchema } from '@/lib/validators/auth'
+import { useSignInSchema } from '@/lib/validators/auth'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -26,6 +27,7 @@ export const SignIn = () => {
   const [formErrors, setFormErrors] = useState<Record<string, string[]>>({})
   const [isPendingSubmit, startTransitionSubmit] = useTransition()
   const { refetch } = useSession()
+  const schema = useSignInSchema()
   const t = useTranslations('SignInPage')
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +43,7 @@ export const SignIn = () => {
     setFormErrors({})
     startTransitionSubmit(async () => {
       try {
-        const parsedData = formSignInSchema.parse(formData)
+        const parsedData = schema.parse(formData)
         const { data, error } = await signIn(parsedData)
         if (error) {
           console.log(error.message)
@@ -76,11 +78,13 @@ export const SignIn = () => {
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         {formErrors.form && (
-          <div className="mb-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded-md">
-            {formErrors.form.map((error, index) => (
-              <p key={index}>{error}</p>
-            ))}
-          </div>
+          <Alert variant="destructive">
+            <AlertDescription>
+              {formErrors.form.map((error, index) => (
+                <p key={index}>{error}</p>
+              ))}
+            </AlertDescription>
+          </Alert>
         )}
         <Button type="button" onClick={handleSubmit} disabled={true}>
           <FaGoogle /> {t('loginWithGoogleButton')}
@@ -104,7 +108,7 @@ export const SignIn = () => {
         </fieldset>
       </CardContent>
       <CardFooter className="flex flex-col items-stretch gap-4">
-        <Button type="button" onClick={handleSubmit} tabIndex={0} disabled={isPendingSubmit}>
+        <Button type="button" onClick={handleSubmit} disabled={isPendingSubmit}>
           {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaSignInAlt />} {t('loginButton')}
         </Button>
         <Link className="text-center" href="/auth/sign-up">
