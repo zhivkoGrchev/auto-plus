@@ -4,7 +4,7 @@ import { prisma } from '@/db/prisma'
 import type { CarBrand, CarModel } from '@prisma/client'
 import type { CarExtended } from '../interfaces/car-extended'
 import { toJson } from '../utils'
-import { createInsertCarSchema } from '../validators'
+import { createInsertCarSchema } from '../validators/car'
 import type AddCarData from '../interfaces/add-car-data'
 import { ZodError } from 'zod'
 

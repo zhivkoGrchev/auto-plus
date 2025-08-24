@@ -10,7 +10,7 @@ export const useSignUpSchema = () => {
     password: z.string().min(8, t('password')),
   })
 }
-export type SignUpSchema = z.infer<Awaited<ReturnType<typeof useSignUpSchema>>>
+export type SignUpSchema = z.infer<ReturnType<typeof useSignUpSchema>>
 
 export const useSignInSchema = () => {
   const t = useTranslations('AuthValidations')
@@ -20,4 +20,4 @@ export const useSignInSchema = () => {
     password: z.string().min(8, t('password')),
   })
 }
-export type SignInSchema = z.infer<Awaited<ReturnType<typeof useSignInSchema>>>
+export type SignInSchema = z.infer<ReturnType<typeof useSignInSchema>>

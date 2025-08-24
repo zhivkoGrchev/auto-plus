@@ -5,7 +5,7 @@ import { getTranslations } from 'next-intl/server'
 
 export const createInsertCarSchema = async () => {
   const t = await getTranslations('Validations')
-  
+
   return z.object({
     brandId: z.string().min(1, t('brand')),
     modelId: z.string().min(1, t('model')),
