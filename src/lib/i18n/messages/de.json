@@ -15,6 +15,11 @@
     "en": "English",
     "label": "Sprache"
   },
+  "ThemeTool": {
+    "light": "Licht",
+    "dark": "Dunkel",
+    "system": "Systemisch"
+  },
   "SignInPage": {
     "title": "Willkommen zurück!",
     "description": "Melden Sie sich mit Ihrem Google-Konto an",
