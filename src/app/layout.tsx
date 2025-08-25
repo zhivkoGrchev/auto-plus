@@ -1,10 +1,12 @@
 import { APP_NAME } from '@/lib/constants'
 import type { Metadata } from 'next'
 import { Nunito_Sans } from 'next/font/google'
+import { ThemeProvider } from 'next-themes'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getTranslations } from 'next-intl/server'
-import './globals.css'
 import { Toaster } from '@/components/ui/sonner'
+import { defaultTheme } from '@/lib/config/theme'
+import './globals.css'
 
 const fontNunitoSans = Nunito_Sans({
   variable: '--font-nunito-sans',
@@ -27,12 +29,14 @@ export default async function RootLayout({ children }: LayoutProps) {
   const locale = await getLocale()
 
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
       <body className={`${fontNunitoSans.variable} min-h-screen flex flex-col antialiased`}>
-        <NextIntlClientProvider>
-          {children}
-          <Toaster />
-        </NextIntlClientProvider>
+        <ThemeProvider attribute="class" defaultTheme={defaultTheme} enableSystem disableTransitionOnChange>
+          <NextIntlClientProvider>
+            {children}
+            <Toaster />
+          </NextIntlClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   )
