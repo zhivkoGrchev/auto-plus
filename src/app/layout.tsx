@@ -5,6 +5,7 @@ import { ThemeProvider } from 'next-themes'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getTranslations } from 'next-intl/server'
 import { Toaster } from '@/components/ui/sonner'
+import { defaultTheme } from '@/lib/config/theme'
 import './globals.css'
 
 const fontNunitoSans = Nunito_Sans({
@@ -30,7 +31,7 @@ export default async function RootLayout({ children }: LayoutProps) {
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className={`${fontNunitoSans.variable} min-h-screen flex flex-col antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme={defaultTheme} enableSystem disableTransitionOnChange>
           <NextIntlClientProvider>
             {children}
             <Toaster />
