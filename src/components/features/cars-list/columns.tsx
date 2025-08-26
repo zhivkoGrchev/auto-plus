@@ -2,6 +2,7 @@
 
 import type { ColumnDef } from '@tanstack/react-table'
 import type { Car } from '@prisma/client'
+import { deleteCar } from '@/lib/actions/car.actions'
 import { MoreHorizontal } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -66,6 +67,19 @@ export const columns: ColumnDef<Car>[] = [
     cell: ({ row }) => {
       const car = row.original
 
+      const handleDelete = async () => {
+        // Optional: Show confirmation dialog
+        if (!window.confirm('Are you sure you want to delete this car?')) return
+        // Call your server action
+        const result = await deleteCar(car.id)
+        if (result.success) {
+          // Optionally show a toast or notification
+          // Refresh data (router.refresh() for Next.js 13/14)
+        } else {
+          alert(result.errors?.form?.[0] ?? 'Failed to delete car.')
+        }
+      }
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -77,7 +91,7 @@ export const columns: ColumnDef<Car>[] = [
           <DropdownMenuContent>
             <DropdownMenuItem>Edit</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleDelete}>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )
