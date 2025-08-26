@@ -1,6 +1,7 @@
 'use client'
 
 import type { ColumnDef } from '@tanstack/react-table'
+import { ArrowUpDown } from 'lucide-react'
 import type { Car } from '@prisma/client'
 import { deleteCar } from '@/lib/actions/car.actions'
 import { MoreHorizontal } from 'lucide-react'
@@ -25,7 +26,16 @@ export const columns: ColumnDef<Car>[] = [
   },
   {
     accessorKey: 'year',
-    header: () => <div className="text-right">First registration</div>,
+    header: ({ column }) => {
+      return (
+        <div className="text-right">
+          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+            First Registration
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
+      )
+    },
     cell: ({ row }) => {
       const FirstRegistration = Number.parseFloat(row.getValue('year'))
       const formatted = FirstRegistration
@@ -52,7 +62,16 @@ export const columns: ColumnDef<Car>[] = [
   },
   {
     accessorKey: 'price',
-    header: () => <div className="text-right">Price</div>,
+    header: ({ column }) => {
+      return (
+        <div className="text-right">
+          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+            Price
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
+      )
+    },
     cell: ({ row }) => {
       const amount = Number.parseFloat(row.getValue('price'))
       const formatted = new Intl.NumberFormat('en-US', {
