@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { FaSpinner } from 'react-icons/fa'
 import { getAllCars } from '@/lib/actions/car.actions'
 import type { CarExtended } from '@/lib/interfaces/car-extended'
 import { DataTable } from './data-table'
@@ -27,7 +28,12 @@ export const CarsList = () => {
     fetchCars()
   }, [])
 
-  if (loading) return <div>Loading cars...</div>
+  if (loading)
+    return (
+      <div className="flex flex-col justify-center items-center grow gap-4 text-5xl">
+        <FaSpinner className="animate-spin" /> Loading ...
+      </div>
+    )
 
   return (
     <div className="container mx-auto px-4">

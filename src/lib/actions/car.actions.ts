@@ -187,3 +187,16 @@ export async function searchCars(searchTerm: string): Promise<CarExtended[]> {
     await prisma.$disconnect()
   }
 }
+
+export async function deleteCar(id: string): Promise<{ success: boolean; errors?: Record<string, string[]> }> {
+  try {
+    await prisma.car.delete({
+      where: { id },
+    })
+    return { success: true }
+  } catch (error) {
+    return { success: false, errors: { form: ['Failed to delete car.'] } }
+  } finally {
+    await prisma.$disconnect()
+  }
+}
