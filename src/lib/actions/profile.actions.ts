@@ -3,8 +3,7 @@
 import { headers } from 'next/headers'
 import { prisma } from '@/db/prisma'
 import { auth } from '@/lib/auth'
-import type { UserWithProfiles } from '@/lib/types/user'
-import type { EditProfileData } from '@/lib/types/profile'
+import type { UserWithProfiles, EditProfileData, EditUserData } from '@/lib/types/profile'
 
 export const getUserWithProfile = async (): Promise<Return<UserWithProfiles>> => {
   try {
@@ -21,6 +20,23 @@ export const getUserWithProfile = async (): Promise<Return<UserWithProfiles>> =>
     const e = error as Error
     console.error('Error fetching user with profile:', e.message)
     throw error
+  } finally {
+    prisma.$disconnect()
+  }
+}
+
+export const editUser = async (formData: EditUserData): Promise<Return<string>> => {
+  try {
+    const session = await auth.api.getSession({ headers: await headers() })
+    if (!session) {
+      return { data: undefined, error: { message: 'You are not signed in' } }
+    }
+    await prisma.user.update({ data: formData, where: { id: session.user.id } })
+    return { data: 'All is Ok', error: undefined }
+  } catch (error) {
+    const e = error as Error
+    console.error('Error editing user:', e.message)
+    return { data: undefined, error: { message: e.message } }
   } finally {
     prisma.$disconnect()
   }
