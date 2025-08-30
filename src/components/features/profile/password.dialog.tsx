@@ -77,12 +77,12 @@ export const PasswordDialog = ({ trigger, title, description, onSubmit }: Passwo
               Current password
             </Label>
             <Input id="currentPassword" name="currentPassword" type="password" value={formData.currentPassword} onChange={handleInputChange} />
-            {formErrors['currentPassword'] && <sub className="col-start-2 mx-2 text-red-600">{formErrors['currentPassword'][0]}</sub>}
+            {formErrors['currentPassword'] && <span className="col-start-2 mx-2 text-xs text-red-600">{formErrors['currentPassword'][0]}</span>}
             <Label className="self-center" htmlFor="newPassword">
               New password
             </Label>
             <Input id="newPassword" name="newPassword" type="password" value={formData.newPassword} onChange={handleInputChange} />
-            {formErrors['newPassword'] && <sub className="col-start-2 mx-2 text-red-600">{formErrors['newPassword'][0]}</sub>}
+            {formErrors['newPassword'] && <span className="col-start-2 mx-2 text-xs text-red-600">{formErrors['newPassword'][0]}</span>}
           </div>
         </div>
         <DialogFooter>

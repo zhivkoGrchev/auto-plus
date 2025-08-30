@@ -81,7 +81,7 @@ export const UserDialog = ({ trigger, title, description, onSubmit }: UserDialog
               E-Mail
             </Label>
             <Input id="email" name="email" type="email" value={formData.email} onChange={handleInputChange} />
-            {formErrors['email'] && <sub className="mx-2 text-red-600">{formErrors['email'][0]}</sub>}
+            {formErrors['email'] && <span className="col-start-2 mx-2 text-xs text-red-600">{formErrors['email'][0]}</span>}
           </div>
         </div>
         <DialogFooter>
