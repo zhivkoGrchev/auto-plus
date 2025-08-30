@@ -1,12 +1,11 @@
 import { ChangeEvent, MouseEvent, useState, useTransition } from 'react'
+import { FaCheck, FaSpinner } from 'react-icons/fa'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import type { UserWithProfiles } from '@/lib/types/user'
-import type { EditProfileData } from '@/lib/types/profile'
-import { FaCheck, FaSpinner } from 'react-icons/fa'
 import { createProfile } from '@/lib/actions/profile.actions'
+import type { UserWithProfiles, EditProfileData } from '@/lib/types/profile'
 
 const initialFormData: EditProfileData = {
   organization: '',
@@ -14,11 +13,11 @@ const initialFormData: EditProfileData = {
   phoneNumber: '',
 } as const
 
-export interface AddProfileDialogProps {
+export interface ProfileDialogProps {
   user?: UserWithProfiles
 }
 
-export const AddProfileDialog = ({ user }: AddProfileDialogProps) => {
+export const ProfileDialog = ({ user }: ProfileDialogProps) => {
   const [formData, setFormData] = useState<EditProfileData>(initialFormData)
   const [isPendingSubmit, startTransitionSubmit] = useTransition()
 
