@@ -43,11 +43,13 @@ export const useEditProfileSchema = () => {
       .string()
       .transform((v) => (v === '' ? undefined : v))
       .optional(),
-    phoneNumber: z
-      .string()
-      .regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number')
-      .transform((v) => (v === '' ? undefined : v))
-      .optional(),
+    phoneNumber: z.preprocess(
+      (v) => (typeof v === 'string' && v === '' ? undefined : v),
+      z
+        .string()
+        .regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number')
+        .optional()
+    ),
   })
 }
 

@@ -2,13 +2,13 @@
 
 import { useEffect, useState, useTransition } from 'react'
 import { FaSpinner } from 'react-icons/fa'
-import { useSession } from '@/lib/auth/client'
-import { getUserWithProfile } from '@/lib/actions/profile.actions'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import type { UserWithProfiles } from '@/lib/types/profile'
 import { UserDialog } from './user.dialog'
 import { PasswordDialog } from './password.dialog'
 import { ProfileDialog } from './profile.dialog'
+import { useSession } from '@/lib/auth/client'
+import { getUserWithProfile } from '@/lib/actions/profile.actions'
+import type { UserWithProfiles } from '@/lib/types/profile'
 
 export const Profile = () => {
   const { refetch } = useSession()
@@ -24,11 +24,6 @@ export const Profile = () => {
       }
       setUser(data)
     })
-  }
-
-  const handleUpdate = () => {
-    fetchUser()
-    refetch()
   }
 
   useEffect(() => {
@@ -57,8 +52,18 @@ export const Profile = () => {
           </ul>
         </CardContent>
         <CardFooter className="flex justify-end gap-2">
-          <UserDialog onUpdate={handleUpdate} />
-          <PasswordDialog onUpdate={handleUpdate} />
+          <UserDialog
+            onUpdate={() => {
+              fetchUser()
+              refetch()
+            }}
+          />
+          <PasswordDialog
+            onUpdate={() => {
+              fetchUser()
+              refetch()
+            }}
+          />
         </CardFooter>
       </Card>
       <Card>
@@ -69,16 +74,19 @@ export const Profile = () => {
         <CardContent>
           {user?.profiles
             ? user.profiles.map((item) => (
-                <ul key={item.id} className="not-first:mt-2 pb-2 border-b">
+                <ul key={item.id} className="flex flex-col not-first:mt-2 pb-2 border-b">
                   <li>Organization: {item.organization ? item.organization : '-'}</li>
                   <li>Address: {item.address ? item.address : '-'}</li>
                   <li>Phone number: {item.phoneNumber ? item.phoneNumber : '-'}</li>
+                  <li className="flex self-end">
+                    <ProfileDialog profile={item} onUpdate={fetchUser} />
+                  </li>
                 </ul>
               ))
             : 'None'}
         </CardContent>
         <CardFooter className="flex justify-end gap-2">
-          <ProfileDialog user={user} />
+          <ProfileDialog onUpdate={fetchUser} />
         </CardFooter>
       </Card>
     </div>
