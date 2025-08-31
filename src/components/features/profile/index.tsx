@@ -2,16 +2,13 @@
 
 import { useEffect, useState, useTransition } from 'react'
 import { FaSpinner } from 'react-icons/fa'
-import { toast } from 'sonner'
-import { authClient, useSession } from '@/lib/auth/client'
-import { editUser, getUserWithProfile } from '@/lib/actions/profile.actions'
+import { useSession } from '@/lib/auth/client'
+import { getUserWithProfile } from '@/lib/actions/profile.actions'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import type { UserWithProfiles } from '@/lib/types/profile'
 import { UserDialog } from './user.dialog'
 import { PasswordDialog } from './password.dialog'
 import { ProfileDialog } from './profile.dialog'
-import { ChangePasswordData, EditUserData } from '@/lib/validators/profile'
 
 export const Profile = () => {
   const { refetch } = useSession()
@@ -29,28 +26,7 @@ export const Profile = () => {
     })
   }
 
-  const handleEditUser = async (formData: EditUserData) => {
-    const { data, error } = await editUser(formData)
-    if (error) {
-      toast.error(error.message)
-      return
-    }
-    toast.success(data)
-    fetchUser()
-    refetch()
-  }
-
-  const handleChangePassword = async (formData: ChangePasswordData) => {
-    const { error } = await authClient.changePassword({
-      newPassword: formData.newPassword,
-      currentPassword: formData.currentPassword,
-      revokeOtherSessions: true,
-    })
-    if (error) {
-      toast.error(error.message)
-      return
-    }
-    toast.success('It is all right')
+  const handleUpdate = () => {
     fetchUser()
     refetch()
   }
@@ -81,8 +57,8 @@ export const Profile = () => {
           </ul>
         </CardContent>
         <CardFooter className="flex justify-end gap-2">
-          <UserDialog trigger={<Button>Edit User</Button>} title="Edit user" onSubmit={handleEditUser} />
-          <PasswordDialog trigger={<Button>Change password</Button>} title="Change password" onSubmit={handleChangePassword} />
+          <UserDialog onUpdate={handleUpdate} />
+          <PasswordDialog onUpdate={handleUpdate} />
         </CardFooter>
       </Card>
       <Card>

@@ -32,7 +32,7 @@ export const editUser = async (formData: EditUserData): Promise<Return<string>> 
       return { data: undefined, error: { message: 'You are not signed in' } }
     }
     await prisma.user.update({ data: formData, where: { id: session.user.id } })
-    return { data: 'All is Ok', error: undefined }
+    return { data: 'User`s data has been successfully changed', error: undefined }
   } catch (error) {
     const e = error as Error
     console.error('Error editing user:', e.message)
@@ -51,7 +51,7 @@ export const createProfile = async (profileData: EditProfileData): Promise<Retur
     await prisma.profile.create({
       data: { ...profileData, userId: session.user.id },
     })
-    return { data: 'Profile was created successfully', error: undefined }
+    return { data: 'Profile was successfully created', error: undefined }
   } catch (error) {
     const e = error as Error
     console.error('Error creating profile:', e.message)

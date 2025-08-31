@@ -1,25 +1,24 @@
-import { ChangeEvent, MouseEvent, ReactNode, useState, useTransition } from 'react'
+import { ChangeEvent, MouseEvent, useState, useTransition } from 'react'
 import { FaCheck, FaSpinner } from 'react-icons/fa'
+import { toast } from 'sonner'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
+import { authClient } from '@/lib/auth/client'
 import { useChangePasswordSchema, type ChangePasswordData } from '@/lib/validators/profile'
 
 const initialData: ChangePasswordData = {
-  newPassword: '',
   currentPassword: '',
+  newPassword: '',
 }
 
 export interface PasswordDialogProps {
-  trigger: ReactNode
-  title: string
-  description?: string
-  onSubmit: (formData: ChangePasswordData) => Promise<void>
+  onUpdate?: () => void
 }
 
-export const PasswordDialog = ({ trigger, title, description, onSubmit }: PasswordDialogProps) => {
+export const PasswordDialog = ({ onUpdate }: PasswordDialogProps) => {
   const [isOpen, setOpen] = useState(false)
   const [formData, setFormData] = useState<ChangePasswordData>(initialData)
   const [formErrors, setFormErrors] = useState<Record<string, string[]>>({})
@@ -33,21 +32,34 @@ export const PasswordDialog = ({ trigger, title, description, onSubmit }: Passwo
       [name]: value,
     }))
   }
+
   const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault()
     startTransitionSubmit(async () => {
       const validation = schema.safeParse(formData)
       if (validation.success) {
-        await onSubmit(validation.data)
+        const { error } = await authClient.changePassword({
+          currentPassword: validation.data.currentPassword,
+          newPassword: validation.data.newPassword,
+          revokeOtherSessions: true,
+        })
+        if (error) {
+          toast.error(error.message)
+          return
+        }
+        if (onUpdate) {
+          onUpdate()
+        }
+        toast.success('The password has been successfully changed')
         setOpen(false)
       } else {
         const formattedErrors: Record<string, string[]> = {}
-        for (const err of validation.error.errors) {
-          const field = err.path.join('.') || 'form'
+        for (const e of validation.error.errors) {
+          const field = e.path.join('.') || 'form'
           if (!formattedErrors[field]) {
             formattedErrors[field] = []
           }
-          formattedErrors[field].push(err.message)
+          formattedErrors[field].push(e.message)
         }
         setFormErrors(formattedErrors)
       }
@@ -56,11 +68,13 @@ export const PasswordDialog = ({ trigger, title, description, onSubmit }: Passwo
 
   return (
     <Dialog open={isOpen} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      <DialogTrigger asChild>
+        <Button>Change password</Button>
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          {description && <DialogDescription>{description}</DialogDescription>}
+          <DialogTitle>Change password</DialogTitle>
+          <DialogDescription>Fill in the following fields to change your password</DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-4">
           {formErrors.form && (
