@@ -2,16 +2,13 @@
 
 import { useEffect, useState, useTransition } from 'react'
 import { FaSpinner } from 'react-icons/fa'
-import { toast } from 'sonner'
-import { authClient, useSession } from '@/lib/auth/client'
-import { editUser, getUserWithProfile } from '@/lib/actions/profile.actions'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import type { UserWithProfiles } from '@/lib/types/profile'
 import { UserDialog } from './user.dialog'
 import { PasswordDialog } from './password.dialog'
 import { ProfileDialog } from './profile.dialog'
-import { ChangePasswordData, EditUserData } from '@/lib/validators/profile'
+import { useSession } from '@/lib/auth/client'
+import { getUserWithProfile } from '@/lib/actions/profile.actions'
+import type { UserWithProfiles } from '@/lib/types/profile'
 
 export const Profile = () => {
   const { refetch } = useSession()
@@ -27,32 +24,6 @@ export const Profile = () => {
       }
       setUser(data)
     })
-  }
-
-  const handleEditUser = async (formData: EditUserData) => {
-    const { data, error } = await editUser(formData)
-    if (error) {
-      toast.error(error.message)
-      return
-    }
-    toast.success(data)
-    fetchUser()
-    refetch()
-  }
-
-  const handleChangePassword = async (formData: ChangePasswordData) => {
-    const { error } = await authClient.changePassword({
-      newPassword: formData.newPassword,
-      currentPassword: formData.currentPassword,
-      revokeOtherSessions: true,
-    })
-    if (error) {
-      toast.error(error.message)
-      return
-    }
-    toast.success('It is all right')
-    fetchUser()
-    refetch()
   }
 
   useEffect(() => {
@@ -81,8 +52,18 @@ export const Profile = () => {
           </ul>
         </CardContent>
         <CardFooter className="flex justify-end gap-2">
-          <UserDialog trigger={<Button>Edit User</Button>} title="Edit user" onSubmit={handleEditUser} />
-          <PasswordDialog trigger={<Button>Change password</Button>} title="Change password" onSubmit={handleChangePassword} />
+          <UserDialog
+            onUpdate={() => {
+              fetchUser()
+              refetch()
+            }}
+          />
+          <PasswordDialog
+            onUpdate={() => {
+              fetchUser()
+              refetch()
+            }}
+          />
         </CardFooter>
       </Card>
       <Card>
@@ -93,16 +74,19 @@ export const Profile = () => {
         <CardContent>
           {user?.profiles
             ? user.profiles.map((item) => (
-                <ul key={item.id} className="not-first:mt-2 pb-2 border-b">
+                <ul key={item.id} className="flex flex-col not-first:mt-2 pb-2 border-b">
                   <li>Organization: {item.organization ? item.organization : '-'}</li>
                   <li>Address: {item.address ? item.address : '-'}</li>
                   <li>Phone number: {item.phoneNumber ? item.phoneNumber : '-'}</li>
+                  <li className="flex self-end">
+                    <ProfileDialog profile={item} onUpdate={fetchUser} />
+                  </li>
                 </ul>
               ))
             : 'None'}
         </CardContent>
         <CardFooter className="flex justify-end gap-2">
-          <ProfileDialog user={user} />
+          <ProfileDialog onUpdate={fetchUser} />
         </CardFooter>
       </Card>
     </div>

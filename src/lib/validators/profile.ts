@@ -28,7 +28,7 @@ export const useCreateProfileSchema = () => {
     address: z.string().min(1),
     phoneNumber: z
       .string()
-      .regex(/^\+?[1-9]\d{1,14}$/)
+      .regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number')
       .min(1),
   })
 }
@@ -43,11 +43,13 @@ export const useEditProfileSchema = () => {
       .string()
       .transform((v) => (v === '' ? undefined : v))
       .optional(),
-    phoneNumber: z
-      .string()
-      .regex(/^\+?[1-9]\d{1,14}$/)
-      .transform((v) => (v === '' ? undefined : v))
-      .optional(),
+    phoneNumber: z.preprocess(
+      (v) => (typeof v === 'string' && v === '' ? undefined : v),
+      z
+        .string()
+        .regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number')
+        .optional()
+    ),
   })
 }
 
