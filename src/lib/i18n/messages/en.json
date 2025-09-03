@@ -67,8 +67,10 @@
     "description": "Fill in the details of the car here. Click save when you&apos;re done.",
     "uploadImage": "Upload Image",
     "brand": "Brand",
+    "brand_name": "Brand",
     "selectBrand": "Select a brand",
     "model": "Model",
+    "model_name": "Model",
     "selectModel": "Select a model",
     "year": "First registration",
     "color": "Body color",
@@ -87,7 +89,8 @@
     "vin": "VIN",
     "price": "Price",
     "desc": "Description",
-    "save": "Save"
+    "save": "Save",
+    "actions": "Actions"
   },
   "Dashboard": {
     "myCars": "My Cars",

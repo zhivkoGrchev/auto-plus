@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import { useTranslations } from 'next-intl'
 import { BsChevronDown } from 'react-icons/bs'
 import {
   type ColumnDef,
@@ -57,6 +58,8 @@ export function DataTable<
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
 
   const [rowSelection, setRowSelection] = React.useState({})
+
+  const t = useTranslations('AddCarDialog')
 
   const table = useReactTable({
     data,
@@ -123,7 +126,7 @@ export function DataTable<
                     checked={column.getIsVisible()}
                     onCheckedChange={(value) => column.toggleVisibility(!!value)}
                   >
-                    {column.id}
+                    {t(column.id)}
                   </DropdownMenuCheckboxItem>
                 )
               })}
