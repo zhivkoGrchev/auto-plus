@@ -67,8 +67,10 @@
     "description": "Füllen Sie hier die Details des Autos aus. Klicken Sie auf Speichern, wenn Sie fertig sind.",
     "uploadImage": "Bild hochladen",
     "brand": "Marke",
+    "brand_name": "Marke",
     "selectBrand": "Wählen Sie eine Marke",
     "model": "Modell",
+    "model_name": "Modell",
     "selectModel": "Wählen Sie ein Modell",
     "year": "Erstzulassung",
     "color": "Karosseriefarbe",
@@ -87,7 +89,8 @@
     "vin": "FIN",
     "price": "Preis",
     "desc": "Beschreibung",
-    "save": "Speichern"
+    "save": "Speichern",
+    "actions": "Aktionen"
   },
   "Dashboard": {
     "myCars": "Meine Autos",

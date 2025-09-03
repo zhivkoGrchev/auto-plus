@@ -2,7 +2,8 @@
 
 import type { ColumnDef } from '@tanstack/react-table'
 import type { CarExtended } from '@/lib/interfaces/car-extended'
-import { Checkbox } from "@/components/ui/checkbox"
+import { useTranslations } from 'next-intl'
+import { Checkbox } from '@/components/ui/checkbox'
 import { ArrowUpDown } from 'lucide-react'
 import { deleteCar } from '@/lib/actions/car.actions'
 import { MoreHorizontal } from 'lucide-react'
@@ -16,26 +17,19 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
+const t = useTranslations('AddCarDialog')
+
 export const columns: ColumnDef<CarExtended>[] = [
-   {
-    id: "select",
+  {
+    id: 'select',
     header: ({ table }) => (
       <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
+        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
       />
     ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
+    cell: ({ row }) => <Checkbox checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} aria-label="Select row" />,
     enableSorting: false,
     enableHiding: false,
   },
