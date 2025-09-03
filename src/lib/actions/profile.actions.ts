@@ -81,3 +81,22 @@ export const editProfile = async (profileData: EditProfileData, id: string): Pro
     await prisma.$disconnect()
   }
 }
+
+export const deleteProfile = async (id: string): Promise<Return<string>> => {
+  try {
+    const session = await auth.api.getSession({ headers: await headers() })
+    if (!session) {
+      return { data: undefined, error: { message: 'You are not signed in' } }
+    }
+    await prisma.profile.delete({
+      where: { id },
+    })
+    return { data: 'Profile was successfully deleted', error: undefined }
+  } catch (error) {
+    const e = error as Error
+    console.error('Error deleting profile:', e.message)
+    return { data: undefined, error: { message: e.message } }
+  } finally {
+    await prisma.$disconnect()
+  }
+}

@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, useState, useTransition } from 'react'
+import { ChangeEvent, MouseEvent, ReactNode, useState, useTransition } from 'react'
 import { ZodError } from 'zod'
 import { FaCheck, FaSpinner } from 'react-icons/fa'
 import { toast } from 'sonner'
@@ -18,11 +18,12 @@ const initialFormData: EditProfileData = {
 } as const
 
 export interface ProfileDialogProps {
+  trigger?: ReactNode
   profile?: Profile
   onUpdate?: () => void
 }
 
-export const ProfileDialog = ({ profile, onUpdate }: ProfileDialogProps) => {
+export const ProfileDialog = ({ trigger, profile, onUpdate }: ProfileDialogProps) => {
   const [isOpen, setOpen] = useState(false)
   const [formData, setFormData] = useState<EditProfileData>(initialFormData)
   const [formErrors, setFormErrors] = useState<Record<string, string[]>>({})
@@ -81,9 +82,7 @@ export const ProfileDialog = ({ profile, onUpdate }: ProfileDialogProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button>{!profile ? 'Create profile' : 'Edit profile'}</Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{trigger ? trigger : <Button>{!profile ? 'Create profile' : 'Edit profile'}</Button>}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{!profile ? 'Create new profile' : 'Edit profile'}</DialogTitle>
