@@ -2,7 +2,6 @@
 
 import type { ColumnDef } from '@tanstack/react-table'
 import type { CarExtended } from '@/lib/interfaces/car-extended'
-import { useTranslations } from 'next-intl'
 import { Checkbox } from '@/components/ui/checkbox'
 import { ArrowUpDown } from 'lucide-react'
 import { deleteCar } from '@/lib/actions/car.actions'
@@ -16,8 +15,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-
-const t = useTranslations('AddCarDialog')
 
 export const columns: ColumnDef<CarExtended>[] = [
   {
