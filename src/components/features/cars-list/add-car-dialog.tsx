@@ -13,6 +13,10 @@ import { Textarea } from '@/components/ui/textarea'
 import { getCarBrands, getCarModelsByBrand, createCar } from '@/lib/actions/car.actions'
 import type AddCarData from '@/lib/interfaces/add-car-data'
 
+type AddCarDialogProps = {
+  onCarAdded?: () => Promise<void>
+}
+
 const initialData: AddCarData = {
   brandId: '',
   modelId: '',
@@ -28,7 +32,7 @@ const initialData: AddCarData = {
   models: [],
 }
 
-export const AddCarDialog = () => {
+export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
   const [carData, setCarData] = useState<AddCarData>(initialData)
   const [errors, setErrors] = useState<Record<string, string[]>>({})
   const [isPendingSubmit, startTransitionSubmit] = useTransition()
@@ -70,10 +74,6 @@ export const AddCarDialog = () => {
 
   const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault()
-
-    console.log('Submitting car data:', carData)
-
-    // Clear previous errors
     setErrors({})
 
     startTransitionSubmit(async () => {
@@ -84,6 +84,7 @@ export const AddCarDialog = () => {
       } else {
         setCarData(initialData)
         setIsOpen(false)
+        if (onCarAdded) await onCarAdded()
       }
     })
   }
@@ -95,9 +96,9 @@ export const AddCarDialog = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <div className="container mx-auto px-4 mb-4 flex justify-end">
+      <div className="container mx-auto flex justify-start">
         <DialogTrigger asChild>
-          <Button type="button">
+          <Button type="button" variant="default" size="sm">
             <FaPlus /> {t('addCar')}
           </Button>
         </DialogTrigger>

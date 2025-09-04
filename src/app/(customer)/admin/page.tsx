@@ -1,6 +1,6 @@
 import { Tabs } from 'radix-ui'
 import { useTranslations } from 'next-intl'
-import { AddCarDialog, CarsList } from '@/components/features/cars-list'
+import { CarsList } from '@/components/features/cars-list'
 import { ProfilesList } from '@/components/features/profiles-list'
 
 export default function AdminPage() {
@@ -29,9 +29,6 @@ export default function AdminPage() {
         </Tabs.Trigger>
       </Tabs.List>
       <Tabs.Content className="flex flex-col py-4 gap-4 grow" value="cars-list">
-        <div className="flex justify-end">
-          <AddCarDialog />
-        </div>
         <CarsList />
       </Tabs.Content>
       <Tabs.Content className="flex flex-col py-4 gap-4 grow" value="profiles-list">
