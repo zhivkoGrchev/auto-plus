@@ -7,6 +7,7 @@ import { ArrowUpDown } from 'lucide-react'
 import { deleteCar } from '@/lib/actions/car.actions'
 import { MoreHorizontal } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -122,6 +123,10 @@ export const columns: ColumnDef<CarExtended>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
+            <DropdownMenuItem asChild>
+              <Link href={`/cars/${car.id}`}>Details</Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuItem>Edit</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleDelete}>Delete</DropdownMenuItem>

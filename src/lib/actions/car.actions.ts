@@ -200,3 +200,22 @@ export async function deleteCar(id: string): Promise<{ success: boolean; errors?
     await prisma.$disconnect()
   }
 }
+
+export async function getCarById(id: string): Promise<CarExtended | null> {
+  try {
+    const car = await prisma.car.findUnique({
+      where: { id },
+      include: {
+        brand: true,
+        model: true,
+      },
+    })
+
+    return car ? toJson(car) : null
+  } catch (error) {
+    console.error('Error fetching car by ID:', error)
+    throw error
+  } finally {
+    await prisma.$disconnect()
+  }
+}
