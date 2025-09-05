@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { FaSpinner } from 'react-icons/fa'
-import { getAllCars } from '@/lib/actions/car.actions'
+import { getAllCars, deleteCar } from '@/lib/actions/car.actions'
 import type { CarExtended } from '@/lib/interfaces/car-extended'
 import { DataTable } from './data-table'
 import { columns } from './columns'
@@ -20,6 +20,16 @@ export const CarsList = () => {
       console.error('Error fetching cars:', error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleDelete = async (id: string) => {
+    if (!window.confirm('Are you sure you want to delete this car?')) return
+    const result = await deleteCar(id)
+    if (result.success) {
+      setCars((prev) => prev.filter((car) => car.id !== id)) // remove deleted car
+    } else {
+      alert(result.errors?.form?.[0] ?? 'Failed to delete car.')
     }
   }
 
@@ -48,7 +58,7 @@ export const CarsList = () => {
   return (
     <div className="container mx-auto px-4">
       <AddCarDialog onCarAdded={fetchCars} />
-      <DataTable columns={columns} data={cars} />
+      <DataTable columns={columns(handleDelete)} data={cars} />
     </div>
   )
 }

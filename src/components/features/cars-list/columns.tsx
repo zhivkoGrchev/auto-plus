@@ -4,7 +4,6 @@ import type { ColumnDef } from '@tanstack/react-table'
 import type { CarExtended } from '@/lib/interfaces/car-extended'
 import { Checkbox } from '@/components/ui/checkbox'
 import { ArrowUpDown } from 'lucide-react'
-import { deleteCar } from '@/lib/actions/car.actions'
 import { MoreHorizontal } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
@@ -17,7 +16,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-export const columns: ColumnDef<CarExtended>[] = [
+export const columns = (handleDelete: (id: string) => void): ColumnDef<CarExtended>[] => [
   {
     id: 'select',
     header: ({ table }) => (
@@ -101,19 +100,6 @@ export const columns: ColumnDef<CarExtended>[] = [
     cell: ({ row }) => {
       const car = row.original
 
-      const handleDelete = async () => {
-        // Optional: Show confirmation dialog
-        if (!window.confirm('Are you sure you want to delete this car?')) return
-        // Call your server action
-        const result = await deleteCar(car.id)
-        if (result.success) {
-          // Optionally show a toast or notification
-          // Refresh data (router.refresh() for Next.js 13/14)
-        } else {
-          alert(result.errors?.form?.[0] ?? 'Failed to delete car.')
-        }
-      }
-
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -129,7 +115,7 @@ export const columns: ColumnDef<CarExtended>[] = [
             <DropdownMenuSeparator />
             <DropdownMenuItem>Edit</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleDelete}>Delete</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleDelete(car.id)}>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )
