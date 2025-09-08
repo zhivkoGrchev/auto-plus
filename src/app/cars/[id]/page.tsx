@@ -56,7 +56,7 @@ export default async function CarDetailsPage({ params }: PageProps) {
             <h1 className="text-3xl font-bold tracking-tight">
               {car.brand?.name ?? ''} {car.model?.name ?? ''} {car.year ? `(${car.year})` : ''}
             </h1>
-            <p className="text-sm text-muted-foreground">{car.color ?? 'No color specified'}</p>
+            <p className="text-sm text-muted-foreground">{car.mileage.toLocaleString()} km</p>
           </div>
         </header>
 
@@ -79,7 +79,7 @@ export default async function CarDetailsPage({ params }: PageProps) {
           {/* Sidebar details */}
           <aside className="space-y-4 text-sm mx-auto w-full md:w-64">
             <div className="flex justify-between border-b pb-2">
-              <span className="font-medium">Year:</span>
+              <span className="font-medium">First registration:</span>
               <span>{car.year ?? '—'}</span>
             </div>
             <div className="flex justify-between border-b pb-2">
@@ -87,7 +87,15 @@ export default async function CarDetailsPage({ params }: PageProps) {
               <span>{car.mileage != null ? `${car.mileage} km` : '—'}</span>
             </div>
             <div className="flex justify-between border-b pb-2">
-              <span className="font-medium">Color:</span>
+              <span className="font-medium">Fuel type:</span>
+              <span>{car.fuelType ?? '—'}</span>
+            </div>
+            <div className="flex justify-between border-b pb-2">
+              <span className="font-medium">Transmission:</span>
+              <span>{car.transmission ?? '—'}</span>
+            </div>
+            <div className="flex justify-between border-b pb-2">
+              <span className="font-medium">Body color:</span>
               <span>{car.color ?? '—'}</span>
             </div>
             <div className="flex justify-between border-b pb-2">
