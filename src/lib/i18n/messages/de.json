@@ -90,7 +90,10 @@
     "price": "Preis",
     "desc": "Beschreibung",
     "save": "Speichern",
-    "actions": "Aktionen"
+    "actions": "Aktionen",
+    "created": "Erstellt am",
+    "backToList": "Zurück zur Liste",
+    "print": "Drucken"
   },
   "Dashboard": {
     "myCars": "Meine Autos",

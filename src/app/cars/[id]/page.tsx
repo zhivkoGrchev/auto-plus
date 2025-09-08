@@ -1,12 +1,14 @@
 import { prisma } from '@/db/prisma'
 import Link from 'next/link'
 import PrintButton from './print-button'
+import { getTranslations } from 'next-intl/server'
 
 interface PageProps {
   params: { id: string }
 }
 
 export default async function CarDetailsPage({ params }: PageProps) {
+  const t = await getTranslations('AddCarDialog')
   const id = params.id
 
   const car = await prisma.car.findUnique({
@@ -79,35 +81,35 @@ export default async function CarDetailsPage({ params }: PageProps) {
           {/* Sidebar details */}
           <aside className="space-y-4 text-sm mx-auto w-full md:w-64">
             <div className="flex justify-between border-b pb-2">
-              <span className="font-medium">First registration:</span>
+              <span className="font-medium">{t('year')}</span>
               <span>{car.year ?? '—'}</span>
             </div>
             <div className="flex justify-between border-b pb-2">
-              <span className="font-medium">Mileage:</span>
-              <span>{car.mileage != null ? `${car.mileage} km` : '—'}</span>
+              <span className="font-medium">{t('mileage')}</span>
+              <span>{car.mileage != null ? `${car.mileage.toLocaleString()} km` : '—'}</span>
             </div>
             <div className="flex justify-between border-b pb-2">
-              <span className="font-medium">Fuel type:</span>
-              <span>{car.fuelType ?? '—'}</span>
+              <span className="font-medium">{t('fuelType')}</span>
+              <span>{car.fuelType ? t(car.fuelType) : '—'}</span>
             </div>
             <div className="flex justify-between border-b pb-2">
-              <span className="font-medium">Transmission:</span>
-              <span>{car.transmission ?? '—'}</span>
+              <span className="font-medium">{t('transmission')}</span>
+              <span>{car.transmission ? t(car.transmission) : '—'}</span>
             </div>
             <div className="flex justify-between border-b pb-2">
-              <span className="font-medium">Body color:</span>
+              <span className="font-medium">{t('color')}</span>
               <span>{car.color ?? '—'}</span>
             </div>
             <div className="flex justify-between border-b pb-2">
-              <span className="font-medium">VIN:</span>
+              <span className="font-medium">{t('vin')}</span>
               <span>{car.vin ?? '—'}</span>
             </div>
             <div className="flex justify-between border-b pb-2">
-              <span className="font-medium">Price:</span>
+              <span className="font-medium">{t('price')}</span>
               <span>{formatCurrency(car.price as number)}</span>
             </div>
             <div className="flex justify-between pt-8">
-              <span className="font-medium">Created:</span>
+              <span className="font-medium">{t('created')}</span>
               <span>{formatDate(car.createdAt)}</span>
             </div>
           </aside>
@@ -116,7 +118,7 @@ export default async function CarDetailsPage({ params }: PageProps) {
         {/* Actions (hidden in print) */}
         <div className="no-print flex items-center justify-between mt-8">
           <Link href="/admin" className="px-4 py-2 rounded-lg border hover:bg-muted transition text-sm">
-            Back to list
+            {t('backToList')}
           </Link>
           <PrintButton />
         </div>

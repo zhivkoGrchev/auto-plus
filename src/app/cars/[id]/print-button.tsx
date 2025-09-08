@@ -2,12 +2,15 @@
 
 import { Button } from '@/components/ui/button'
 import { FaPrint } from 'react-icons/fa'
+import { useTranslations } from 'next-intl'
 
 export default function PrintButton() {
+  const t = useTranslations('AddCarDialog')
+
   return (
     <Button variant="outline" onClick={() => window.print()}>
       <FaPrint />
-      Print
+      {t('print')}
     </Button>
   )
 }
