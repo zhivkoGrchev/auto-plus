@@ -1,31 +1,27 @@
 'use client'
 
-import React, { useState } from 'react'
-import { LocaleTool } from '@/components/toolbar/locale-tool'
-import { useTranslations } from 'next-intl'
+import { useState } from 'react'
 
 export const WebsiteHeader = () => {
   const [menuOpen, setMenuOpen] = useState(false)
-  const t = useTranslations('WebsiteHeader')
 
   return (
-    <header className="w-full bg-cyan-700 text-white shadow-md">
+    <header className="w-full bg-cyan-900 text-white shadow-md">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <a href="#home" className="flex items-center gap-2">
-          <span className="text-2xl font-bold tracking-wide">{t('CompanyName')}</span>
+          <span className="text-2xl font-bold tracking-wide">Company name</span>
         </a>
 
         <nav className="hidden md:flex items-center gap-6 text-lg">
           <a href="#home" className="hover:text-cyan-200 transition">
-            {t('Home')}
+            Home
           </a>
           <a href="#about" className="hover:text-cyan-200 transition">
-            {t('About')}
+            About
           </a>
           <a href="#contact" className="hover:text-cyan-200 transition">
-            {t('Contact')}
+            Contact
           </a>
-          <LocaleTool />
         </nav>
 
         {/* Mobile toggle */}
@@ -37,15 +33,14 @@ export const WebsiteHeader = () => {
       {menuOpen && (
         <div className="md:hidden bg-cyan-600 px-6 py-4 space-y-4">
           <a href="#home" className="block hover:text-cyan-200 transition">
-            {t('Home')}
+            Home
           </a>
           <a href="#about" className="block hover:text-cyan-200 transition">
-            {t('About')}
+            About
           </a>
           <a href="#contact" className="block hover:text-cyan-200 transition">
-            {t('Contact')}
+            Contact
           </a>
-          <LocaleTool />
         </div>
       )}
     </header>

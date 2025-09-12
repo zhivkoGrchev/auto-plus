@@ -2,6 +2,7 @@ import { Tabs } from 'radix-ui'
 import { useTranslations } from 'next-intl'
 import { CarsList } from '@/components/features/cars-list'
 import { ProfilesList } from '@/components/features/profiles-list'
+import { WebsiteAdmin } from '@/components/features/my-website'
 
 export default function AdminPage() {
   const t = useTranslations('Dashboard')
@@ -35,14 +36,7 @@ export default function AdminPage() {
         <ProfilesList />
       </Tabs.Content>
       <Tabs.Content className="flex flex-col p-2 gap-4 grow" value="website">
-        <div className="mt-10">
-          <p className="text-center text-lg font-semibold mb-4">
-            <a className="cursor-pointer" href="http://localhost:3000/website" target="_blank" rel="noopener noreferrer">
-              Open my Website
-            </a>
-          </p>
-          <p className="text-center">This feature is under development.</p>
-        </div>
+        <WebsiteAdmin />
       </Tabs.Content>
     </Tabs.Root>
   )
