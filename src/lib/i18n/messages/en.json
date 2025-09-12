@@ -100,6 +100,10 @@
     "myProfile": "My Profile",
     "myWebsite": "My Website"
   },
+  "MyWebsite": {
+    "openWebsite": "Open my Website",
+    "developerMode": "This feature is under development."
+  },
   "AuthValidations": {
     "name": "Name is required",
     "email": "Invalid E-Mail",
@@ -115,27 +119,5 @@
     "fuelType": "Fuel Type is required",
     "mileage": "Mileage is required",
     "price": "Price is required"
-  },
-  "WebsiteHeader": {
-    "CompanyName": "Company name",
-    "Home": "Home",
-    "About": "About",
-    "Contact": "Contact"
-  },
-  "WebsiteHomePage": {
-    "Title": "Used cars in Gremany",
-    "Description": "Explore our selection of vehicles for every lifestyle.",
-    "Details": "Details"
-  },
-  "WebsiteFooter": {
-    "CompanyName": "Company name",
-    "CompanyDescription": "Used cars for sale. The best place to find your next car.",
-    "Links": "Quick Links",
-    "Contact": "Contact",
-    "Phone": "+49 123 456 7890",
-    "Email": "info@autohausplus.com",
-    "Address": "Saalfeld, Germany",
-    "Impressum": "Impressum",
-    "PrivacyPolicy": "Privacy Policy"
   }
 }
