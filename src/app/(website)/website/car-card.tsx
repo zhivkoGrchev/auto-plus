@@ -34,7 +34,7 @@ export const CarCard = async () => {
                       }).format(car.price)
                     : '—'}
                 </span>
-                <Link href={`/cars/${car.id}`}>
+                <Link href={`/website/${car.id}`}>
                   <Button className="cursor-pointer" variant="outline" size="sm">
                     Details
                   </Button>
