@@ -25,6 +25,8 @@ model Car {
   id           String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   brandId      String       @db.Uuid
   modelId      String       @db.Uuid
+  powerKW      Int
+  powerPS      Int
   year         Int
   color        String
   transmission Transmission

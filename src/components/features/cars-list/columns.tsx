@@ -39,6 +39,14 @@ export const columns = (handleDelete: (id: string) => void): ColumnDef<CarExtend
     header: 'Model',
   },
   {
+    id: 'power',
+    header: () => <div className="text-right">Power</div>,
+    cell: ({ row }) => {
+      const car = row.original
+      return <div className="text-right font-medium">{`${car.powerKW} kW / ${car.powerPS} PS`}</div>
+    },
+  },
+  {
     accessorKey: 'year',
     header: ({ column }) => {
       return (

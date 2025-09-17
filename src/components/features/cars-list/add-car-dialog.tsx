@@ -23,11 +23,14 @@ const initialData: AddCarData = {
   year: 0,
   color: '',
   transmission: null,
+  powerKW: 0,
+  powerPS: 0,
   fuelType: null,
   mileage: 0,
   vin: '',
   price: 0,
   description: '',
+  showOnWebsite: false,
   brands: [],
   models: [],
 }
@@ -66,10 +69,23 @@ export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
-    setCarData((prev) => ({
-      ...prev,
-      [name]: name === 'year' || name === 'mileage' || name === 'price' ? Number(value) : value,
-    }))
+    const numericValue = Number(value)
+
+    setCarData((prev) => {
+      if (name === 'powerKW') {
+        return { ...prev, powerKW: numericValue, powerPS: Math.round(numericValue * 1.35962) }
+      }
+
+      if (name === 'powerPS') {
+        return { ...prev, powerPS: numericValue, powerKW: Math.round(numericValue * 0.735499) }
+      }
+
+      if (name === 'year' || name === 'mileage' || name === 'price') {
+        return { ...prev, [name]: numericValue }
+      }
+
+      return { ...prev, [name]: value }
+    })
   }
 
   const handleSubmit = async (e: MouseEvent) => {
@@ -182,6 +198,32 @@ export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
               </SelectContent>
             </Select>
             {getFieldError('modelId') && <sub className="mx-2 text-red-600">{getFieldError('modelId')}</sub>}
+          </fieldset>
+          {/* Power: kW and PS */}
+          <fieldset className="flex flex-col gap-2">
+            <Label className="mx-2" htmlFor="power">
+              {t('power')}
+            </Label>
+            <div className="flex gap-2">
+              <Input
+                className="w-1/2"
+                id="powerKW"
+                name="powerKW"
+                placeholder="kW"
+                value={carData.powerKW === 0 ? '' : carData.powerKW}
+                onChange={handleInputChange}
+              />
+              <Input
+                className="w-1/2"
+                id="powerPS"
+                name="powerPS"
+                placeholder="PS"
+                value={carData.powerPS === 0 ? '' : carData.powerPS}
+                onChange={handleInputChange}
+              />
+            </div>
+            {getFieldError('powerKW') && <sub className="mx-2 text-red-600">{getFieldError('powerKW')}</sub>}
+            {getFieldError('powerPS') && <sub className="mx-2 text-red-600">{getFieldError('powerPS')}</sub>}
           </fieldset>
           <fieldset className="flex flex-col gap-2">
             <Label className="mx-2" htmlFor="year">

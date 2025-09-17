@@ -9,6 +9,8 @@ export const createInsertCarSchema = async () => {
   return z.object({
     brandId: z.string().min(1, t('brand')),
     modelId: z.string().min(1, t('model')),
+    powerKW: z.number().int().positive(),
+    powerPS: z.number().int().positive(),
     year: z.number().int().min(1886, t('yearMin')).max(new Date().getFullYear(), t('yearMax')),
     color: z.string().min(1, t('color')),
     transmission: z.nativeEnum(Transmission, {
