@@ -25,12 +25,12 @@ const initialData: AddCarData = {
   transmission: null,
   powerKW: 0,
   powerPS: 0,
+  cubicCapacity: 0,
   fuelType: null,
   mileage: 0,
   vin: '',
   price: 0,
   description: '',
-  showOnWebsite: false,
   brands: [],
   models: [],
 }
@@ -80,7 +80,7 @@ export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
         return { ...prev, powerPS: numericValue, powerKW: Math.round(numericValue * 0.735499) }
       }
 
-      if (name === 'year' || name === 'mileage' || name === 'price') {
+      if (name === 'year' || name === 'mileage' || name === 'price' || name === 'cubicCapacity') {
         return { ...prev, [name]: numericValue }
       }
 
@@ -224,6 +224,19 @@ export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
             </div>
             {getFieldError('powerKW') && <sub className="mx-2 text-red-600">{getFieldError('powerKW')}</sub>}
             {getFieldError('powerPS') && <sub className="mx-2 text-red-600">{getFieldError('powerPS')}</sub>}
+          </fieldset>
+          <fieldset className="flex flex-col gap-2">
+            <Label className="mx-2" htmlFor="cubicCapacity">
+              Cubic Capacity (cm³)
+            </Label>
+            <Input
+              id="cubicCapacity"
+              name="cubicCapacity"
+              type="number"
+              value={carData.cubicCapacity === 0 ? '' : carData.cubicCapacity}
+              onChange={handleInputChange}
+              placeholder="e.g. 2000"
+            />
           </fieldset>
           <fieldset className="flex flex-col gap-2">
             <Label className="mx-2" htmlFor="year">

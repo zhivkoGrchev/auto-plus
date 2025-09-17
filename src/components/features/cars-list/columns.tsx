@@ -47,6 +47,14 @@ export const columns = (handleDelete: (id: string) => void): ColumnDef<CarExtend
     },
   },
   {
+    accessorKey: 'cubicCapacity',
+    header: () => <div className="text-right">Cubic Capacity</div>,
+    cell: ({ row }) => {
+      const capacity = row.getValue('cubicCapacity') as number
+      return <div className="text-right font-medium">{capacity ? `${capacity.toLocaleString()} cm³` : '—'}</div>
+    },
+  },
+  {
     accessorKey: 'year',
     header: ({ column }) => {
       return (

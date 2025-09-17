@@ -27,6 +27,7 @@ model Car {
   modelId      String       @db.Uuid
   powerKW      Int
   powerPS      Int
+  cubicCapacity Int
   year         Int
   color        String
   transmission Transmission

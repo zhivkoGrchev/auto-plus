@@ -73,6 +73,7 @@
     "model_name": "Model",
     "selectModel": "Select a model",
     "power": "Power",
+    "cubicCapacity": "Cubic Capacity",
     "year": "First registration",
     "color": "Body color",
     "transmission": "Transmission",

@@ -6,6 +6,7 @@ export default interface AddCarData extends Omit<Car, 'id' | 'createdAt' | 'upda
   description: string
   powerKW: number
   powerPS: number
+  cubicCapacity: number
   brands: CarBrand[]
   models: CarModel[]
 }

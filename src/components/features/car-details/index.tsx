@@ -85,6 +85,10 @@ export default async function CarDetailsPage({ params, searchParams }: PageProps
             </span>
           </div>
           <div className="flex justify-between border-b pb-2">
+            <span className="font-medium">{t('cubicCapacity')}</span>
+            <span>{car.cubicCapacity != null ? `${car.cubicCapacity.toLocaleString()} cm³` : '—'}</span>
+          </div>
+          <div className="flex justify-between border-b pb-2">
             <span className="font-medium">{t('year')}</span>
             <span>{car.year ?? '—'}</span>
           </div>
