@@ -72,6 +72,8 @@
     "model": "Modell",
     "model_name": "Modell",
     "selectModel": "Wählen Sie ein Modell",
+    "power": "Leistung",
+    "cubicCapacity": "Hubraum",
     "year": "Erstzulassung",
     "color": "Karosseriefarbe",
     "transmission": "Getriebe",

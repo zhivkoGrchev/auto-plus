@@ -39,6 +39,22 @@ export const columns = (handleDelete: (id: string) => void): ColumnDef<CarExtend
     header: 'Model',
   },
   {
+    id: 'power',
+    header: () => <div className="text-right">Power</div>,
+    cell: ({ row }) => {
+      const car = row.original
+      return <div className="text-right font-medium">{`${car.powerKW} kW / ${car.powerPS} PS`}</div>
+    },
+  },
+  {
+    accessorKey: 'cubicCapacity',
+    header: () => <div className="text-right">Cubic Capacity</div>,
+    cell: ({ row }) => {
+      const capacity = row.getValue('cubicCapacity') as number
+      return <div className="text-right font-medium">{capacity ? `${capacity.toLocaleString()} cm³` : '—'}</div>
+    },
+  },
+  {
     accessorKey: 'year',
     header: ({ column }) => {
       return (

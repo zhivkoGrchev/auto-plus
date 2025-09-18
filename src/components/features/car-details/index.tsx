@@ -79,6 +79,16 @@ export default async function CarDetailsPage({ params, searchParams }: PageProps
         {/* Sidebar details */}
         <aside className="space-y-4 text-sm mx-auto w-full md:w-64">
           <div className="flex justify-between border-b pb-2">
+            <span className="font-medium">{t('power')}</span>
+            <span>
+              {car.powerKW ?? '—'} kW / {car.powerPS ?? '—'} PS
+            </span>
+          </div>
+          <div className="flex justify-between border-b pb-2">
+            <span className="font-medium">{t('cubicCapacity')}</span>
+            <span>{car.cubicCapacity != null ? `${car.cubicCapacity.toLocaleString()} cm³` : '—'}</span>
+          </div>
+          <div className="flex justify-between border-b pb-2">
             <span className="font-medium">{t('year')}</span>
             <span>{car.year ?? '—'}</span>
           </div>
