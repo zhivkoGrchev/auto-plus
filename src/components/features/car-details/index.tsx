@@ -49,7 +49,7 @@ export default async function CarDetailsPage({ params, searchParams }: PageProps
   }
 
   return (
-    <main className="mx-auto p-8 m-8 bg-background text-foreground border rounded-2xl shadow-lg print-reset">
+    <main className="printable mx-auto p-8 m-8 bg-background text-foreground border rounded-2xl shadow-lg print-reset">
       {/* Title */}
       <header className="flex justify-between items-start mb-8">
         <div>
@@ -125,7 +125,7 @@ export default async function CarDetailsPage({ params, searchParams }: PageProps
 
       {/* Actions */}
       <div className="no-print flex items-center justify-between mt-8">
-        <Link href={backLink} className="px-4 py-2 rounded-lg border hover:bg-muted transition text-sm">
+        <Link href={backLink} className="no-print px-4 py-2 rounded-lg border hover:bg-muted transition text-sm">
           {t('backToList')}
         </Link>
         <PrintButton />
