@@ -125,3 +125,27 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@media print {
+  /* Hide everything by default */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Show only the car details content */
+  .printable,
+  .printable * {
+    visibility: visible;
+  }
+
+  /* Position the printable content at the top */
+  .printable {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

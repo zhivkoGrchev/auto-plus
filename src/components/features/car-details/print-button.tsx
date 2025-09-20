@@ -8,7 +8,7 @@ export default function PrintButton() {
   const t = useTranslations('AddCarDialog')
 
   return (
-    <Button variant="outline" onClick={() => window.print()}>
+    <Button className="no-print cursor-pointer" variant="outline" onClick={() => window.print()}>
       <FaPrint />
       {t('print')}
     </Button>
