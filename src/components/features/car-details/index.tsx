@@ -23,8 +23,8 @@ export default async function CarDetailsPage({ params, searchParams }: PageProps
       <div className="p-6 max-w-4xl mx-auto">
         <h2 className="text-xl font-semibold">Car not found</h2>
         <p className="mt-2">The requested car does not exist.</p>
-        <Link href="/cars" className="inline-block mt-4 text-blue-500 hover:underline">
-          Back to list
+        <Link href={backLink} className="inline-block mt-4 text-blue-500 hover:underline">
+          {t('backToList')}
         </Link>
       </div>
     )

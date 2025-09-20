@@ -23,7 +23,7 @@ export const CarCard = async () => {
               <h3 className="text-xl font-bold text-cyan-50">
                 {car.brand?.name} {car.model?.name} {car.year ? `(${car.year})` : ''}
               </h3>
-              <p className="text-gray-600 mt-2">{car.description}</p>
+              <p className="text-cyan-50 mt-2">{car.description}</p>
               <div className="mt-4 flex justify-between items-center">
                 <span className="text-lg font-semibold text-cyan-50">
                   {car.price
