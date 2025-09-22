@@ -44,7 +44,11 @@ export async function createCar(carData: AddCarData): Promise<{ success: boolean
     console.log('Parsed Car Data:', parsedData)
 
     await prisma.car.create({
-      data: parsedData,
+      data: {
+        ...parsedData,
+        imageHash: carData.imageHash ?? null, // ✅ added support
+        imageUrl: carData.imageUrl ?? null,   // ✅ added support
+      },
     })
 
     return { success: true }

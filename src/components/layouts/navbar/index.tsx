@@ -13,6 +13,7 @@ export const Navbar = () => {
           width={77} // Desired display width
           height={50} // Desired display height
           className="object-contain" // Keep aspect ratio
+          priority={true}
         />
         <span className=" text-cyan-50 text-2xl font-bold">{APP_NAME}</span>
       </Link>

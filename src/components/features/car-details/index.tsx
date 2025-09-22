@@ -62,10 +62,13 @@ export default async function CarDetailsPage({ params, searchParams }: PageProps
 
       {/* Layout */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-        {/* Image placeholder */}
         <div className="md:col-span-2">
-          <div className="w-full h-80 bg-muted flex items-center justify-center rounded-xl border border-dashed">
-            <span className="text-muted-foreground">Image Placeholder</span>
+          <div className="w-full h-80 bg-muted flex items-center justify-center rounded-xl border border-dashed overflow-hidden">
+            {car.imageUrl ? (
+              <img src={car.imageUrl} alt={`${car.brand?.name} ${car.model?.name}`} className="w-full h-full object-cover" />
+            ) : (
+              <span className="text-muted-foreground">No image available</span>
+            )}
           </div>
 
           {car.description && (
