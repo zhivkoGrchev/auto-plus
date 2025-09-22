@@ -2,7 +2,7 @@
 
 import { type ChangeEvent, type MouseEvent, useState, useTransition } from 'react'
 import { useTranslations } from 'next-intl'
-import { FaCheck, FaImage, FaPlus, FaSpinner } from 'react-icons/fa'
+import { FaCheck, FaImage, FaPlus, FaSpinner, FaTrash } from 'react-icons/fa'
 import { FuelType, Transmission } from '@prisma/client'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
@@ -12,6 +12,18 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { getCarBrands, getCarModelsByBrand, createCar } from '@/lib/actions/car.actions'
 import type AddCarData from '@/lib/interfaces/add-car-data'
+
+async function uploadImageToServer(file: File) {
+  const formData = new FormData()
+  formData.append('file', file)
+
+  const res = await fetch('/api/upload-car-image', {
+    method: 'POST',
+    body: formData,
+  })
+
+  return res.json() // { success: boolean, cid?: string, url?: string, error?: string }
+}
 
 type AddCarDialogProps = {
   onCarAdded?: () => Promise<void>
@@ -33,6 +45,8 @@ const initialData: AddCarData = {
   description: '',
   brands: [],
   models: [],
+  imageHash: '',
+  imageUrl: '',
 }
 
 export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
@@ -41,7 +55,10 @@ export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
   const [isPendingSubmit, startTransitionSubmit] = useTransition()
   const [isPendingBrands, startTransitionBrands] = useTransition()
   const [isPendingModels, startTransitionModels] = useTransition()
+  const [isPendingImage, startTransitionImage] = useTransition()
   const [isOpen, setIsOpen] = useState(false)
+  const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState<string>('')
   const t = useTranslations('AddCarDialog')
 
   const handleOpenBrands = (isOpen: boolean) =>
@@ -88,19 +105,97 @@ export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
     })
   }
 
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        setErrors((prev) => ({ ...prev, image: ['Please select a valid image file'] }))
+        return
+      }
+
+      // Validate file size (e.g., 5MB limit)
+      if (file.size > 5 * 1024 * 1024) {
+        setErrors((prev) => ({ ...prev, image: ['Image size must be less than 5MB'] }))
+        return
+      }
+
+      setSelectedImage(file)
+
+      // Create preview
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        setImagePreview(e.target?.result as string)
+      }
+      reader.readAsDataURL(file)
+
+      // Clear any previous image errors
+      setErrors((prev) => {
+        const { image, ...rest } = prev
+        return rest
+      })
+    }
+  }
+
+  const handleRemoveImage = () => {
+    setSelectedImage(null)
+    setImagePreview('')
+    setCarData((prev) => ({ ...prev, imageHash: '', imageUrl: '' }))
+    // Clear the file input
+    const fileInput = document.getElementById('car-image') as HTMLInputElement
+    if (fileInput) fileInput.value = ''
+  }
+
   const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault()
     setErrors({})
 
     startTransitionSubmit(async () => {
-      const result = await createCar(carData)
+      const finalCarData = { ...carData }
 
-      if (!result.success && result.errors) {
-        setErrors(result.errors)
+      // Upload image to Pinata if selected
+      if (selectedImage) {
+        try {
+          startTransitionImage(async () => {
+            const uploadResult = await uploadImageToServer(selectedImage)
+
+            if (uploadResult.success) {
+              finalCarData.imageHash = uploadResult.cid
+              finalCarData.imageUrl = uploadResult.url
+            } else {
+              setErrors((prev) => ({
+                ...prev,
+                image: [uploadResult.error],
+              }))
+              return
+            }
+
+            // Now submit the car AFTER image upload
+            const createResult = await createCar(finalCarData)
+            if (createResult.success) {
+              setCarData(initialData)
+              setSelectedImage(null)
+              setImagePreview('')
+              onCarAdded?.()
+              setIsOpen(false)
+            } else {
+              setErrors(createResult.errors || {})
+            }
+          })
+        } catch (err: any) {
+          setErrors((prev) => ({ ...prev, image: [err.message] }))
+          return
+        }
       } else {
-        setCarData(initialData)
-        setIsOpen(false)
-        if (onCarAdded) await onCarAdded()
+        // No image selected, submit immediately
+        const createResult = await createCar(finalCarData)
+        if (createResult.success) {
+          setCarData(initialData)
+          onCarAdded?.()
+          setIsOpen(false)
+        } else {
+          setErrors(createResult.errors || {})
+        }
       }
     })
   }
@@ -125,12 +220,29 @@ export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
           <DialogDescription>{t('description')}</DialogDescription>
         </DialogHeader>
         <div className="flex flex-col items-center mb-6">
-          <Label className="flex flex-col justify-center items-center size-32 gap-2 border-2 border-dashed border-neutral-700 dark:border-neutral-300 rounded-md cursor-pointer bg-cyan-100 hover:bg-cyan-200 dark:bg-cyan-900 dark:hover:bg-cyan-800">
-            <FaImage className="size-8 text-neutral-700 dark:text-neutral-300" />
-            <span className="text-xs text-neutral-700 dark:text-neutral-300">{t('uploadImage')}</span>
-            <input type="file" className="hidden" accept="image/*" />
-          </Label>
+          {imagePreview ? (
+            <div className="relative">
+              <img src={imagePreview} alt="Car preview" className="size-32 object-cover rounded-md border-2 border-neutral-300" />
+              <Button type="button" variant="destructive" size="sm" className="absolute -top-2 -right-2 size-6 p-0" onClick={handleRemoveImage}>
+                <FaTrash className="size-3" />
+              </Button>
+            </div>
+          ) : (
+            <Label className="flex flex-col justify-center items-center size-32 gap-2 border-2 border-dashed border-neutral-700 dark:border-neutral-300 rounded-md cursor-pointer bg-cyan-100 hover:bg-cyan-200 dark:bg-cyan-900 dark:hover:bg-cyan-800">
+              {isPendingImage ? (
+                <FaSpinner className="size-8 animate-spin text-neutral-700 dark:text-neutral-300" />
+              ) : (
+                <>
+                  <FaImage className="size-8 text-neutral-700 dark:text-neutral-300" />
+                  <span className="text-xs text-neutral-700 dark:text-neutral-300">{t('uploadImage')}</span>
+                </>
+              )}
+              <input type="file" id="car-image" className="hidden" accept="image/*" onChange={handleImageChange} disabled={isPendingImage} />
+            </Label>
+          )}
+          {getFieldError('image') && <sub className="mt-1 text-red-600">{getFieldError('image')}</sub>}
         </div>
+
         {/* Form-level errors */}
         {errors.form && (
           <div className="mb-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded">
@@ -353,8 +465,9 @@ export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
           </fieldset>
         </div>
         <DialogFooter>
-          <Button type="button" onClick={handleSubmit} disabled={isPendingSubmit}>
-            {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaCheck />} {t('save')}
+          <Button type="button" onClick={handleSubmit} disabled={isPendingSubmit || isPendingImage}>
+            {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaCheck />}
+            {isPendingImage ? 'Uploading...' : t('save')}
           </Button>
         </DialogFooter>
       </DialogContent>
