@@ -9,9 +9,9 @@ export const createInsertCarSchema = async () => {
   return z.object({
     brandId: z.string().min(1, t('brand')),
     modelId: z.string().min(1, t('model')),
-    powerKW: z.number().int().positive(),
+    powerKW: z.number().int().min(1, t('powerKW')),
     powerPS: z.number().int().positive(),
-    cubicCapacity: z.number().optional(),
+    cubicCapacity: z.number().int().min(49, t('cubicCapacity')),
     year: z.number().int().min(1886, t('yearMin')).max(new Date().getFullYear(), t('yearMax')),
     color: z.string().min(1, t('color')),
     transmission: z.nativeEnum(Transmission, {
@@ -28,6 +28,8 @@ export const createInsertCarSchema = async () => {
     vin: z.string().optional(),
     price: z.number().int().min(1, t('price')),
     description: z.string().optional(),
+    imageHash: z.string().nullable().optional(),
+    imageUrl: z.string().url().nullable().optional(),
   })
 }
 
