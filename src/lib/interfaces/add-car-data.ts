@@ -9,6 +9,6 @@ export default interface AddCarData extends Omit<Car, 'id' | 'createdAt' | 'upda
   cubicCapacity: number
   brands: CarBrand[]
   models: CarModel[]
-  imageHash?: string
-  imageUrl?: string
+  imageHash: string
+  imageUrl: string
 }

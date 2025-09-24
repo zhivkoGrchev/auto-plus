@@ -120,6 +120,8 @@
     "transmission": "Transmission is required",
     "fuelType": "Fuel Type is required",
     "mileage": "Mileage is required",
-    "price": "Price is required"
+    "price": "Price is required",
+    "cubicCapacity": "Cubic Capacity must be at least 49cc",
+    "powerKW": "Power is required"
   }
 }

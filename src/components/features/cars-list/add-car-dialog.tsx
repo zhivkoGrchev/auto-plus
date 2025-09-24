@@ -335,7 +335,6 @@ export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
               />
             </div>
             {getFieldError('powerKW') && <sub className="mx-2 text-red-600">{getFieldError('powerKW')}</sub>}
-            {getFieldError('powerPS') && <sub className="mx-2 text-red-600">{getFieldError('powerPS')}</sub>}
           </fieldset>
           <fieldset className="flex flex-col gap-2">
             <Label className="mx-2" htmlFor="cubicCapacity">
@@ -349,6 +348,7 @@ export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
               onChange={handleInputChange}
               placeholder="e.g. 2000"
             />
+            {getFieldError('cubicCapacity') && <sub className="mx-2 text-red-600">{getFieldError('cubicCapacity')}</sub>}
           </fieldset>
           <fieldset className="flex flex-col gap-2">
             <Label className="mx-2" htmlFor="year">

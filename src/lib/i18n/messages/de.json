@@ -120,6 +120,8 @@
     "transmission": "Getriebe ist erforderlich",
     "fuelType": "Kraftstoffart ist erforderlich",
     "mileage": "Kilometerstand ist erforderlich",
-    "price": "Preis ist erforderlich"
+    "price": "Preis ist erforderlich",
+    "cubicCapacity": "Hubraum muss mindestens 49cc sein",
+    "powerKW": "Leistung ist erforderlich"
   }
 }
