@@ -13,6 +13,64 @@ import { Textarea } from '@/components/ui/textarea'
 import { getCarBrands, getCarModelsByBrand, createCar } from '@/lib/actions/car.actions'
 import type AddCarData from '@/lib/interfaces/add-car-data'
 
+const resizeImage = (file: File, maxWidth = 800, maxHeight = 600, quality = 0.8): Promise<File> => {
+  return new Promise((resolve, reject) => {
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')
+    const img = new Image()
+
+    if (!ctx) {
+      reject(new Error('Could not get canvas context'))
+      return
+    }
+
+    img.onload = () => {
+      // Calculate new dimensions maintaining aspect ratio
+      let { width, height } = img
+
+      if (width > height) {
+        if (width > maxWidth) {
+          height = (height * maxWidth) / width
+          width = maxWidth
+        }
+      } else {
+        if (height > maxHeight) {
+          width = (width * maxHeight) / height
+          height = maxHeight
+        }
+      }
+
+      canvas.width = width
+      canvas.height = height
+
+      // Draw and resize
+      ctx.drawImage(img, 0, 0, width, height)
+
+      canvas.toBlob(
+        (blob) => {
+          if (blob) {
+            const resizedFile = new File([blob], file.name, {
+              type: file.type,
+              lastModified: Date.now(),
+            })
+            resolve(resizedFile)
+          } else {
+            reject(new Error('Failed to create resized image blob'))
+          }
+        },
+        file.type,
+        quality
+      )
+    }
+
+    img.onerror = () => {
+      reject(new Error('Failed to load image'))
+    }
+
+    img.src = URL.createObjectURL(file)
+  })
+}
+
 async function uploadImageToServer(file: File) {
   const formData = new FormData()
   formData.append('file', file)
@@ -105,7 +163,7 @@ export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
     })
   }
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
       // Validate file type
@@ -114,26 +172,40 @@ export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
         return
       }
 
-      // Validate file size (e.g., 5MB limit)
-      if (file.size > 5 * 1024 * 1024) {
-        setErrors((prev) => ({ ...prev, image: ['Image size must be less than 5MB'] }))
-        return
+      // Show original file size
+      console.log(`Original file size: ${(file.size / 1024 / 1024).toFixed(2)} MB`)
+
+      try {
+        // Resize the image
+        const resizedFile = await resizeImage(file, 800, 600, 0.8) // Max 800x600, 80% quality
+
+        console.log(`Resized file size: ${(resizedFile.size / 1024 / 1024).toFixed(2)} MB`)
+
+        // Check resized file size (should be much smaller now)
+        if (resizedFile.size > 2 * 1024 * 1024) {
+          // 2MB limit after resize
+          setErrors((prev) => ({ ...prev, image: ['Image is still too large after compression'] }))
+          return
+        }
+
+        setSelectedImage(resizedFile)
+
+        // Create preview from resized image
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          setImagePreview(e.target?.result as string)
+        }
+        reader.readAsDataURL(resizedFile)
+
+        // Clear any previous image errors
+        setErrors((prev) => {
+          const { image, ...rest } = prev
+          return rest
+        })
+      } catch (error: any) {
+        console.error('Image resize error:', error)
+        setErrors((prev) => ({ ...prev, image: ['Failed to process image. Please try another image.'] }))
       }
-
-      setSelectedImage(file)
-
-      // Create preview
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        setImagePreview(e.target?.result as string)
-      }
-      reader.readAsDataURL(file)
-
-      // Clear any previous image errors
-      setErrors((prev) => {
-        const { image, ...rest } = prev
-        return rest
-      })
     }
   }
 
