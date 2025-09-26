@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Clock, Home, Settings, Users, FileText, BarChart3 } from 'lucide-react'
 import { OpeningHours } from './opening-hours'
-import { getCarsCount } from '@/lib/actions/car.actions'
+import { getCarsCount, getCarsTotalPrice } from '@/lib/actions/car.actions'
 
 type ActiveSection = 'overview' | 'opening-hours' | 'settings' | 'users' | 'content' | 'analytics'
 
@@ -14,12 +14,19 @@ export const WebsiteAdmin = () => {
   const t = useTranslations('MyWebsite')
   const [activeSection, setActiveSection] = useState<ActiveSection>('overview')
   const [carsCount, setCarsCount] = useState<number | null>(null)
+  const [carsTotalPrice, setCarsTotalPrice] = useState<number | null>(null)
 
   useEffect(() => {
-    // fetch car count on mount
-    getCarsCount()
-      .then(setCarsCount)
-      .catch(() => setCarsCount(0))
+    // fetch both count + total price on mount
+    Promise.all([getCarsCount(), getCarsTotalPrice()])
+      .then(([count, totalPrice]) => {
+        setCarsCount(count)
+        setCarsTotalPrice(totalPrice)
+      })
+      .catch(() => {
+        setCarsCount(0)
+        setCarsTotalPrice(0)
+      })
   }, [])
 
   const navigationItems = [
@@ -84,7 +91,9 @@ export const WebsiteAdmin = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold text-purple-600">{carsCount !== null ? carsCount : '...'}</div>
-                    <p className="text-sm text-muted-foreground">Total cars currently available on the website</p>
+                    <p className="text-sm text-muted-foreground mb-4">Total cars currently available on the website</p>
+                    <div className="text-l font-bold text-purple-600">{carsTotalPrice !== null ? `${carsTotalPrice.toLocaleString()} €` : '...'}</div>
+                    <p className="text-xs text-muted-foreground">Total value of all cars</p>
                   </CardContent>
                 </Card>
 

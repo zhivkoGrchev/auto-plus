@@ -233,3 +233,19 @@ export async function getCarsCount(): Promise<number> {
   }
 }
 
+export async function getCarsTotalPrice(): Promise<number> {
+  try {
+    const result = await prisma.car.aggregate({
+      _sum: {
+        price: true,
+      },
+    })
+
+    return result._sum.price ?? 0
+  } catch (error) {
+    console.error('Error calculating total car price:', error)
+    throw error
+  } finally {
+    await prisma.$disconnect()
+  }
+}
