@@ -1,17 +1,26 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Clock, Home, Settings, Users, FileText, BarChart3 } from 'lucide-react'
 import { OpeningHours } from './opening-hours'
+import { getCarsCount } from '@/lib/actions/car.actions'
 
 type ActiveSection = 'overview' | 'opening-hours' | 'settings' | 'users' | 'content' | 'analytics'
 
 export const WebsiteAdmin = () => {
   const t = useTranslations('MyWebsite')
   const [activeSection, setActiveSection] = useState<ActiveSection>('overview')
+  const [carsCount, setCarsCount] = useState<number | null>(null)
+
+  useEffect(() => {
+    // fetch car count on mount
+    getCarsCount()
+      .then(setCarsCount)
+      .catch(() => setCarsCount(0))
+  }, [])
 
   const navigationItems = [
     {
@@ -71,11 +80,11 @@ export const WebsiteAdmin = () => {
 
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Mode</CardTitle>
+                    <CardTitle className="text-sm font-medium">Cars Listed</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-blue-600">Development</div>
-                    <p className="text-sm text-muted-foreground">{t('developerMode')}</p>
+                    <div className="text-2xl font-bold text-purple-600">{carsCount !== null ? carsCount : '...'}</div>
+                    <p className="text-sm text-muted-foreground">Total cars currently available on the website</p>
                   </CardContent>
                 </Card>
 

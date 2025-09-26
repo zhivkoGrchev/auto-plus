@@ -221,3 +221,15 @@ export async function getCarById(id: string): Promise<CarExtended | null> {
     await prisma.$disconnect()
   }
 }
+
+export async function getCarsCount(): Promise<number> {
+  try {
+    return await prisma.car.count()
+  } catch (error) {
+    console.error('Error counting cars:', error)
+    throw error
+  } finally {
+    await prisma.$disconnect()
+  }
+}
+
