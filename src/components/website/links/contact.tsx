@@ -1,5 +1,3 @@
-import React from 'react'
-
 function Contact() {
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -13,14 +11,6 @@ function Contact() {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <div>
-                  <p className="font-medium">Adresse</p>
-                  <p className="text-cyan-50">Autohaus Plus</p>
-                  <p className="text-cyan-50">Hauptstraße 123, 12345 Berlin, Germany</p>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-3">
-                <div>
                   <p className="font-medium">Telefon</p>
                   <p className="text-cyan-50">+49 123 456 789</p>
                 </div>
@@ -31,24 +21,6 @@ function Contact() {
                   <p className="font-medium">E-mail</p>
                   <p className="text-cyan-50">info@autohaus-plus.de</p>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Öffnungszeiten</h3>
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span>Montag - Freitag:</span>
-                <span>09:00 - 18:00 Uhr</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Samstag:</span>
-                <span>09:00 - 12:00 Uhr</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Sonntag und Feiertage</span>
-                <span>Geschlossen</span>
               </div>
             </div>
           </div>

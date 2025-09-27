@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -8,25 +8,12 @@ import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Clock, Plus, Trash2 } from 'lucide-react'
+import { saveOpeningHours, getOpeningHours } from '@/lib/actions/opening-hours.actions'
+import type { OpeningHoursData } from '@/lib/interfaces/opening-hours'
 
 interface TimeSlot {
   open: string
   close: string
-}
-
-interface DaySchedule {
-  isOpen: boolean
-  slots: TimeSlot[]
-}
-
-interface OpeningHours {
-  monday: DaySchedule
-  tuesday: DaySchedule
-  wednesday: DaySchedule
-  thursday: DaySchedule
-  friday: DaySchedule
-  saturday: DaySchedule
-  sunday: DaySchedule
 }
 
 const DAYS = [
@@ -42,90 +29,144 @@ const DAYS = [
 export const OpeningHours = () => {
   const t = useTranslations('MyWebsite')
 
-  const [openingHours, setOpeningHours] = useState<OpeningHours>({
-    monday: { isOpen: true, slots: [{ open: '09:00', close: '17:00' }] },
-    tuesday: { isOpen: true, slots: [{ open: '09:00', close: '17:00' }] },
-    wednesday: { isOpen: true, slots: [{ open: '09:00', close: '17:00' }] },
-    thursday: { isOpen: true, slots: [{ open: '09:00', close: '17:00' }] },
-    friday: { isOpen: true, slots: [{ open: '09:00', close: '17:00' }] },
-    saturday: { isOpen: true, slots: [{ open: '10:00', close: '16:00' }] },
-    sunday: { isOpen: false, slots: [] },
-  })
+  const [openingHours, setOpeningHours] = useState<OpeningHoursData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
 
-  const updateDayStatus = (day: keyof OpeningHours, isOpen: boolean) => {
-    setOpeningHours((prev) => ({
-      ...prev,
-      [day]: {
-        ...prev[day],
-        isOpen,
-        slots: isOpen && prev[day].slots.length === 0 ? [{ open: '09:00', close: '17:00' }] : prev[day].slots,
-      },
-    }))
+  // Load opening hours from database on component mount
+  useEffect(() => {
+    const loadOpeningHours = async () => {
+      try {
+        const data = await getOpeningHours()
+        setOpeningHours(data)
+      } catch (error) {
+        console.error('Failed to load opening hours:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadOpeningHours()
+  }, [])
+
+  const updateDayStatus = (day: keyof OpeningHoursData, isOpen: boolean) => {
+    if (!openingHours) return
+
+    setOpeningHours((prev) => {
+      if (!prev) return prev
+      return {
+        ...prev,
+        [day]: {
+          ...prev[day],
+          isOpen,
+          slots: isOpen && prev[day].slots.length === 0 ? [{ open: '09:00', close: '17:00' }] : prev[day].slots,
+        },
+      }
+    })
   }
 
-  const updateTimeSlot = (day: keyof OpeningHours, slotIndex: number, field: 'open' | 'close', value: string) => {
-    setOpeningHours((prev) => ({
-      ...prev,
-      [day]: {
-        ...prev[day],
-        slots: prev[day].slots.map((slot, index) => (index === slotIndex ? { ...slot, [field]: value } : slot)),
-      },
-    }))
+  const updateTimeSlot = (day: keyof OpeningHoursData, slotIndex: number, field: 'open' | 'close', value: string) => {
+    if (!openingHours) return
+
+    setOpeningHours((prev) => {
+      if (!prev) return prev
+      return {
+        ...prev,
+        [day]: {
+          ...prev[day],
+          slots: prev[day].slots.map((slot, index) => (index === slotIndex ? { ...slot, [field]: value } : slot)),
+        },
+      }
+    })
   }
 
-  const addTimeSlot = (day: keyof OpeningHours) => {
-    setOpeningHours((prev) => ({
-      ...prev,
-      [day]: {
-        ...prev[day],
-        slots: [...prev[day].slots, { open: '09:00', close: '17:00' }],
-      },
-    }))
+  const addTimeSlot = (day: keyof OpeningHoursData) => {
+    if (!openingHours) return
+
+    setOpeningHours((prev) => {
+      if (!prev) return prev
+      return {
+        ...prev,
+        [day]: {
+          ...prev[day],
+          slots: [...prev[day].slots, { open: '09:00', close: '17:00' }],
+        },
+      }
+    })
   }
 
-  const removeTimeSlot = (day: keyof OpeningHours, slotIndex: number) => {
-    setOpeningHours((prev) => ({
-      ...prev,
-      [day]: {
-        ...prev[day],
-        slots: prev[day].slots.filter((_, index) => index !== slotIndex),
-      },
-    }))
+  const removeTimeSlot = (day: keyof OpeningHoursData, slotIndex: number) => {
+    if (!openingHours) return
+
+    setOpeningHours((prev) => {
+      if (!prev) return prev
+      return {
+        ...prev,
+        [day]: {
+          ...prev[day],
+          slots: prev[day].slots.filter((_, index) => index !== slotIndex),
+        },
+      }
+    })
   }
 
-  const copyFromPreviousDay = (day: keyof OpeningHours) => {
+  const copyFromPreviousDay = (day: keyof OpeningHoursData) => {
+    if (!openingHours) return
+
     const dayIndex = DAYS.findIndex((d) => d.key === day)
     if (dayIndex > 0) {
-      const previousDay = DAYS[dayIndex - 1].key as keyof OpeningHours
-      setOpeningHours((prev) => ({
-        ...prev,
-        [day]: { ...prev[previousDay] },
-      }))
+      const previousDay = DAYS[dayIndex - 1].key as keyof OpeningHoursData
+      setOpeningHours((prev) => {
+        if (!prev) return prev
+        return {
+          ...prev,
+          [day]: { ...prev[previousDay] },
+        }
+      })
     }
   }
 
-  const handleSaveOpeningHours = () => {
-    console.log('Opening Hours:', openingHours)
+  const handleSaveOpeningHours = async () => {
+    if (!openingHours) return
 
-    // Convert to your desired format
-    const formattedHours = Object.entries(openingHours).reduce(
-      (acc, [day, schedule]) => {
-        if (schedule.isOpen) {
-          acc[day] = schedule.slots.map((slot: TimeSlot) => `${slot.open}-${slot.close}`).join(', ')
-        } else {
-          acc[day] = 'Closed'
-        }
-        return acc
-      },
-      {} as Record<string, string>
+    setSaving(true)
+    try {
+      const result = await saveOpeningHours(openingHours)
+
+      if (result.success) {
+        alert('Opening hours saved successfully!')
+      } else {
+        alert(result.errors?.form?.[0] || 'Failed to save opening hours')
+      }
+    } catch (error) {
+      console.error('Error saving opening hours:', error)
+      alert('Failed to save opening hours')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  // Loading state
+  if (loading) {
+    return (
+      <Card className="w-full max-w-2xl mx-auto">
+        <CardContent className="flex justify-center items-center p-8">
+          <Clock className="h-6 w-6 animate-spin mr-2" />
+          Loading opening hours...
+        </CardContent>
+      </Card>
     )
+  }
 
-    console.log('Formatted Hours:', formattedHours)
-
-    // Here you can call your API to save the opening hours
-    // Example: await saveOpeningHours(formattedHours);
-
-    alert('Opening hours saved! Check console for output.')
+  // Error state
+  if (!openingHours) {
+    return (
+      <Card className="w-full max-w-2xl mx-auto">
+        <CardContent className="p-8">
+          <p className="text-center text-red-600">Failed to load opening hours</p>
+        </CardContent>
+      </Card>
+    )
   }
 
   return (
@@ -141,7 +182,7 @@ export const OpeningHours = () => {
         <CardContent>
           <div className="space-y-6">
             {DAYS.map(({ key, label }) => {
-              const daySchedule = openingHours[key as keyof OpeningHours]
+              const daySchedule = openingHours[key as keyof OpeningHoursData]
 
               return (
                 <div key={key} className="space-y-3">
@@ -150,7 +191,7 @@ export const OpeningHours = () => {
                       <Checkbox
                         id={`${key}-open`}
                         checked={daySchedule.isOpen}
-                        onCheckedChange={(checked) => updateDayStatus(key as keyof OpeningHours, !!checked)}
+                        onCheckedChange={(checked) => updateDayStatus(key as keyof OpeningHoursData, !!checked)}
                       />
                       <Label htmlFor={`${key}-open`} className="text-sm font-medium min-w-[80px]">
                         {label}
@@ -162,7 +203,7 @@ export const OpeningHours = () => {
                         type="button"
                         variant="ghost"
                         size="sm"
-                        onClick={() => copyFromPreviousDay(key as keyof OpeningHours)}
+                        onClick={() => copyFromPreviousDay(key as keyof OpeningHoursData)}
                         className="text-xs"
                         disabled={key === 'monday'}
                       >
@@ -179,14 +220,14 @@ export const OpeningHours = () => {
                             <Input
                               type="time"
                               value={slot.open}
-                              onChange={(e) => updateTimeSlot(key as keyof OpeningHours, slotIndex, 'open', e.target.value)}
+                              onChange={(e) => updateTimeSlot(key as keyof OpeningHoursData, slotIndex, 'open', e.target.value)}
                               className="w-24"
                             />
                             <span className="text-sm text-gray-500">to</span>
                             <Input
                               type="time"
                               value={slot.close}
-                              onChange={(e) => updateTimeSlot(key as keyof OpeningHours, slotIndex, 'close', e.target.value)}
+                              onChange={(e) => updateTimeSlot(key as keyof OpeningHoursData, slotIndex, 'close', e.target.value)}
                               className="w-24"
                             />
                           </div>
@@ -195,7 +236,7 @@ export const OpeningHours = () => {
                             type="button"
                             variant="ghost"
                             size="sm"
-                            onClick={() => removeTimeSlot(key as keyof OpeningHours, slotIndex)}
+                            onClick={() => removeTimeSlot(key as keyof OpeningHoursData, slotIndex)}
                             disabled={daySchedule.slots.length === 1}
                             className="p-1 h-8 w-8"
                           >
@@ -208,7 +249,7 @@ export const OpeningHours = () => {
                         type="button"
                         variant="outline"
                         size="sm"
-                        onClick={() => addTimeSlot(key as keyof OpeningHours)}
+                        onClick={() => addTimeSlot(key as keyof OpeningHoursData)}
                         className="flex items-center gap-1 text-xs"
                       >
                         <Plus className="h-3 w-3" />
@@ -223,18 +264,25 @@ export const OpeningHours = () => {
             })}
 
             <div className="flex justify-end pt-4">
-              <Button onClick={handleSaveOpeningHours} className="px-8">
-                Save Opening Hours
+              <Button onClick={handleSaveOpeningHours} disabled={saving} className="px-8">
+                {saving ? (
+                  <>
+                    <Clock className="h-4 w-4 animate-spin mr-2" />
+                    Saving...
+                  </>
+                ) : (
+                  'Save Opening Hours'
+                )}
               </Button>
             </div>
           </div>
 
           {/* Preview Section */}
-          <div className="mt-6 p-4 bg-gray-50 dark:bg-cyan-900 rounded-lg">
+          <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
             <h3 className="font-medium mb-3">Preview:</h3>
             <div className="space-y-1 text-sm">
               {DAYS.map(({ key, label }) => {
-                const daySchedule = openingHours[key as keyof OpeningHours]
+                const daySchedule = openingHours[key as keyof OpeningHoursData]
                 return (
                   <div key={key} className="flex justify-between">
                     <span className="font-medium">{label}:</span>

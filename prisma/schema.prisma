@@ -140,3 +140,26 @@ model Profile {
 
   @@map("profile")
 }
+
+model OpeningHours {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  // Store as JSON for flexibility - each day can have multiple time slots
+  
+  monday    Json?    // Example: [{"open":"09:00","close":"17:00"},{"open":"19:00","close":"22:00"}] or null if closed
+  tuesday   Json?
+  wednesday Json?
+  thursday  Json?
+  friday    Json?
+  saturday  Json?
+  sunday    Json?
+  
+  // Metadata
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // If you want to support multiple locations/businesses in the future:
+  // businessName String @default("Main Location")
+  
+  @@map("opening_hours")
+}

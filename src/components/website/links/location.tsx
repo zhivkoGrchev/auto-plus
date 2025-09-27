@@ -22,19 +22,6 @@ function Location() {
             <p className="text-gray-50">Hauptstraße 123</p>
             <p className="text-gray-50">12345 Berlin, Germany</p>
           </div>
-
-          <div>
-            <h3 className="text-xl font-semibold mb-2">Kontact</h3>
-            <p className="text-gray-50">+49 123 456 789</p>
-            <p className="text-gray-50">info@autohaus-plus.de</p>
-          </div>
-
-          <div>
-            <h3 className="text-xl font-semibold mb-2">Öffnungszeiten</h3>
-            <p className="text-gray-50">Montag - Freitag: 09:00 - 18:00 Uhr</p>
-            <p className="text-gray-50">Samstag: 09:00 - 12:00 Uhr</p>
-            <p className="text-gray-50">Sonntag und Feiertage Geschlossen, oder nach Vereinbarung.</p>
-          </div>
         </div>
 
         {/* Map */}
