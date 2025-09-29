@@ -221,3 +221,31 @@ export async function getCarById(id: string): Promise<CarExtended | null> {
     await prisma.$disconnect()
   }
 }
+
+export async function getCarsCount(): Promise<number> {
+  try {
+    return await prisma.car.count()
+  } catch (error) {
+    console.error('Error counting cars:', error)
+    throw error
+  } finally {
+    await prisma.$disconnect()
+  }
+}
+
+export async function getCarsTotalPrice(): Promise<number> {
+  try {
+    const result = await prisma.car.aggregate({
+      _sum: {
+        price: true,
+      },
+    })
+
+    return result._sum.price ?? 0
+  } catch (error) {
+    console.error('Error calculating total car price:', error)
+    throw error
+  } finally {
+    await prisma.$disconnect()
+  }
+}

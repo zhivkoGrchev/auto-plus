@@ -1,17 +1,33 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Clock, Home, Settings, Users, FileText, BarChart3 } from 'lucide-react'
 import { OpeningHours } from './opening-hours'
+import { getCarsCount, getCarsTotalPrice } from '@/lib/actions/car.actions'
 
 type ActiveSection = 'overview' | 'opening-hours' | 'settings' | 'users' | 'content' | 'analytics'
 
 export const WebsiteAdmin = () => {
   const t = useTranslations('MyWebsite')
   const [activeSection, setActiveSection] = useState<ActiveSection>('overview')
+  const [carsCount, setCarsCount] = useState<number | null>(null)
+  const [carsTotalPrice, setCarsTotalPrice] = useState<number | null>(null)
+
+  useEffect(() => {
+    // fetch both count + total price on mount
+    Promise.all([getCarsCount(), getCarsTotalPrice()])
+      .then(([count, totalPrice]) => {
+        setCarsCount(count)
+        setCarsTotalPrice(totalPrice)
+      })
+      .catch(() => {
+        setCarsCount(0)
+        setCarsTotalPrice(0)
+      })
+  }, [])
 
   const navigationItems = [
     {
@@ -71,11 +87,13 @@ export const WebsiteAdmin = () => {
 
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Mode</CardTitle>
+                    <CardTitle className="text-sm font-medium">Cars Listed</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-blue-600">Development</div>
-                    <p className="text-sm text-muted-foreground">{t('developerMode')}</p>
+                    <div className="text-2xl font-bold text-purple-600">{carsCount !== null ? carsCount : '...'}</div>
+                    <p className="text-sm text-muted-foreground mb-4">Total cars currently available on the website</p>
+                    <div className="text-l font-bold text-purple-600">{carsTotalPrice !== null ? `${carsTotalPrice.toLocaleString()} €` : '...'}</div>
+                    <p className="text-xs text-muted-foreground">Total value of all cars</p>
                   </CardContent>
                 </Card>
 
