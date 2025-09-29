@@ -2,7 +2,7 @@
 
 import type { ColumnDef } from '@tanstack/react-table'
 import type { CarExtended } from '@/lib/interfaces/car-extended'
-import { Checkbox } from '@/components/ui/checkbox'
+import { Switch } from '@/components/ui/switch'
 import { ArrowUpDown } from 'lucide-react'
 import { MoreHorizontal } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -19,14 +19,13 @@ import {
 export const columns = (handleDelete: (id: string) => void): ColumnDef<CarExtended>[] => [
   {
     id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
+    header: () => (
+      <div className="py-2">
+        List on
+        <br /> Website
+      </div>
     ),
-    cell: ({ row }) => <Checkbox checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} aria-label="Select row" />,
+    cell: ({ row }) => <Switch checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} aria-label="Select row" />,
     enableSorting: false,
     enableHiding: false,
   },
