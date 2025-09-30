@@ -12,6 +12,9 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { getCarBrands, getCarModelsByBrand, createCar } from '@/lib/actions/car.actions'
 import type AddCarData from '@/lib/interfaces/add-car-data'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { COLORS } from '@/lib/constants/colors'
+import { LuChevronDown } from 'react-icons/lu'
 
 const resizeImage = (file: File, maxWidth = 800, maxHeight = 600, quality = 0.8): Promise<File> => {
   return new Promise((resolve, reject) => {
@@ -202,7 +205,7 @@ export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
           const { image, ...rest } = prev
           return rest
         })
-      } catch (error: any) {
+      } catch (error) {
         console.error('Image resize error:', error)
         setErrors((prev) => ({ ...prev, image: ['Failed to process image. Please try another image.'] }))
       }
@@ -254,8 +257,9 @@ export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
               setErrors(createResult.errors || {})
             }
           })
-        } catch (err: any) {
-          setErrors((prev) => ({ ...prev, image: [err.message] }))
+        } catch (error) {
+          const e = error as Error
+          setErrors((prev) => ({ ...prev, image: [e.message] }))
           return
         }
       } else {
@@ -415,7 +419,6 @@ export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
             <Input
               id="cubicCapacity"
               name="cubicCapacity"
-              type="number"
               value={carData.cubicCapacity === 0 ? '' : carData.cubicCapacity}
               onChange={handleInputChange}
               placeholder="e.g. 2000"
@@ -439,7 +442,23 @@ export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
             <Label className="mx-2" htmlFor="color">
               {t('color')}
             </Label>
-            <Input className="w-full" id="color" name="color" value={carData.color} onChange={handleInputChange} />
+            <div className="flex gap-2">
+              <Input className="grow" id="color" name="color" value={carData.color} onChange={handleInputChange} />
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline">
+                    <LuChevronDown />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="flex justify-center flex-wrap gap-2" align="end">
+                  {COLORS.map((value) => (
+                    <Button key={value.hex} style={{ background: value.hex }} onClick={() => setCarData((prev) => ({ ...prev, color: value.name }))}>
+                      &nbsp;
+                    </Button>
+                  ))}
+                </PopoverContent>
+              </Popover>
+            </div>
             {getFieldError('color') && <sub className="mx-2 text-red-600">{getFieldError('color')}</sub>}
           </fieldset>
           <fieldset className="flex flex-col gap-2">
