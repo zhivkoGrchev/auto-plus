@@ -1,6 +1,6 @@
 'use client'
 
-import { type ChangeEvent, type MouseEvent, useState, useTransition } from 'react'
+import { type ChangeEvent, type MouseEvent, useState, useTransition, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { FaCheck, FaImage, FaPlus, FaSpinner, FaTrash } from 'react-icons/fa'
 import { FuelType, Transmission } from '@prisma/client'
@@ -10,8 +10,9 @@ import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { getCarBrands, getCarModelsByBrand, createCar } from '@/lib/actions/car.actions'
+import { getCarBrands, getCarModelsByBrand, createCar, updateCar } from '@/lib/actions/car.actions'
 import type AddCarData from '@/lib/interfaces/add-car-data'
+import type { CarExtended } from '@/lib/interfaces/car-extended'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { COLORS } from '@/lib/constants/colors'
 import { LuChevronDown } from 'react-icons/lu'
@@ -87,7 +88,10 @@ async function uploadImageToServer(file: File) {
 }
 
 type AddCarDialogProps = {
+  mode?: 'add' | 'edit'
+  car?: CarExtended | null
   onCarAdded?: () => Promise<void>
+  onSuccess?: () => Promise<void>
 }
 
 const initialData: AddCarData = {
@@ -111,7 +115,7 @@ const initialData: AddCarData = {
   listedOnWebsite: false,
 }
 
-export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
+export const AddCarDialog = ({ mode = 'add', car = null, onCarAdded, onSuccess }: AddCarDialogProps) => {
   const [carData, setCarData] = useState<AddCarData>(initialData)
   const [errors, setErrors] = useState<Record<string, string[]>>({})
   const [isPendingSubmit, startTransitionSubmit] = useTransition()
@@ -122,6 +126,40 @@ export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string>('')
   const t = useTranslations('AddCarDialog')
+
+  // Initialize form data when editing
+  useEffect(() => {
+    if (mode === 'edit' && car) {
+      setIsOpen(true)
+
+      if (isOpen) {
+        setCarData({
+          brandId: car.brandId,
+          modelId: car.modelId,
+          year: car.year,
+          color: car.color,
+          transmission: car.transmission,
+          powerKW: car.powerKW,
+          powerPS: car.powerPS,
+          cubicCapacity: car.cubicCapacity,
+          fuelType: car.fuelType,
+          mileage: car.mileage,
+          vin: car.vin || '',
+          price: car.price,
+          description: car.description || '',
+          brands: [],
+          models: [],
+          imageHash: car.imageHash || '',
+          imageUrl: car.imageUrl || '',
+          listedOnWebsite: car.listedOnWebsite,
+        })
+
+        if (car.imageUrl) {
+          setImagePreview(car.imageUrl)
+        }
+      }
+    }
+  }, [mode, car, isOpen])
 
   const handleOpenBrands = (isOpen: boolean) =>
     isOpen &&
@@ -247,15 +285,15 @@ export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
             }
 
             // Now submit the car AFTER image upload
-            const createResult = await createCar(finalCarData)
-            if (createResult.success) {
+            const result = mode === 'edit' && car ? await updateCar(car.id, finalCarData) : await createCar(finalCarData)
+            if (result.success) {
               setCarData(initialData)
               setSelectedImage(null)
               setImagePreview('')
-              onCarAdded?.()
+              onSuccess ? onSuccess() : onCarAdded?.()
               setIsOpen(false)
             } else {
-              setErrors(createResult.errors || {})
+              setErrors(result.errors || {})
             }
           })
         } catch (error) {
@@ -265,13 +303,13 @@ export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
         }
       } else {
         // No image selected, submit immediately
-        const createResult = await createCar(finalCarData)
-        if (createResult.success) {
+        const result = mode === 'edit' && car ? await updateCar(car.id, finalCarData) : await createCar(finalCarData)
+        if (result.success) {
           setCarData(initialData)
-          onCarAdded?.()
+          onSuccess ? onSuccess() : onCarAdded?.()
           setIsOpen(false)
         } else {
-          setErrors(createResult.errors || {})
+          setErrors(result.errors || {})
         }
       }
     })
@@ -293,8 +331,8 @@ export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
       </div>
       <DialogContent className="sm:max-w-[640px]">
         <DialogHeader>
-          <DialogTitle>{t('title')}</DialogTitle>
-          <DialogDescription>{t('description')}</DialogDescription>
+          <DialogTitle>{mode === 'edit' ? 'Edit Car' : t('title')}</DialogTitle>
+          <DialogDescription>{mode === 'edit' ? 'Update car information' : t('description')}</DialogDescription>
         </DialogHeader>
         <div className="flex flex-col items-center mb-6">
           {imagePreview ? (
@@ -559,7 +597,7 @@ export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
         <DialogFooter>
           <Button type="button" onClick={handleSubmit} disabled={isPendingSubmit || isPendingImage}>
             {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaCheck />}
-            {isPendingImage ? 'Uploading...' : t('save')}
+            {isPendingImage ? 'Uploading...' : mode === 'edit' ? 'Update' : t('save')}
           </Button>
         </DialogFooter>
       </DialogContent>

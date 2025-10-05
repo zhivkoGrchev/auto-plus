@@ -271,3 +271,46 @@ export async function toggleCarListing(
     await prisma.$disconnect()
   }
 }
+
+export async function updateCar(
+  carId: string,
+  carData: Partial<AddCarData>
+): Promise<{ success: boolean; errors?: Record<string, string[]> }> {
+  try {
+    const schema = await createInsertCarSchema()
+    const parsedData = schema.partial().parse(carData)
+
+    await prisma.car.update({
+      where: { id: carId },
+      data: {
+        ...parsedData,
+        updatedAt: new Date(),
+      },
+    })
+
+    return { success: true }
+  } catch (error) {
+    console.error('Error updating car:', error)
+    if (error instanceof ZodError) {
+      const formattedErrors: Record<string, string[]> = {}
+
+      for (const err of error.errors) {
+        const field = err.path.join('.') || 'form'
+        if (!formattedErrors[field]) {
+          formattedErrors[field] = []
+        }
+        formattedErrors[field].push(err.message)
+      }
+
+      return { success: false, errors: formattedErrors }
+    }
+
+    return {
+      success: false,
+      errors: { form: ['Failed to update car. Please try again.'] },
+    }
+  } finally {
+    await prisma.$disconnect()
+  }
+}
+

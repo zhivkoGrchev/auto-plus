@@ -16,7 +16,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-export const columns = (handleDelete: (id: string) => void, handleToggleListing: (id: string, value: boolean) => Promise<void>): ColumnDef<CarExtended>[] => [
+export const columns = (
+  handleDelete: (id: string) => void,
+  handleToggleListing: (id: string, value: boolean) => Promise<void>,
+  handleEdit: (car: CarExtended) => void
+): ColumnDef<CarExtended>[] => [
   {
     id: 'listOnWebsite',
     header: () => (
@@ -134,7 +138,7 @@ export const columns = (handleDelete: (id: string) => void, handleToggleListing:
               <Link href={`/cars/${car.id}`}>Details</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Edit</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleEdit(row.original)}>Edit</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => handleDelete(car.id)}>Delete</DropdownMenuItem>
           </DropdownMenuContent>

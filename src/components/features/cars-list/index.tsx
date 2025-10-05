@@ -11,6 +11,7 @@ import { AddCarDialog } from './add-car-dialog'
 export const CarsList = () => {
   const [cars, setCars] = useState<CarExtended[]>([])
   const [loading, setLoading] = useState(true)
+  const [editingCar, setEditingCar] = useState<CarExtended | null>(null)
 
   const fetchCars = async () => {
     try {
@@ -47,6 +48,10 @@ export const CarsList = () => {
     }
   }
 
+  const handleEdit = (car: CarExtended) => {
+    setEditingCar(car)
+  }
+
   useEffect(() => {
     const fetchCars = async () => {
       try {
@@ -72,7 +77,18 @@ export const CarsList = () => {
   return (
     <div className="container mx-auto px-4">
       <AddCarDialog onCarAdded={fetchCars} />
-      <DataTable columns={columns(handleDelete, handleToggleListing)} data={cars} />
+      <DataTable columns={columns(handleDelete, handleToggleListing, handleEdit)} data={cars} />
+
+      {editingCar && (
+        <AddCarDialog
+          mode="edit"
+          car={editingCar}
+          onSuccess={async () => {
+            await fetchCars()
+            setEditingCar(null)
+          }}
+        />
+      )}
     </div>
   )
 }
