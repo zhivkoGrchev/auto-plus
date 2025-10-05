@@ -108,6 +108,7 @@ const initialData: AddCarData = {
   models: [],
   imageHash: '',
   imageUrl: '',
+  listedOnWebsite: false,
 }
 
 export const AddCarDialog = ({ onCarAdded }: AddCarDialogProps) => {
