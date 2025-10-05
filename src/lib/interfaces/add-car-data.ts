@@ -11,4 +11,5 @@ export default interface AddCarData extends Omit<Car, 'id' | 'createdAt' | 'upda
   models: CarModel[]
   imageHash: string
   imageUrl: string
+  listedOnWebsite: boolean
 }

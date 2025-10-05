@@ -249,3 +249,25 @@ export async function getCarsTotalPrice(): Promise<number> {
     await prisma.$disconnect()
   }
 }
+
+export async function toggleCarListing(
+  carId: string, 
+  isListed: boolean
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    await prisma.car.update({
+      where: { id: carId },
+      data: { 
+        listedOnWebsite: isListed,
+        updatedAt: new Date()
+      },
+    })
+
+    return { success: true }
+  } catch (error) {
+    console.error('Error toggling car listing:', error)
+    return { success: false, error: 'Failed to update listing status' }
+  } finally {
+    await prisma.$disconnect()
+  }
+}
