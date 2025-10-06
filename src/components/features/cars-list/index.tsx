@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { FaSpinner } from 'react-icons/fa'
-import { getAllCars, deleteCar } from '@/lib/actions/car.actions'
+import { getAllCars, deleteCar, toggleCarListing } from '@/lib/actions/car.actions'
 import type { CarExtended } from '@/lib/interfaces/car-extended'
 import { DataTable } from './data-table'
 import { columns } from './columns'
@@ -11,6 +11,7 @@ import { AddCarDialog } from './add-car-dialog'
 export const CarsList = () => {
   const [cars, setCars] = useState<CarExtended[]>([])
   const [loading, setLoading] = useState(true)
+  const [editingCar, setEditingCar] = useState<CarExtended | null>(null)
 
   const fetchCars = async () => {
     try {
@@ -31,6 +32,24 @@ export const CarsList = () => {
     } else {
       alert(result.errors?.form?.[0] ?? 'Failed to delete car.')
     }
+  }
+
+  const handleToggleListing = async (id: string, value: boolean) => {
+    // Optimistic update
+    setCars((prev) => prev.map((car) => (car.id === id ? { ...car, listedOnWebsite: value } : car)))
+
+    const result = await toggleCarListing(id, value)
+
+    if (!result.success) {
+      // Revert optimistic update on error
+      setCars((prev) => prev.map((car) => (car.id === id ? { ...car, listedOnWebsite: !value } : car)))
+
+      alert(result.error || 'Failed to update listing status')
+    }
+  }
+
+  const handleEdit = (car: CarExtended) => {
+    setEditingCar(car)
   }
 
   useEffect(() => {
@@ -58,7 +77,18 @@ export const CarsList = () => {
   return (
     <div className="container mx-auto px-4">
       <AddCarDialog onCarAdded={fetchCars} />
-      <DataTable columns={columns(handleDelete)} data={cars} />
+      <DataTable columns={columns(handleDelete, handleToggleListing, handleEdit)} data={cars} />
+
+      {editingCar && (
+        <AddCarDialog
+          mode="edit"
+          car={editingCar}
+          onSuccess={async () => {
+            await fetchCars()
+            setEditingCar(null)
+          }}
+        />
+      )}
     </div>
   )
 }

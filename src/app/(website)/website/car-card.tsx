@@ -4,6 +4,9 @@ import { Button } from '@/components/ui/button'
 
 export const CarCard = async () => {
   const cars = await prisma.car.findMany({
+    where: {
+      listedOnWebsite: true,
+    },
     include: {
       brand: true,
       model: true,

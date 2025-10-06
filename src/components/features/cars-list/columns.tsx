@@ -16,16 +16,26 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-export const columns = (handleDelete: (id: string) => void): ColumnDef<CarExtended>[] => [
+export const columns = (
+  handleDelete: (id: string) => void,
+  handleToggleListing: (id: string, value: boolean) => Promise<void>,
+  handleEdit: (car: CarExtended) => void
+): ColumnDef<CarExtended>[] => [
   {
-    id: 'select',
+    id: 'listOnWebsite',
     header: () => (
       <div className="py-2">
         List on
         <br /> Website
       </div>
     ),
-    cell: ({ row }) => <Switch checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} aria-label="Select row" />,
+    cell: ({ row }) => (
+      <Switch
+        checked={row.original.listedOnWebsite}
+        onCheckedChange={(value) => handleToggleListing(row.original.id, value)}
+        aria-label="Toggle website listing"
+      />
+    ),
     enableSorting: false,
     enableHiding: false,
   },
@@ -128,7 +138,7 @@ export const columns = (handleDelete: (id: string) => void): ColumnDef<CarExtend
               <Link href={`/cars/${car.id}`}>Details</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Edit</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleEdit(row.original)}>Edit</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => handleDelete(car.id)}>Delete</DropdownMenuItem>
           </DropdownMenuContent>
