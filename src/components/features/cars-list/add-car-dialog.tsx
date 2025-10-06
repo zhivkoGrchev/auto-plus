@@ -112,8 +112,8 @@ const initialData: AddCarData = {
   description: '',
   brands: [],
   models: [],
-  imageHash: '',
-  imageUrl: '',
+  imageHash: null,
+  imageUrl: null,
   listedOnWebsite: false,
 }
 
@@ -152,8 +152,8 @@ export const AddCarDialog = ({ mode = 'add', car = null, profileId, onUpdate }: 
           description: car.description || '',
           brands: [],
           models: [],
-          imageHash: car.imageHash || '',
-          imageUrl: car.imageUrl || '',
+          imageHash: car.imageHash || null,
+          imageUrl: car.imageUrl || null,
           listedOnWebsite: car.listedOnWebsite,
         })
 
