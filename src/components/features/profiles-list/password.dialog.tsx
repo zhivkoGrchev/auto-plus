@@ -1,5 +1,7 @@
 import { ChangeEvent, MouseEvent, useState, useTransition } from 'react'
+import { useTranslations } from 'next-intl'
 import { FaCheck, FaSpinner } from 'react-icons/fa'
+import { LuKeyRound } from 'react-icons/lu'
 import { toast } from 'sonner'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Alert, AlertDescription } from '@/components/ui/alert'
@@ -24,6 +26,7 @@ export const PasswordDialog = ({ onUpdate }: PasswordDialogProps) => {
   const [formErrors, setFormErrors] = useState<Record<string, string[]>>({})
   const [isPendingSubmit, startTransitionSubmit] = useTransition()
   const schema = useChangePasswordSchema()
+  const t = useTranslations('ChangePasswordDialog')
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -69,12 +72,15 @@ export const PasswordDialog = ({ onUpdate }: PasswordDialogProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Change password</Button>
+        <Button>
+          <LuKeyRound />
+          {t('trigger')}
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Change password</DialogTitle>
-          <DialogDescription>Fill in the following fields to change your password</DialogDescription>
+          <DialogTitle>{t('title')}</DialogTitle>
+          <DialogDescription>{t('description')}</DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-4">
           {formErrors.form && (
@@ -88,12 +94,12 @@ export const PasswordDialog = ({ onUpdate }: PasswordDialogProps) => {
           )}
           <div className="grid grid-cols-[auto_1fr] gap-2">
             <Label className="self-center" htmlFor="currentPassword">
-              Current password
+              {t('currentPassword')}
             </Label>
             <Input id="currentPassword" name="currentPassword" type="password" value={formData.currentPassword} onChange={handleInputChange} />
             {formErrors['currentPassword'] && <span className="col-start-2 mx-2 text-xs text-red-600">{formErrors['currentPassword'][0]}</span>}
             <Label className="self-center" htmlFor="newPassword">
-              New password
+              {t('newPassword')}
             </Label>
             <Input id="newPassword" name="newPassword" type="password" value={formData.newPassword} onChange={handleInputChange} />
             {formErrors['newPassword'] && <span className="col-start-2 mx-2 text-xs text-red-600">{formErrors['newPassword'][0]}</span>}
@@ -101,7 +107,7 @@ export const PasswordDialog = ({ onUpdate }: PasswordDialogProps) => {
         </div>
         <DialogFooter>
           <Button onClick={handleSubmit} disabled={isPendingSubmit}>
-            {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaCheck />} Save
+            {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaCheck />} {t('save')}
           </Button>
         </DialogFooter>
       </DialogContent>

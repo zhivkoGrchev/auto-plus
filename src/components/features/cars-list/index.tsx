@@ -1,19 +1,42 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 import { FaSpinner } from 'react-icons/fa'
+import { getProfiles } from '@/lib/actions/profile.actions'
 import { getAllCars, deleteCar, toggleCarListing } from '@/lib/actions/car.actions'
+import type { Profile } from '@prisma/client'
 import type { CarExtended } from '@/lib/interfaces/car-extended'
+import { ProfileDialog } from '../profiles-list/profile.dialog'
+import { AddCarDialog } from './add-car-dialog'
 import { DataTable } from './data-table'
 import { columns } from './columns'
-import { AddCarDialog } from './add-car-dialog'
 
 export const CarsList = () => {
+  const [profiles, setProfiles] = useState<Profile[]>([])
   const [cars, setCars] = useState<CarExtended[]>([])
   const [loading, setLoading] = useState(true)
   const [editingCar, setEditingCar] = useState<CarExtended | null>(null)
 
+  const fetchProfiles = async () => {
+    setLoading(true)
+    try {
+      const { data, error } = await getProfiles()
+      if (error || !data.length) {
+        toast.error(error?.message || 'There are no profiles')
+        return
+      }
+      setProfiles(data)
+    } catch (error) {
+      const e = error as Error
+      console.error('Error fetching profiles:', e.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const fetchCars = async () => {
+    setLoading(true)
     try {
       const carsData = await getAllCars()
       setCars(carsData)
@@ -27,11 +50,11 @@ export const CarsList = () => {
   const handleDelete = async (id: string) => {
     if (!window.confirm('Are you sure you want to delete this car?')) return
     const result = await deleteCar(id)
-    if (result.success) {
-      setCars((prev) => prev.filter((car) => car.id !== id)) // remove deleted car
-    } else {
-      alert(result.errors?.form?.[0] ?? 'Failed to delete car.')
+    if (!result.success) {
+      toast.error(result.errors?.form?.[0] ?? 'Failed to delete car.')
+      return
     }
+    setCars((prev) => prev.filter((car) => car.id !== id))
   }
 
   const handleToggleListing = async (id: string, value: boolean) => {
@@ -53,17 +76,7 @@ export const CarsList = () => {
   }
 
   useEffect(() => {
-    const fetchCars = async () => {
-      try {
-        const carsData = await getAllCars()
-        setCars(carsData)
-      } catch (error) {
-        console.error('Error fetching cars:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
+    fetchProfiles()
     fetchCars()
   }, [])
 
@@ -75,15 +88,17 @@ export const CarsList = () => {
     )
 
   return (
-    <div className="container mx-auto px-4">
-      <AddCarDialog onCarAdded={fetchCars} />
+    <div className="container mx-auto px-4 flex flex-col gap-4">
+      <div className="flex justify-end gap-2">
+        {profiles.length ? null : <ProfileDialog />}
+        <AddCarDialog profileId={profiles?.[0]?.id} onUpdate={fetchCars} />
+      </div>
       <DataTable columns={columns(handleDelete, handleToggleListing, handleEdit)} data={cars} />
-
       {editingCar && (
         <AddCarDialog
           mode="edit"
           car={editingCar}
-          onSuccess={async () => {
+          onUpdate={async () => {
             await fetchCars()
             setEditingCar(null)
           }}

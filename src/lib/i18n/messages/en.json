@@ -1,4 +1,7 @@
 {
+  "Metadata": {
+    "description": "This is the best place for your Cars"
+  },
   "Hero": {
     "title": "The cloud platform for used car dealers & car parks",
     "description": "Manage your inventory, automate sales and increase your turnover. your turnover - all in one secure system.",
@@ -20,27 +23,6 @@
     "dark": "Dark",
     "system": "System"
   },
-  "SignInPage": {
-    "title": "Welcome back!",
-    "description": "Login with your Google Account",
-    "loginWithGoogleButton": "Sign in with Google",
-    "continue": "Or continue with",
-    "email": "E-Mail",
-    "password": "Password",
-    "loginButton": "Sign in with E-Mail",
-    "noAccount": "Don't have an account?",
-    "signUp": "Register now!"
-  },
-  "SignUpPage": {
-    "title": "Sign up",
-    "description": "Create your Account",
-    "name": "Name",
-    "email": "E-Mail",
-    "password": "Password",
-    "signUpButton": "Sign up",
-    "alreadyHaveAccount": "Already have an account?",
-    "signIn": "Sign in now!"
-  },
   "Footer": {
     "companyDescription": "The complete cloud solution for used car dealerships and vehicle parks.",
     "quickLinks": "Quick Links",
@@ -58,8 +40,62 @@
     "cloudDescription": "Securely deployed on AWS with 99.9% uptime",
     "allRightsReserved": "All rights reserved."
   },
-  "Metadata": {
-    "description": "This is the best place for your Cars"
+  "AdminPage": {
+    "myCars": "My Cars",
+    "myProfile": "My Profile",
+    "myWebsite": "My Website"
+  },
+  "SignInPage": {
+    "title": "Welcome back!",
+    "description": "Login with your Google Account",
+    "loginWithGoogleButton": "Sign in with Google",
+    "continue": "Or continue with",
+    "email": "E-Mail",
+    "password": "Password",
+    "loginButton": "Sign in with E-Mail",
+    "noAccount": "Don't have an account?",
+    "signUp": "Register now!"
+  },
+  "SignUpPage": {
+    "title": "Sign up",
+    "description": "Create your Account",
+    "logo": "Company logo",
+    "name": "Company name",
+    "email": "E-Mail",
+    "password": "Password",
+    "signUpButton": "Sign up",
+    "alreadyHaveAccount": "Already have an account?",
+    "signIn": "Sign in now!"
+  },
+  "EditUserDialog": {
+    "title": "Edit company data",
+    "description": "Fill in the fields that you want to change",
+    "trigger": "Edit company data",
+    "logo": "Company logo",
+    "name": "Company name",
+    "email": "E-Mail",
+    "password": "Password",
+    "save": "Save"
+  },
+  "ChangePasswordDialog": {
+    "title": "Change password",
+    "description": "Fill in the following fields to change your password",
+    "trigger": "Change password",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "save": "Save"
+  },
+  "ProfileDialog": {
+    "creationTitle": "Create new profile",
+    "editingTitle": "Edit profile",
+    "creationDescription": "Fill in all the fields",
+    "editingDescription": "Fill in the fields that you want to change",
+    "creationTrigger": "Create profile",
+    "editingTrigger": "Edit profile",
+    "slug": "Slug",
+    "address": "Address",
+    "phoneNumber": "Phone number",
+    "save": "Save"
   },
   "AddCarDialog": {
     "addCar": "Add Car",
@@ -96,11 +132,6 @@
     "created": "Created at",
     "backToList": "Back to list",
     "print": "Print"
-  },
-  "Dashboard": {
-    "myCars": "My Cars",
-    "myProfile": "My Profile",
-    "myWebsite": "My Website"
   },
   "MyWebsite": {
     "openWebsite": "Open my Website",

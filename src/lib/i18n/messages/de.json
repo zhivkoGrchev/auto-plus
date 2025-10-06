@@ -1,4 +1,7 @@
 {
+  "Metadata": {
+    "description": "Der beste Ort für Ihre Autos"
+  },
   "Hero": {
     "title": "Die Cloud-Plattform für Gebrauchtwagenhändler & Autoparks",
     "description": "Verwalten Sie Ihren Bestand, automatisieren Sie Verkäufe und steigern. Sie Ihren Umsatz - alles in einem sicheren System.",
@@ -20,27 +23,6 @@
     "dark": "Dunkel",
     "system": "Systemisch"
   },
-  "SignInPage": {
-    "title": "Willkommen zurück!",
-    "description": "Melden Sie sich mit Ihrem Google-Konto an",
-    "loginWithGoogleButton": "Mit Google anmelden",
-    "continue": "Oder weiter mit",
-    "email": "E-Mail",
-    "password": "Passwort",
-    "loginButton": "Mit E-Mail anmelden",
-    "noAccount": "Haben Sie kein Konto?",
-    "signUp": "Jetzt registrieren!"
-  },
-  "SignUpPage": {
-    "title": "Registrieren",
-    "description": "Erstellen Sie Ihr Konto",
-    "name": "Name",
-    "email": "E-Mail",
-    "password": "Passwort",
-    "signUpButton": "Registrieren",
-    "alreadyHaveAccount": "Haben Sie bereits ein Konto?",
-    "signIn": "Jetzt anmelden!"
-  },
   "Footer": {
     "companyDescription": "Die komplette Cloud-Lösung für Gebrauchtwagenhändler und Fahrzeugparks.",
     "quickLinks": "Schnellzugriff",
@@ -58,8 +40,62 @@
     "cloudDescription": "Sicher auf AWS bereitgestellt mit 99,9% Verfügbarkeit",
     "allRightsReserved": "Alle Rechte vorbehalten."
   },
-  "Metadata": {
-    "description": "Der beste Ort für Ihre Autos"
+  "AdminPage": {
+    "myCars": "Meine Autos",
+    "myProfile": "Mein Profil",
+    "myWebsite": "Meine Website"
+  },
+  "SignInPage": {
+    "title": "Willkommen zurück!",
+    "description": "Melden Sie sich mit Ihrem Google-Konto an",
+    "loginWithGoogleButton": "Mit Google anmelden",
+    "continue": "Oder weiter mit",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "loginButton": "Mit E-Mail anmelden",
+    "noAccount": "Haben Sie kein Konto?",
+    "signUp": "Jetzt registrieren!"
+  },
+  "SignUpPage": {
+    "title": "Registrieren",
+    "description": "Erstellen Sie Ihr Konto",
+    "logo": "Firmenlogo",
+    "name": "Firmenname",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "signUpButton": "Registrieren",
+    "alreadyHaveAccount": "Haben Sie bereits ein Konto?",
+    "signIn": "Jetzt anmelden!"
+  },
+  "EditUserDialog": {
+    "title": "Firmendaten bearbeiten",
+    "description": "Füllen Sie die Felder aus, die Sie ändern möchten",
+    "trigger": "Firmendaten bearbeiten",
+    "logo": "Firmenlogo",
+    "name": "Firmenname",
+    "email": "E-Mail",
+    "password": "Password",
+    "save": "speichern"
+  },
+  "ChangePasswordDialog": {
+    "title": "Passwort ändern",
+    "description": "Füllen Sie die folgenden Felder aus, um Ihr Passwort zu ändern",
+    "trigger": "Passwort ändern",
+    "currentPassword": "Aktuelles Passwort",
+    "newPassword": "Neues Passwort",
+    "save": "speichern"
+  },
+  "ProfileDialog": {
+    "creationTitle": "Neues Profil erstellen",
+    "editingTitle": "Profil bearbeiten",
+    "creationDescription": "Füllen Sie alle Felder aus",
+    "editingDescription": "Füllen Sie die Felder aus, die Sie ändern möchten",
+    "creationTrigger": "Profil erstellen",
+    "editingTrigger": "Profil bearbeiten",
+    "slug": "Slug",
+    "address": "Anschrift",
+    "phoneNumber": "Telefonnummer",
+    "save": "speichern"
   },
   "AddCarDialog": {
     "addCar": "Auto hinzufügen",
@@ -96,11 +132,6 @@
     "created": "Erstellt am",
     "backToList": "Zurück zur Liste",
     "print": "Drucken"
-  },
-  "Dashboard": {
-    "myCars": "Meine Autos",
-    "myProfile": "Mein Profil",
-    "myWebsite": "Meine Website"
   },
   "MyWebsite": {
     "openWebsite": "Meine Website öffnen",

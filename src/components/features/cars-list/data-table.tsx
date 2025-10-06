@@ -99,8 +99,8 @@ export function DataTable<
   })
 
   return (
-    <div>
-      <div className="flex items-center gap-2 py-4">
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center gap-2">
         <Input placeholder="Search brand or model…" value={query} onChange={(e) => setQuery(e.target.value)} className="max-w-sm" />
         {query && (
           <Button variant="ghost" size="sm" onClick={() => setQuery('')}>
@@ -167,10 +167,10 @@ export function DataTable<
       </div>
 
       <div className="flex items-center justify-between">
-        <div className="flex items-center justify-end space-x-2 py-4">
+        <div className="flex items-center justify-end space-x-2">
           {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <div className="flex items-center justify-end space-x-2 py-4">
+        <div className="flex items-center justify-end space-x-2">
           <Button variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
             Previous
           </Button>

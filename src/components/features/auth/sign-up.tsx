@@ -8,6 +8,7 @@ import { FaSpinner, FaUserPlus } from 'react-icons/fa'
 import { ZodError } from 'zod'
 import { toast } from 'sonner'
 import { signUp } from '@/lib/actions/auth.actions'
+import { useSession } from '@/lib/auth/client'
 import { useSignUpSchema } from '@/lib/validators/auth'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
@@ -27,6 +28,7 @@ export const SignUp = () => {
   const [formData, setFormData] = useState<SignUpData>(initialFormData)
   const [formErrors, setFormErrors] = useState<Record<string, string[]>>({})
   const [isPendingSubmit, startTransitionSubmit] = useTransition()
+  const { refetch } = useSession()
   const schema = useSignUpSchema()
   const t = useTranslations('SignUpPage')
 
@@ -52,7 +54,8 @@ export const SignUp = () => {
         }
         toast(data)
         setFormData(initialFormData)
-        router.push('/auth/sign-in')
+        refetch()
+        router.push('/admin')
       } catch (error) {
         if (error instanceof ZodError) {
           const formattedErrors: Record<string, string[]> = {}

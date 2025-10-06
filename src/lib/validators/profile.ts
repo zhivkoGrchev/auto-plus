@@ -1,5 +1,5 @@
-import { useTranslations } from 'next-intl'
 import { z } from 'zod'
+import { useTranslations } from 'next-intl'
 
 export const useEditUserSchema = () => {
   const t = useTranslations('AuthValidations')
@@ -22,38 +22,36 @@ export const useChangePasswordSchema = () => {
   })
 }
 
-export const useCreateProfileSchema = () => {
-  return z.object({
-    organization: z.string().min(1),
-    address: z.string().min(1),
-    phoneNumber: z
-      .string()
-      .regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number')
-      .min(1),
-  })
-}
-
-export const useEditProfileSchema = () => {
-  return z.object({
-    organization: z
-      .string()
-      .transform((v) => (v === '' ? undefined : v))
-      .optional(),
-    address: z
-      .string()
-      .transform((v) => (v === '' ? undefined : v))
-      .optional(),
-    phoneNumber: z.preprocess(
-      (v) => (typeof v === 'string' && v === '' ? undefined : v),
-      z
-        .string()
-        .regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number')
-        .optional()
-    ),
-  })
+export const useProfileSchema = (isEdit: boolean) => {
+  // const t = useTranslations('ProfileValidations')
+  return isEdit
+    ? z.object({
+        slug: z
+          .string()
+          .transform((v) => (v === '' ? undefined : v))
+          .optional(),
+        address: z
+          .string()
+          .transform((v) => (v === '' ? undefined : v))
+          .optional(),
+        phoneNumber: z.preprocess(
+          (v) => (typeof v === 'string' && v === '' ? undefined : v),
+          z
+            .string()
+            .regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number')
+            .optional()
+        ),
+      })
+    : z.object({
+        slug: z.string().min(1),
+        address: z.string().min(1),
+        phoneNumber: z
+          .string()
+          .regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number')
+          .min(1),
+      })
 }
 
 export type EditUserData = z.infer<ReturnType<typeof useEditUserSchema>>
 export type ChangePasswordData = z.infer<ReturnType<typeof useChangePasswordSchema>>
-export type CreateProfileData = z.infer<ReturnType<typeof useCreateProfileSchema>>
-export type EditProfileData = z.infer<ReturnType<typeof useEditProfileSchema>>
+export type ProfileData = z.infer<ReturnType<typeof useProfileSchema>>
