@@ -2,7 +2,7 @@ import { Tabs } from 'radix-ui'
 import { useTranslations } from 'next-intl'
 import { CarsList } from '@/components/features/cars-list'
 import { ProfilesList } from '@/components/features/profiles-list'
-import { WebsiteAdmin } from '@/components/features/my-website'
+import { WebsiteAdmin } from '@/components/features/website-admin'
 
 export default function AdminPage() {
   const t = useTranslations('AdminPage')

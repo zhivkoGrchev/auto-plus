@@ -1,4 +1,4 @@
-import Location from '@/components/features/my-website/links/location'
+import Location from '@/components/features/website-admin/links/location'
 
 export default function LocationPage() {
   return (
