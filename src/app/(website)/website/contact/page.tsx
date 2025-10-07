@@ -1,4 +1,4 @@
-import Contact from '@/components/features/my-website/links/contact'
+import Contact from '@/components/features/website-admin/links/contact'
 
 export default function ContactPage() {
   return (
