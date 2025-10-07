@@ -17,7 +17,11 @@ interface CarStats {
   avgPrice: number | null
 }
 
-export const WebsiteAdmin = () => {
+interface WebsiteAdminProps {
+  profileSlug: string | null
+}
+
+export const WebsiteAdmin = ({ profileSlug }: WebsiteAdminProps) => {
   const t = useTranslations('MyWebsite')
   const [activeSection, setActiveSection] = useState<ActiveSection>('overview')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -138,8 +142,12 @@ export const WebsiteAdmin = () => {
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <h2 className="text-2xl font-bold">Website Overview</h2>
               <div className="flex items-center gap-2">
-                <Button variant="default" size="sm" asChild>
-                  <a href={`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/website`} target="_blank" rel="noopener noreferrer">
+                <Button variant="default" size="sm" asChild disabled={!profileSlug}>
+                  <a
+                    href={profileSlug ? `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/${profileSlug}` : '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <ExternalLink className="h-4 w-4 mr-2" />
                     Open Website
                   </a>

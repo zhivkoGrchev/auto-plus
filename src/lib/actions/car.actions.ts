@@ -1,6 +1,7 @@
 'use server'
 
 import { prisma } from '@/db/prisma'
+import { getCurrentUser } from './auth.actions'
 import type { CarBrand, CarModel } from '@prisma/client'
 import type { CarExtended } from '../interfaces/car-extended'
 import { toJson } from '../utils'
@@ -309,6 +310,29 @@ export async function updateCar(
       success: false,
       errors: { form: ['Failed to update car. Please try again.'] },
     }
+  } finally {
+    await prisma.$disconnect()
+  }
+}
+
+export async function getCurrentUserProfileSlug(): Promise<string | null> {
+  try {
+    const { data: user, error } = await getCurrentUser()
+    
+    if (error || !user) {
+      return null
+    }
+
+    const profile = await prisma.profile.findFirst({
+      where: {
+        userId: user.id,
+      },
+    })
+
+    return profile?.slug || null
+  } catch (error) {
+    console.error('Error getting profile slug:', error)
+    return null
   } finally {
     await prisma.$disconnect()
   }
