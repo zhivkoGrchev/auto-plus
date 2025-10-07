@@ -1,6 +1,14 @@
 import { CarCard } from './car-card'
 
-export default function WebsiteHomePage() {
+interface PageProps {
+  params: {
+    slug: string
+  }
+}
+
+export default function WebsiteHomePage({ params }: PageProps) {
+  const { slug } = params
+
   return (
     <>
       <section id="home" className="py-16 text-center">
@@ -9,7 +17,7 @@ export default function WebsiteHomePage() {
           <p className="text-lg">Entdecken Sie unsere Auswahl an Fahrzeugen für jeden Lebensstil.</p>
         </div>
       </section>
-      <CarCard />
+      <CarCard slug={slug} />
     </>
   )
 }
