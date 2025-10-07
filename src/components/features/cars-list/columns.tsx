@@ -2,6 +2,7 @@
 
 import type { ColumnDef } from '@tanstack/react-table'
 import type { CarExtended } from '@/lib/interfaces/car-extended'
+import type { FuelType } from '@prisma/client'
 import { Switch } from '@/components/ui/switch'
 import { ArrowUpDown } from 'lucide-react'
 import { MoreHorizontal } from 'lucide-react'
@@ -61,6 +62,15 @@ export const columns = (
     cell: ({ row }) => {
       const capacity = row.getValue('cubicCapacity') as number
       return <div className="text-right font-medium">{capacity ? `${capacity.toLocaleString()} cm³` : '—'}</div>
+    },
+  },
+  {
+    accessorKey: 'fuelType',
+    header: () => <div className="text-right">Fuel Type</div>,
+    cell: ({ row }) => {
+      const fuelType = row.getValue('fuelType') as FuelType | null
+      const formatted = fuelType ? fuelType.charAt(0).toUpperCase() + fuelType.slice(1).toLowerCase() : '—'
+      return <div className="text-right font-medium">{formatted}</div>
     },
   },
   {
