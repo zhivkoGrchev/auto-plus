@@ -223,9 +223,36 @@ export async function getCarById(id: string): Promise<CarExtended | null> {
   }
 }
 
+async function getCurrentUserProfile() {
+  const { data: user, error } = await getCurrentUser()
+  
+  if (error || !user) {
+    throw new Error('Not authenticated')
+  }
+
+  const profile = await prisma.profile.findFirst({
+    where: {
+      userId: user.id,
+    },
+  })
+
+  if (!profile) {
+    throw new Error('Profile not found')
+  }
+
+  return profile
+}
+
 export async function getCarsCount(): Promise<number> {
   try {
-    return await prisma.car.count()
+    const profile = await getCurrentUserProfile() 
+    
+    return await prisma.car.count({
+      where: {
+        profileId: profile.id, 
+        listedOnWebsite: true,
+      },
+    })
   } catch (error) {
     console.error('Error counting cars:', error)
     throw error
@@ -236,7 +263,13 @@ export async function getCarsCount(): Promise<number> {
 
 export async function getCarsTotalPrice(): Promise<number> {
   try {
+    const profile = await getCurrentUserProfile() 
+    
     const result = await prisma.car.aggregate({
+      where: {
+        profileId: profile.id, 
+        listedOnWebsite: true,
+      },
       _sum: {
         price: true,
       },
