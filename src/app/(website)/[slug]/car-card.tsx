@@ -2,10 +2,32 @@ import { prisma } from '@/db/prisma'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 
-export const CarCard = async () => {
+interface CarCardProps {
+  slug: string
+}
+
+export const CarCard = async ({ slug }: CarCardProps) => {
+  // Find Profile by slug (not User!)
+  const profile = await prisma.profile.findUnique({
+    where: {
+      slug: slug,
+    },
+  })
+
+  if (!profile) {
+    return (
+      <main className="flex-grow max-w-6xl mx-auto p-6">
+        <div className="text-center text-cyan-50">
+          <p>Profile not found</p>
+        </div>
+      </main>
+    )
+  }
+  // Fetch cars listed on the website for the found profile
   const cars = await prisma.car.findMany({
     where: {
       listedOnWebsite: true,
+      profileId: profile.id,
     },
     include: {
       brand: true,
@@ -13,6 +35,16 @@ export const CarCard = async () => {
     },
     orderBy: { createdAt: 'desc' },
   })
+
+  if (cars.length === 0) {
+    return (
+      <main className="flex-grow max-w-6xl mx-auto p-6">
+        <div className="text-center text-cyan-50">
+          <p>Keine Fahrzeuge verfügbar</p>
+        </div>
+      </main>
+    )
+  }
 
   return (
     <main id="cars" className="flex-grow max-w-6xl mx-auto p-6">
@@ -39,7 +71,7 @@ export const CarCard = async () => {
                       }).format(car.price)
                     : '—'}
                 </span>
-                <Link href={`/website/${car.id}`}>
+                <Link href={`/${slug}/${car.id}`}>
                   <Button className="cursor-pointer" variant="outline" size="sm">
                     Details
                   </Button>
