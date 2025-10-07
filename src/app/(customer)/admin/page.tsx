@@ -5,7 +5,7 @@ import { ProfilesList } from '@/components/features/profiles-list'
 import { WebsiteAdmin } from '@/components/features/my-website'
 
 export default function AdminPage() {
-  const t = useTranslations('Dashboard')
+  const t = useTranslations('AdminPage')
 
   return (
     <Tabs.Root className="flex flex-col grow p-4" defaultValue="cars-list">

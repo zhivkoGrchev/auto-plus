@@ -22,28 +22,30 @@ enum Transmission {
 }
 
 model Car {
-  id           String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  brandId      String       @db.Uuid
-  modelId      String       @db.Uuid
-  powerKW      Int
-  powerPS      Int
-  cubicCapacity Int
-  year         Int
-  color        String
-  transmission Transmission
-  fuelType     FuelType
-  mileage      Float
-  vin          String?
-  price        Float
-  description  String?
-  imageHash     String?     // IPFS hash from Pinata
-  imageUrl      String?     // Gateway URL
-  listedOnWebsite Boolean   @default(false)
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  id              String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  profileId       String       @db.Uuid
+  brandId         String       @db.Uuid
+  modelId         String       @db.Uuid
+  powerKW         Int
+  powerPS         Int
+  cubicCapacity   Int
+  year            Int
+  color           String
+  transmission    Transmission
+  fuelType        FuelType
+  mileage         Float
+  vin             String?
+  price           Float
+  description     String?
+  imageHash       String? // IPFS hash from Pinata
+  imageUrl        String? // Gateway URL
+  listedOnWebsite Boolean      @default(false)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
 
-  brand CarBrand @relation(fields: [brandId], references: [id])
-  model CarModel @relation(fields: [modelId], references: [id])
+  profile Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  brand   CarBrand @relation(fields: [brandId], references: [id])
+  model   CarModel @relation(fields: [modelId], references: [id])
 }
 
 model CarBrand {
@@ -129,13 +131,14 @@ model Verification {
 }
 
 model Profile {
-  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId       String
-  organization String
-  address      String
-  phoneNumber  String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug        String   @unique
+  userId      String
+  address     String
+  phoneNumber String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  cars        Car[]
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -143,24 +146,24 @@ model Profile {
 }
 
 model OpeningHours {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
 
   // Store as JSON for flexibility - each day can have multiple time slots
-  
-  monday    Json?    // Example: [{"open":"09:00","close":"17:00"},{"open":"19:00","close":"22:00"}] or null if closed
+
+  monday    Json? // Example: [{"open":"09:00","close":"17:00"},{"open":"19:00","close":"22:00"}] or null if closed
   tuesday   Json?
   wednesday Json?
   thursday  Json?
   friday    Json?
   saturday  Json?
   sunday    Json?
-  
+
   // Metadata
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   // If you want to support multiple locations/businesses in the future:
   // businessName String @default("Main Location")
-  
+
   @@map("opening_hours")
 }

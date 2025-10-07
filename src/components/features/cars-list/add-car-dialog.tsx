@@ -87,14 +87,16 @@ async function uploadImageToServer(file: File) {
   return res.json() // { success: boolean, cid?: string, url?: string, error?: string }
 }
 
-type AddCarDialogProps = {
+interface AddCarDialogProps {
   mode?: 'add' | 'edit'
   car?: CarExtended | null
-  onCarAdded?: () => Promise<void>
-  onSuccess?: () => Promise<void>
+  profileId?: string
+  onUpdate?: () => void
+  // onSuccess?: () => Promise<void>
 }
 
 const initialData: AddCarData = {
+  profileId: '',
   brandId: '',
   modelId: '',
   year: 0,
@@ -110,12 +112,12 @@ const initialData: AddCarData = {
   description: '',
   brands: [],
   models: [],
-  imageHash: '',
-  imageUrl: '',
+  imageHash: null,
+  imageUrl: null,
   listedOnWebsite: false,
 }
 
-export const AddCarDialog = ({ mode = 'add', car = null, onCarAdded, onSuccess }: AddCarDialogProps) => {
+export const AddCarDialog = ({ mode = 'add', car = null, profileId, onUpdate }: AddCarDialogProps) => {
   const [carData, setCarData] = useState<AddCarData>(initialData)
   const [errors, setErrors] = useState<Record<string, string[]>>({})
   const [isPendingSubmit, startTransitionSubmit] = useTransition()
@@ -134,6 +136,7 @@ export const AddCarDialog = ({ mode = 'add', car = null, onCarAdded, onSuccess }
 
       if (isOpen) {
         setCarData({
+          profileId: car.profileId,
           brandId: car.brandId,
           modelId: car.modelId,
           year: car.year,
@@ -149,8 +152,8 @@ export const AddCarDialog = ({ mode = 'add', car = null, onCarAdded, onSuccess }
           description: car.description || '',
           brands: [],
           models: [],
-          imageHash: car.imageHash || '',
-          imageUrl: car.imageUrl || '',
+          imageHash: car.imageHash || null,
+          imageUrl: car.imageUrl || null,
           listedOnWebsite: car.listedOnWebsite,
         })
 
@@ -265,7 +268,7 @@ export const AddCarDialog = ({ mode = 'add', car = null, onCarAdded, onSuccess }
     setErrors({})
 
     startTransitionSubmit(async () => {
-      const finalCarData = { ...carData }
+      const finalCarData = profileId ? { ...carData, profileId } : { ...carData }
 
       // Upload image to Pinata if selected
       if (selectedImage) {
@@ -290,7 +293,8 @@ export const AddCarDialog = ({ mode = 'add', car = null, onCarAdded, onSuccess }
               setCarData(initialData)
               setSelectedImage(null)
               setImagePreview('')
-              onSuccess ? onSuccess() : onCarAdded?.()
+              // onSuccess ? onSuccess() : onUpdate?.()
+              onUpdate?.()
               setIsOpen(false)
             } else {
               setErrors(result.errors || {})
@@ -306,7 +310,8 @@ export const AddCarDialog = ({ mode = 'add', car = null, onCarAdded, onSuccess }
         const result = mode === 'edit' && car ? await updateCar(car.id, finalCarData) : await createCar(finalCarData)
         if (result.success) {
           setCarData(initialData)
-          onSuccess ? onSuccess() : onCarAdded?.()
+          // onSuccess ? onSuccess() : onUpdate?.()
+          onUpdate?.()
           setIsOpen(false)
         } else {
           setErrors(result.errors || {})
@@ -322,13 +327,11 @@ export const AddCarDialog = ({ mode = 'add', car = null, onCarAdded, onSuccess }
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <div className="container mx-auto flex justify-start">
-        <DialogTrigger asChild>
-          <Button type="button" variant="default" size="sm">
-            <FaPlus /> {t('addCar')}
-          </Button>
-        </DialogTrigger>
-      </div>
+      <DialogTrigger asChild>
+        <Button type="button" variant="default" disabled={!profileId}>
+          <FaPlus /> {t('addCar')}
+        </Button>
+      </DialogTrigger>
       <DialogContent className="sm:max-w-[640px]">
         <DialogHeader>
           <DialogTitle>{mode === 'edit' ? 'Edit Car' : t('title')}</DialogTitle>

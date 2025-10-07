@@ -5,6 +5,7 @@ import { prisma } from '@/db/prisma'
 import { auth } from '@/lib/auth'
 import type { UserWithProfiles } from '@/lib/types/profile'
 import { CreateProfileData, EditProfileData, EditUserData } from '../validators/profile'
+import { Profile } from '@prisma/client'
 
 export const getUserWithProfile = async (): Promise<Return<UserWithProfiles>> => {
   try {
@@ -40,6 +41,26 @@ export const editUser = async (formData: EditUserData): Promise<Return<string>> 
     return { data: undefined, error: { message: e.message } }
   } finally {
     prisma.$disconnect()
+  }
+}
+
+export const getProfiles = async (): Promise<Return<Profile[]>> => {
+  try {
+    const session = await auth.api.getSession({ headers: await headers() })
+    if (!session) {
+      return { data: undefined, error: { message: 'You are not signed in' } }
+    }
+    const profiles = await prisma.profile.findMany({ where: { userId: session.user.id } })
+    if (!profiles) {
+      return { data: undefined, error: { message: 'There are no profiles' } }
+    }
+    return { data: profiles, error: undefined }
+  } catch (error) {
+    const e = error as Error
+    console.error('Error fetching profiles:', e.message)
+    return { data: undefined, error: { message: e.message } }
+  } finally {
+    await prisma.$disconnect()
   }
 }
 

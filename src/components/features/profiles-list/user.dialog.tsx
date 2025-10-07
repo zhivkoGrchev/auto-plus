@@ -1,4 +1,5 @@
 import { ChangeEvent, MouseEvent, useState, useTransition } from 'react'
+import { useTranslations } from 'next-intl'
 import { FaCheck, FaSpinner } from 'react-icons/fa'
 import { toast } from 'sonner'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
@@ -8,6 +9,7 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { editUser } from '@/lib/actions/profile.actions'
 import { useEditUserSchema, type EditUserData } from '@/lib/validators/profile'
+import { LuBuilding } from 'react-icons/lu'
 
 const initialData: EditUserData = {
   name: '',
@@ -24,6 +26,7 @@ export const UserDialog = ({ onUpdate }: UserDialogProps) => {
   const [formErrors, setFormErrors] = useState<Record<string, string[]>>({})
   const [isPendingSubmit, startTransitionSubmit] = useTransition()
   const schema = useEditUserSchema()
+  const t = useTranslations('EditUserDialog')
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -43,9 +46,7 @@ export const UserDialog = ({ onUpdate }: UserDialogProps) => {
           toast.error(error.message)
           return
         }
-        if (onUpdate) {
-          onUpdate()
-        }
+        onUpdate?.()
         toast.success(data)
         setOpen(false)
       } else {
@@ -65,12 +66,15 @@ export const UserDialog = ({ onUpdate }: UserDialogProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Edit User</Button>
+        <Button>
+          <LuBuilding />
+          {t('trigger')}
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit user</DialogTitle>
-          <DialogDescription>Fill in the fields that you want to change</DialogDescription>
+          <DialogTitle>{t('title')}</DialogTitle>
+          <DialogDescription>{t('description')}</DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-4">
           {formErrors.form && (
@@ -84,11 +88,11 @@ export const UserDialog = ({ onUpdate }: UserDialogProps) => {
           )}
           <div className="grid grid-cols-[auto_1fr] gap-2">
             <Label className="self-center" htmlFor="name">
-              Name
+              {t('name')}
             </Label>
             <Input id="name" name="name" value={formData.name} onChange={handleInputChange} />
             <Label className="self-center" htmlFor="email">
-              E-Mail
+              {t('email')}
             </Label>
             <Input id="email" name="email" type="email" value={formData.email} onChange={handleInputChange} />
             {formErrors['email'] && <span className="col-start-2 mx-2 text-xs text-red-600">{formErrors['email'][0]}</span>}
@@ -96,7 +100,7 @@ export const UserDialog = ({ onUpdate }: UserDialogProps) => {
         </div>
         <DialogFooter>
           <Button onClick={handleSubmit} disabled={isPendingSubmit}>
-            {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaCheck />} Save
+            {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaCheck />} {t('save')}
           </Button>
         </DialogFooter>
       </DialogContent>

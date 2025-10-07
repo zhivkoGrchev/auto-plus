@@ -52,13 +52,13 @@ export const ProfilesList = () => {
     <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 items-start gap-4">
       <Card>
         <CardHeader>
-          <CardTitle className="text-xl">User data</CardTitle>
-          <CardDescription>You can edit your user</CardDescription>
+          <CardTitle className="text-xl">Company data</CardTitle>
+          <CardDescription>You can edit your company data</CardDescription>
         </CardHeader>
         <CardContent>
           <ul>
-            <li>Image: {user?.image ? user.image : 'None'}</li>
-            <li>Name: {user?.name}</li>
+            <li>Logo: {user?.image ? user.image : 'None'}</li>
+            <li>Company name: {user?.name}</li>
             <li>E-Mail: {user?.email}</li>
           </ul>
         </CardContent>
@@ -87,7 +87,7 @@ export const ProfilesList = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Organization</TableHead>
+                  <TableHead>Slug</TableHead>
                   <TableHead>Address</TableHead>
                   <TableHead>Phone number</TableHead>
                   <TableHead className="text-center">Actions</TableHead>
@@ -97,7 +97,7 @@ export const ProfilesList = () => {
                 {user?.profiles?.length ? (
                   user.profiles.map((item) => (
                     <TableRow key={item.id}>
-                      <TableCell>{item.organization}</TableCell>
+                      <TableCell>{item.slug}</TableCell>
                       <TableCell>{item.address}</TableCell>
                       <TableCell>{item.phoneNumber}</TableCell>
                       <TableCell className="flex justify-center gap-2">
