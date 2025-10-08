@@ -9,7 +9,7 @@ interface PageProps {
 }
 
 export default async function CarDetailsPage({ params, searchParams }: PageProps) {
-  const backLink = searchParams?.source === 'website' ? '/website' : '/admin'
+  const backLink = searchParams?.source === 'admin' ? '/admin' : `/${searchParams?.source || ''}`
   const t = await getTranslations('AddCarDialog')
   const id = params.id
 

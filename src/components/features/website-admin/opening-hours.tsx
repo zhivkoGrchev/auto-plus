@@ -7,7 +7,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Clock, Plus, Trash2 } from 'lucide-react'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Clock, Plus, Trash2, Copy, Save, CheckCircle2, AlertCircle, ExternalLink } from 'lucide-react'
 import { saveOpeningHours, getOpeningHours } from '@/lib/actions/opening-hours.actions'
 import type { OpeningHoursData } from '@/lib/interfaces/opening-hours'
 
@@ -16,31 +17,38 @@ interface TimeSlot {
   close: string
 }
 
+interface OpeningHoursProps {
+  profileSlug?: string | null
+}
+
 const DAYS = [
-  { key: 'monday', label: 'Monday' },
-  { key: 'tuesday', label: 'Tuesday' },
-  { key: 'wednesday', label: 'Wednesday' },
-  { key: 'thursday', label: 'Thursday' },
-  { key: 'friday', label: 'Friday' },
-  { key: 'saturday', label: 'Saturday' },
-  { key: 'sunday', label: 'Sunday' },
+  { key: 'monday', label: 'Monday', short: 'Mon' },
+  { key: 'tuesday', label: 'Tuesday', short: 'Tue' },
+  { key: 'wednesday', label: 'Wednesday', short: 'Wed' },
+  { key: 'thursday', label: 'Thursday', short: 'Thu' },
+  { key: 'friday', label: 'Friday', short: 'Fri' },
+  { key: 'saturday', label: 'Saturday', short: 'Sat' },
+  { key: 'sunday', label: 'Sunday', short: 'Sun' },
 ]
 
-export const OpeningHours = () => {
+export const OpeningHours = ({ profileSlug }: OpeningHoursProps) => {
   const t = useTranslations('MyWebsite')
 
   const [openingHours, setOpeningHours] = useState<OpeningHoursData | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [saveSuccess, setSaveSuccess] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  // Load opening hours from database on component mount
   useEffect(() => {
     const loadOpeningHours = async () => {
       try {
         const data = await getOpeningHours()
         setOpeningHours(data)
+        setError(null)
       } catch (error) {
         console.error('Failed to load opening hours:', error)
+        setError('Failed to load opening hours. Please try again.')
       } finally {
         setLoading(false)
       }
@@ -63,6 +71,7 @@ export const OpeningHours = () => {
         },
       }
     })
+    setSaveSuccess(false)
   }
 
   const updateTimeSlot = (day: keyof OpeningHoursData, slotIndex: number, field: 'open' | 'close', value: string) => {
@@ -78,6 +87,7 @@ export const OpeningHours = () => {
         },
       }
     })
+    setSaveSuccess(false)
   }
 
   const addTimeSlot = (day: keyof OpeningHoursData) => {
@@ -93,6 +103,7 @@ export const OpeningHours = () => {
         },
       }
     })
+    setSaveSuccess(false)
   }
 
   const removeTimeSlot = (day: keyof OpeningHoursData, slotIndex: number) => {
@@ -108,6 +119,7 @@ export const OpeningHours = () => {
         },
       }
     })
+    setSaveSuccess(false)
   }
 
   const copyFromPreviousDay = (day: keyof OpeningHoursData) => {
@@ -123,6 +135,7 @@ export const OpeningHours = () => {
           [day]: { ...prev[previousDay] },
         }
       })
+      setSaveSuccess(false)
     }
   }
 
@@ -130,167 +143,200 @@ export const OpeningHours = () => {
     if (!openingHours) return
 
     setSaving(true)
+    setError(null)
+    setSaveSuccess(false)
+
     try {
       const result = await saveOpeningHours(openingHours)
 
       if (result.success) {
-        alert('Opening hours saved successfully!')
+        setSaveSuccess(true)
+        setTimeout(() => setSaveSuccess(false), 3000)
       } else {
-        alert(result.errors?.form?.[0] || 'Failed to save opening hours')
+        setError(result.errors?.form?.[0] || 'Failed to save opening hours')
       }
     } catch (error) {
       console.error('Error saving opening hours:', error)
-      alert('Failed to save opening hours')
+      setError('Failed to save opening hours. Please try again.')
     } finally {
       setSaving(false)
     }
   }
 
-  // Loading state
   if (loading) {
     return (
-      <Card className="w-full max-w-2xl mx-auto">
-        <CardContent className="flex justify-center items-center p-8">
-          <Clock className="h-6 w-6 animate-spin mr-2" />
-          Loading opening hours...
+      <Card>
+        <CardContent className="p-12">
+          <div className="flex flex-col items-center justify-center gap-3">
+            <Clock className="h-8 w-8 text-blue-600 animate-spin" />
+            <p className="text-sm text-muted-foreground">Loading opening hours...</p>
+          </div>
         </CardContent>
       </Card>
     )
   }
 
-  // Error state
   if (!openingHours) {
     return (
-      <Card className="w-full max-w-2xl mx-auto">
-        <CardContent className="p-8">
-          <p className="text-center text-red-600">Failed to load opening hours</p>
-        </CardContent>
-      </Card>
+      <Alert variant="destructive">
+        <AlertCircle className="h-4 w-4" />
+        <AlertDescription>Failed to load opening hours. Please refresh the page.</AlertDescription>
+      </Alert>
     )
   }
 
   return (
-    <div className="mt-10 space-y-8">
-      {/* Opening Hours Section */}
-      <Card className="w-full max-w-2xl mx-auto">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Clock className="h-5 w-5" />
-            Opening Hours
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-6">
-            {DAYS.map(({ key, label }) => {
-              const daySchedule = openingHours[key as keyof OpeningHoursData]
+    <div className="space-y-6">
+      {/* Header with Buttons */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div>
+          <h2 className="text-2xl font-bold">Opening Hours</h2>
+          <p className="text-sm text-muted-foreground mt-1">Manage your business hours for each day of the week</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button variant="default" size="sm" asChild disabled={!profileSlug}>
+            <a
+              href={profileSlug ? `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/${profileSlug}` : '#'}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <ExternalLink className="h-4 w-4 mr-2" />
+              Open Website
+            </a>
+          </Button>
+          <Button onClick={handleSaveOpeningHours} disabled={saving} size="sm">
+            {saving ? (
+              <>
+                <Clock className="h-4 w-4 animate-spin mr-2" />
+                Saving...
+              </>
+            ) : (
+              <>
+                <Save className="h-4 w-4 mr-2" />
+                Save Changes
+              </>
+            )}
+          </Button>
+        </div>
+      </div>
 
-              return (
-                <div key={key} className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <Checkbox
-                        id={`${key}-open`}
-                        checked={daySchedule.isOpen}
-                        onCheckedChange={(checked) => updateDayStatus(key as keyof OpeningHoursData, !!checked)}
-                      />
-                      <Label htmlFor={`${key}-open`} className="text-sm font-medium min-w-[80px]">
+      {/* Success Message */}
+      {saveSuccess && (
+        <Alert className="border-green-200 bg-green-50 dark:bg-green-950/20">
+          <CheckCircle2 className="h-4 w-4 text-green-600" />
+          <AlertDescription className="text-green-800 dark:text-green-400">Opening hours saved successfully!</AlertDescription>
+        </Alert>
+      )}
+
+      {/* Error Message */}
+      {error && (
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+
+      {/* Days Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {DAYS.map(({ key, label, short }) => {
+          const daySchedule = openingHours[key as keyof OpeningHoursData]
+          const dayIndex = DAYS.findIndex((d) => d.key === key)
+
+          return (
+            <Card key={key} className={daySchedule.isOpen ? 'border-blue-200 dark:border-blue-800' : ''}>
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Checkbox
+                      id={`${key}-open`}
+                      checked={daySchedule.isOpen}
+                      onCheckedChange={(checked) => updateDayStatus(key as keyof OpeningHoursData, !!checked)}
+                      className="mt-0.5"
+                    />
+                    <div>
+                      <Label htmlFor={`${key}-open`} className="text-base font-semibold cursor-pointer">
                         {label}
                       </Label>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        {daySchedule.isOpen ? `${daySchedule.slots.length} time slot${daySchedule.slots.length !== 1 ? 's' : ''}` : 'Closed'}
+                      </p>
                     </div>
+                  </div>
 
-                    {daySchedule.isOpen && (
+                  {daySchedule.isOpen && dayIndex > 0 && (
+                    <Button type="button" variant="ghost" size="sm" onClick={() => copyFromPreviousDay(key as keyof OpeningHoursData)} className="h-8">
+                      <Copy className="h-3 w-3 mr-1" />
+                      Copy
+                    </Button>
+                  )}
+                </div>
+              </CardHeader>
+
+              {daySchedule.isOpen && (
+                <CardContent className="space-y-3">
+                  {daySchedule.slots.map((slot, slotIndex) => (
+                    <div key={slotIndex} className="flex items-center gap-2 p-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+                      <div className="flex items-center gap-2 flex-1">
+                        <Input
+                          type="time"
+                          value={slot.open}
+                          onChange={(e) => updateTimeSlot(key as keyof OpeningHoursData, slotIndex, 'open', e.target.value)}
+                          className="w-28 h-9"
+                        />
+                        <span className="text-sm text-muted-foreground">to</span>
+                        <Input
+                          type="time"
+                          value={slot.close}
+                          onChange={(e) => updateTimeSlot(key as keyof OpeningHoursData, slotIndex, 'close', e.target.value)}
+                          className="w-28 h-9"
+                        />
+                      </div>
+
                       <Button
                         type="button"
                         variant="ghost"
                         size="sm"
-                        onClick={() => copyFromPreviousDay(key as keyof OpeningHoursData)}
-                        className="text-xs"
-                        disabled={key === 'monday'}
+                        onClick={() => removeTimeSlot(key as keyof OpeningHoursData, slotIndex)}
+                        disabled={daySchedule.slots.length === 1}
+                        className="h-9 w-9 p-0 hover:bg-red-50 hover:text-red-600"
                       >
-                        Copy from above
-                      </Button>
-                    )}
-                  </div>
-
-                  {daySchedule.isOpen && (
-                    <div className="ml-6 space-y-2">
-                      {daySchedule.slots.map((slot, slotIndex) => (
-                        <div key={slotIndex} className="flex items-center gap-2">
-                          <div className="flex items-center gap-2">
-                            <Input
-                              type="time"
-                              value={slot.open}
-                              onChange={(e) => updateTimeSlot(key as keyof OpeningHoursData, slotIndex, 'open', e.target.value)}
-                              className="w-24"
-                            />
-                            <span className="text-sm text-gray-500">to</span>
-                            <Input
-                              type="time"
-                              value={slot.close}
-                              onChange={(e) => updateTimeSlot(key as keyof OpeningHoursData, slotIndex, 'close', e.target.value)}
-                              className="w-24"
-                            />
-                          </div>
-
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => removeTimeSlot(key as keyof OpeningHoursData, slotIndex)}
-                            disabled={daySchedule.slots.length === 1}
-                            className="p-1 h-8 w-8"
-                          >
-                            <Trash2 className="h-4 w-4 text-red-500" />
-                          </Button>
-                        </div>
-                      ))}
-
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => addTimeSlot(key as keyof OpeningHoursData)}
-                        className="flex items-center gap-1 text-xs"
-                      >
-                        <Plus className="h-3 w-3" />
-                        Add time slot
+                        <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
-                  )}
+                  ))}
 
-                  {!daySchedule.isOpen && <div className="ml-6 text-sm text-gray-500">Closed</div>}
+                  <Button type="button" variant="outline" size="sm" onClick={() => addTimeSlot(key as keyof OpeningHoursData)} className="w-full">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Time Slot
+                  </Button>
+                </CardContent>
+              )}
+            </Card>
+          )
+        })}
+      </div>
+
+      {/* Preview Card */}
+      <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border-blue-200 dark:border-blue-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-blue-900 dark:text-blue-100">
+            <Clock className="h-5 w-5" />
+            Hours Preview
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {DAYS.map(({ key, label, short }) => {
+              const daySchedule = openingHours[key as keyof OpeningHoursData]
+              return (
+                <div key={key} className="flex justify-between items-center p-3 bg-white dark:bg-gray-900 rounded-lg shadow-sm">
+                  <span className="font-medium text-sm">{label}</span>
+                  <span className={`text-sm ${daySchedule.isOpen ? 'text-green-600 dark:text-green-400' : 'text-gray-500'}`}>
+                    {daySchedule.isOpen ? daySchedule.slots.map((slot) => `${slot.open}-${slot.close}`).join(', ') : 'Closed'}
+                  </span>
                 </div>
               )
             })}
-
-            <div className="flex justify-end pt-4">
-              <Button onClick={handleSaveOpeningHours} disabled={saving} className="px-8">
-                {saving ? (
-                  <>
-                    <Clock className="h-4 w-4 animate-spin mr-2" />
-                    Saving...
-                  </>
-                ) : (
-                  'Save Opening Hours'
-                )}
-              </Button>
-            </div>
-          </div>
-
-          {/* Preview Section */}
-          <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-            <h3 className="font-medium mb-3">Preview:</h3>
-            <div className="space-y-1 text-sm">
-              {DAYS.map(({ key, label }) => {
-                const daySchedule = openingHours[key as keyof OpeningHoursData]
-                return (
-                  <div key={key} className="flex justify-between">
-                    <span className="font-medium">{label}:</span>
-                    <span>{daySchedule.isOpen ? daySchedule.slots.map((slot) => `${slot.open}-${slot.close}`).join(', ') : 'Closed'}</span>
-                  </div>
-                )
-              })}
-            </div>
           </div>
         </CardContent>
       </Card>

@@ -263,8 +263,7 @@ export const WebsiteAdmin = ({ profileSlug }: WebsiteAdminProps) => {
       case 'opening-hours':
         return (
           <div>
-            <h2 className="text-2xl font-bold mb-6">Opening Hours Management</h2>
-            <OpeningHours />
+            <OpeningHours profileSlug={profileSlug} />
           </div>
         )
 
