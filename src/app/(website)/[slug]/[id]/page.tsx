@@ -1,12 +1,10 @@
 import CarDetailsPage from '@/components/features/car-details'
 
 interface PageProps {
-  params: {
-    slug: string
-    id: string
-  }
+  params: Promise<{ slug: string; id: string }>
 }
 
 export default async function CarDetailsWebsite(props: PageProps) {
-  return <CarDetailsPage {...props} searchParams={{ source: props.params.slug }} />
+  const params = await props.params
+  return <CarDetailsPage params={{ id: params.id }} searchParams={{ source: params.slug }} />
 }

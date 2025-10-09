@@ -1,15 +1,33 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import { Label } from '@/components/ui/label'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Clock, Home, Settings, Users, FileText, BarChart3, Menu, X, RefreshCw, ExternalLink, AlertCircle, TrendingUp, DollarSign, Car } from 'lucide-react'
+import {
+  Clock,
+  Home,
+  Settings,
+  Users,
+  FileText,
+  BarChart3,
+  Menu,
+  X,
+  RefreshCw,
+  ExternalLink,
+  AlertCircle,
+  TrendingUp,
+  DollarSign,
+  Car,
+  Code,
+} from 'lucide-react'
 import { OpeningHours } from './opening-hours'
+import { DeveloperTools } from './developer-tools'
 import { getCarsCount, getCarsTotalPrice } from '@/lib/actions/car.actions'
 
-type ActiveSection = 'overview' | 'opening-hours' | 'settings' | 'users' | 'content' | 'analytics'
+type ActiveSection = 'overview' | 'opening-hours' | 'settings' | 'users' | 'developer-tools' | 'analytics'
 
 interface CarStats {
   carsCount: number | null
@@ -17,7 +35,11 @@ interface CarStats {
   avgPrice: number | null
 }
 
-export const WebsiteAdmin = () => {
+interface WebsiteAdminProps {
+  profileSlug: string | null
+}
+
+export const WebsiteAdmin = ({ profileSlug }: WebsiteAdminProps) => {
   const t = useTranslations('MyWebsite')
   const [activeSection, setActiveSection] = useState<ActiveSection>('overview')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -72,9 +94,9 @@ export const WebsiteAdmin = () => {
       icon: Clock,
     },
     {
-      id: 'content' as const,
-      label: 'Content',
-      icon: FileText,
+      id: 'developer-tools' as const,
+      label: 'Developer Tools',
+      icon: Code,
     },
     {
       id: 'users' as const,
@@ -138,8 +160,12 @@ export const WebsiteAdmin = () => {
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <h2 className="text-2xl font-bold">Website Overview</h2>
               <div className="flex items-center gap-2">
-                <Button variant="default" size="sm" asChild>
-                  <a href={`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/website`} target="_blank" rel="noopener noreferrer">
+                <Button variant="default" size="sm" asChild disabled={!profileSlug}>
+                  <a
+                    href={profileSlug ? `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/${profileSlug}` : '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <ExternalLink className="h-4 w-4 mr-2" />
                     Open Website
                   </a>
@@ -213,13 +239,13 @@ export const WebsiteAdmin = () => {
                       variant="outline"
                       size="sm"
                       onClick={() => {
-                        setActiveSection('content')
+                        setActiveSection('developer-tools')
                         setIsMobileMenuOpen(false)
                       }}
                       className="justify-start"
                     >
-                      <FileText className="mr-2 h-4 w-4" />
-                      Edit Content
+                      <Code className="mr-2 h-4 w-4" />
+                      Developer Tools
                     </Button>
                     <Button
                       variant="outline"
@@ -255,26 +281,12 @@ export const WebsiteAdmin = () => {
       case 'opening-hours':
         return (
           <div>
-            <h2 className="text-2xl font-bold mb-6">Opening Hours Management</h2>
-            <OpeningHours />
+            <OpeningHours profileSlug={profileSlug} />
           </div>
         )
 
-      case 'content':
-        return (
-          <div>
-            <h2 className="text-2xl font-bold mb-6">Content Management</h2>
-            <Card>
-              <CardContent className="p-6">
-                <div className="text-center py-12">
-                  <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">Content Management</h3>
-                  <p className="text-muted-foreground">Content management features coming soon...</p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )
+      case 'developer-tools':
+        return <DeveloperTools profileSlug={profileSlug} />
 
       case 'users':
         return (
@@ -311,13 +323,13 @@ export const WebsiteAdmin = () => {
       case 'settings':
         return (
           <div>
-            <h2 className="text-2xl font-bold mb-6">Website Settings</h2>
+            <h2 className="text-2xl font-bold mb-6">Settings</h2>
             <Card>
               <CardContent className="p-6">
                 <div className="text-center py-12">
                   <Settings className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">Settings Panel</h3>
-                  <p className="text-muted-foreground">Settings panel coming soon...</p>
+                  <h3 className="text-lg font-semibold mb-2">Settings Dashboard</h3>
+                  <p className="text-muted-foreground">Settings dashboard coming soon...</p>
                 </div>
               </CardContent>
             </Card>

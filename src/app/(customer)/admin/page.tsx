@@ -1,11 +1,13 @@
 import { Tabs } from 'radix-ui'
-import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 import { CarsList } from '@/components/features/cars-list'
 import { ProfilesList } from '@/components/features/profiles-list'
 import { WebsiteAdmin } from '@/components/features/website-admin'
+import { getCurrentUserProfileSlug } from '@/lib/actions/car.actions'
 
-export default function AdminPage() {
-  const t = useTranslations('AdminPage')
+export default async function AdminPage() {
+  const profileSlug = await getCurrentUserProfileSlug()
+  const t = await getTranslations('AdminPage')
 
   return (
     <Tabs.Root className="flex flex-col grow p-4" defaultValue="cars-list">
@@ -36,7 +38,7 @@ export default function AdminPage() {
         <ProfilesList />
       </Tabs.Content>
       <Tabs.Content className="flex flex-col p-2 gap-4 grow" value="website">
-        <WebsiteAdmin />
+        <WebsiteAdmin profileSlug={profileSlug} />
       </Tabs.Content>
     </Tabs.Root>
   )
