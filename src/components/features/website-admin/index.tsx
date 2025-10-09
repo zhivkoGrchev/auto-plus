@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import { Label } from '@/components/ui/label'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -317,14 +318,88 @@ export const WebsiteAdmin = ({ profileSlug }: WebsiteAdminProps) => {
 
       case 'settings':
         return (
-          <div>
-            <h2 className="text-2xl font-bold mb-6">Website Settings</h2>
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold">Website Settings</h2>
+
+            {/* Embed Code Card */}
             <Card>
-              <CardContent className="p-6">
-                <div className="text-center py-12">
-                  <Settings className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">Settings Panel</h3>
-                  <p className="text-muted-foreground">Settings panel coming soon...</p>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <FileText className="h-5 w-5" />
+                  Embed Code
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Copy this code to embed your car inventory on any external website. The widget is read-only and updates automatically when you add or remove
+                  cars.
+                </p>
+
+                {/* Light Theme */}
+                <div>
+                  <Label className="text-sm font-semibold mb-2 block">Light Theme:</Label>
+                  <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto text-xs">
+                    {`<iframe 
+  src="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/embed/${profileSlug}"
+  width="100%"
+  height="800"
+  frameborder="0"
+  style="border: none;"
+  title="Car Inventory"
+></iframe>`}
+                  </pre>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="mt-2"
+                    onClick={() => {
+                      navigator.clipboard.writeText(
+                        `<iframe src="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/embed/${profileSlug}" width="100%" height="800" frameborder="0" style="border: none;" title="Car Inventory"></iframe>`
+                      )
+                      alert('Copied to clipboard!')
+                    }}
+                  >
+                    Copy Light Theme Code
+                  </Button>
+                </div>
+
+                {/* Dark Theme */}
+                <div>
+                  <Label className="text-sm font-semibold mb-2 block">Dark Theme:</Label>
+                  <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto text-xs">
+                    {`<iframe 
+  src="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/embed/${profileSlug}?theme=dark"
+  width="100%"
+  height="800"
+  frameborder="0"
+  style="border: none;"
+  title="Car Inventory"
+></iframe>`}
+                  </pre>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="mt-2"
+                    onClick={() => {
+                      navigator.clipboard.writeText(
+                        `<iframe src="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/embed/${profileSlug}?theme=dark" width="100%" height="800" frameborder="0" style="border: none;" title="Car Inventory"></iframe>`
+                      )
+                      alert('Copied to clipboard!')
+                    }}
+                  >
+                    Copy Dark Theme Code
+                  </Button>
+                </div>
+
+                {/* Preview Link */}
+                <div className="pt-4 border-t">
+                  <Label className="text-sm font-semibold mb-2 block">Preview:</Label>
+                  <Button variant="default" size="sm" asChild>
+                    <a href={`/embed/${profileSlug}`} target="_blank" rel="noopener noreferrer">
+                      <ExternalLink className="h-4 w-4 mr-2" />
+                      Open Embed Preview
+                    </a>
+                  </Button>
                 </div>
               </CardContent>
             </Card>
