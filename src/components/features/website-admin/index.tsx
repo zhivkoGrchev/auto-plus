@@ -6,11 +6,28 @@ import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Clock, Home, Settings, Users, FileText, BarChart3, Menu, X, RefreshCw, ExternalLink, AlertCircle, TrendingUp, DollarSign, Car } from 'lucide-react'
+import {
+  Clock,
+  Home,
+  Settings,
+  Users,
+  FileText,
+  BarChart3,
+  Menu,
+  X,
+  RefreshCw,
+  ExternalLink,
+  AlertCircle,
+  TrendingUp,
+  DollarSign,
+  Car,
+  Code,
+} from 'lucide-react'
 import { OpeningHours } from './opening-hours'
+import { DeveloperTools } from './developer-tools'
 import { getCarsCount, getCarsTotalPrice } from '@/lib/actions/car.actions'
 
-type ActiveSection = 'overview' | 'opening-hours' | 'settings' | 'users' | 'content' | 'analytics'
+type ActiveSection = 'overview' | 'opening-hours' | 'settings' | 'users' | 'developer-tools' | 'analytics'
 
 interface CarStats {
   carsCount: number | null
@@ -77,9 +94,9 @@ export const WebsiteAdmin = ({ profileSlug }: WebsiteAdminProps) => {
       icon: Clock,
     },
     {
-      id: 'content' as const,
-      label: 'Content',
-      icon: FileText,
+      id: 'developer-tools' as const,
+      label: 'Developer Tools',
+      icon: Code,
     },
     {
       id: 'users' as const,
@@ -222,13 +239,13 @@ export const WebsiteAdmin = ({ profileSlug }: WebsiteAdminProps) => {
                       variant="outline"
                       size="sm"
                       onClick={() => {
-                        setActiveSection('content')
+                        setActiveSection('developer-tools')
                         setIsMobileMenuOpen(false)
                       }}
                       className="justify-start"
                     >
-                      <FileText className="mr-2 h-4 w-4" />
-                      Edit Content
+                      <Code className="mr-2 h-4 w-4" />
+                      Developer Tools
                     </Button>
                     <Button
                       variant="outline"
@@ -268,21 +285,8 @@ export const WebsiteAdmin = ({ profileSlug }: WebsiteAdminProps) => {
           </div>
         )
 
-      case 'content':
-        return (
-          <div>
-            <h2 className="text-2xl font-bold mb-6">Content Management</h2>
-            <Card>
-              <CardContent className="p-6">
-                <div className="text-center py-12">
-                  <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">Content Management</h3>
-                  <p className="text-muted-foreground">Content management features coming soon...</p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )
+      case 'developer-tools':
+        return <DeveloperTools profileSlug={profileSlug} />
 
       case 'users':
         return (
@@ -318,88 +322,14 @@ export const WebsiteAdmin = ({ profileSlug }: WebsiteAdminProps) => {
 
       case 'settings':
         return (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">Website Settings</h2>
-
-            {/* Embed Code Card */}
+          <div>
+            <h2 className="text-2xl font-bold mb-6">Settings</h2>
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <FileText className="h-5 w-5" />
-                  Embed Code
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-sm text-muted-foreground">
-                  Copy this code to embed your car inventory on any external website. The widget is read-only and updates automatically when you add or remove
-                  cars.
-                </p>
-
-                {/* Light Theme */}
-                <div>
-                  <Label className="text-sm font-semibold mb-2 block">Light Theme:</Label>
-                  <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto text-xs">
-                    {`<iframe 
-  src="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/embed/${profileSlug}"
-  width="100%"
-  height="800"
-  frameborder="0"
-  style="border: none;"
-  title="Car Inventory"
-></iframe>`}
-                  </pre>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="mt-2"
-                    onClick={() => {
-                      navigator.clipboard.writeText(
-                        `<iframe src="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/embed/${profileSlug}" width="100%" height="800" frameborder="0" style="border: none;" title="Car Inventory"></iframe>`
-                      )
-                      alert('Copied to clipboard!')
-                    }}
-                  >
-                    Copy Light Theme Code
-                  </Button>
-                </div>
-
-                {/* Dark Theme */}
-                <div>
-                  <Label className="text-sm font-semibold mb-2 block">Dark Theme:</Label>
-                  <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto text-xs">
-                    {`<iframe 
-  src="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/embed/${profileSlug}?theme=dark"
-  width="100%"
-  height="800"
-  frameborder="0"
-  style="border: none;"
-  title="Car Inventory"
-></iframe>`}
-                  </pre>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="mt-2"
-                    onClick={() => {
-                      navigator.clipboard.writeText(
-                        `<iframe src="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/embed/${profileSlug}?theme=dark" width="100%" height="800" frameborder="0" style="border: none;" title="Car Inventory"></iframe>`
-                      )
-                      alert('Copied to clipboard!')
-                    }}
-                  >
-                    Copy Dark Theme Code
-                  </Button>
-                </div>
-
-                {/* Preview Link */}
-                <div className="pt-4 border-t">
-                  <Label className="text-sm font-semibold mb-2 block">Preview:</Label>
-                  <Button variant="default" size="sm" asChild>
-                    <a href={`/embed/${profileSlug}`} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="h-4 w-4 mr-2" />
-                      Open Embed Preview
-                    </a>
-                  </Button>
+              <CardContent className="p-6">
+                <div className="text-center py-12">
+                  <Settings className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">Settings Dashboard</h3>
+                  <p className="text-muted-foreground">Settings dashboard coming soon...</p>
                 </div>
               </CardContent>
             </Card>
