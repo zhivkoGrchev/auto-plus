@@ -4,14 +4,19 @@ import PrintButton from '@/components/features/car-details/print-button'
 import { getTranslations } from 'next-intl/server'
 
 interface PageProps {
-  params: { id: string }
-  searchParams?: { source?: string }
+  profileSlug: string
+  params: Promise<{
+    id: string
+  }>
+  searchParams?: Promise<{ source?: string }>
 }
 
-export default async function CarDetailsPage({ params, searchParams }: PageProps) {
-  const backLink = searchParams?.source === 'admin' ? '/admin' : `/${searchParams?.source || ''}`
+export default async function CarDetailsPage({ profileSlug, ...props }: PageProps) {
+  const params = await props.params
+  const searchParams = await props.searchParams
+  const { id } = params
+  const backLink = searchParams?.source === 'admin' ? '/admin' : `/${profileSlug}`
   const t = await getTranslations('AddCarDialog')
-  const id = params.id
 
   const car = await prisma.car.findUnique({
     where: { id },
