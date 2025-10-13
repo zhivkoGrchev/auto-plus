@@ -37,20 +37,27 @@ export async function getCarModelsByBrand(brandId: string): Promise<CarModel[]> 
   }
 }
 
-export async function createCar(carData: AddCarData): Promise<{ success: boolean; errors?: Record<string, string[]> }> {
+export async function createCar(carData: AddCarData): Promise<{ 
+  success: boolean
+  errors?: Record<string, string[]>
+  data?: { id: string }
+}> {
   try {
     const schema = await createInsertCarSchema()
     const parsedData = schema.parse(carData)
 
     console.log('Parsed Car Data:', parsedData)
 
-    await prisma.car.create({
+    const newCar = await prisma.car.create({
       data: {
         ...parsedData,
       },
     })
 
-    return { success: true }
+    return { 
+      success: true,
+      data: { id: newCar.id }  // Return the car ID
+    }
   } catch (error) {
     console.error('Error creating car:', error)
     if (error instanceof ZodError) {
@@ -191,13 +198,69 @@ export async function searchCars(searchTerm: string): Promise<CarExtended[]> {
   }
 }
 
+async function deleteFromPinata(cid: string) {
+  try {
+    const response = await fetch(`https://api.pinata.cloud/pinning/unpin/${cid}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${process.env.PINATA_JWT}`,
+      },
+    })
+
+    if (!response.ok) {
+      console.error(`Failed to delete ${cid} from Pinata:`, await response.text())
+      return false
+    }
+
+    console.log(`Successfully deleted ${cid} from Pinata`)
+    return true
+  } catch (error) {
+    console.error(`Error deleting ${cid} from Pinata:`, error)
+    return false
+  }
+}
+
 export async function deleteCar(id: string): Promise<{ success: boolean; errors?: Record<string, string[]> }> {
   try {
+    // First, get the car with all its images
+    const car = await prisma.car.findUnique({
+      where: { id },
+      include: {
+        images: true,
+      },
+    })
+
+    if (!car) {
+      return { success: false, errors: { form: ['Car not found.'] } }
+    }
+
+    // Collect all CIDs to delete from Pinata
+    const cidsToDelete: string[] = []
+    
+    // Add main image CID if exists
+    if (car.imageHash) {
+      cidsToDelete.push(car.imageHash)
+    }
+
+    // Add gallery image CIDs
+    for (const image of car.images) {
+      if (image.imageHash) {
+        cidsToDelete.push(image.imageHash)
+      }
+    }
+
+    // Delete the car (this will cascade delete the CarImage records)
     await prisma.car.delete({
       where: { id },
     })
+
+    // Delete images from Pinata (do this after DB deletion to ensure data integrity)
+    const deletePromises = cidsToDelete.map(cid => deleteFromPinata(cid))
+    await Promise.allSettled(deletePromises) // Use allSettled to not fail if some deletions fail
+
     return { success: true }
   } catch (error) {
+    console.error('Error deleting car:', error)
     return { success: false, errors: { form: ['Failed to delete car.'] } }
   } finally {
     await prisma.$disconnect()
@@ -309,7 +372,11 @@ export async function toggleCarListing(
 export async function updateCar(
   carId: string,
   carData: Partial<AddCarData>
-): Promise<{ success: boolean; errors?: Record<string, string[]> }> {
+): Promise<{ 
+  success: boolean
+  errors?: Record<string, string[]>
+  data?: { id: string }
+}> {
   try {
     const schema = await createInsertCarSchema()
     const parsedData = schema.partial().parse(carData)
@@ -322,7 +389,10 @@ export async function updateCar(
       },
     })
 
-    return { success: true }
+    return { 
+      success: true,
+      data: { id: carId }  // Return the car ID for consistency
+    }
   } catch (error) {
     console.error('Error updating car:', error)
     if (error instanceof ZodError) {

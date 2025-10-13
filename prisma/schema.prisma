@@ -39,6 +39,7 @@ model Car {
   description     String?
   imageHash       String? // IPFS hash from Pinata
   imageUrl        String? // Gateway URL
+  images          CarImage[]
   listedOnWebsite Boolean      @default(false)
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
@@ -46,6 +47,20 @@ model Car {
   profile Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
   brand   CarBrand @relation(fields: [brandId], references: [id])
   model   CarModel @relation(fields: [modelId], references: [id])
+}
+
+model CarImage {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  carId     String   @db.Uuid
+  car       Car      @relation(fields: [carId], references: [id], onDelete: Cascade)
+  imageUrl  String
+  imageHash String?  // IPFS hash from Pinata
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([carId])
+  @@map("car_image")
 }
 
 model CarBrand {

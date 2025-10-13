@@ -125,8 +125,8 @@ export const AddCarDialog = ({ mode = 'add', car = null, profileId, onUpdate }: 
   const [isPendingModels, startTransitionModels] = useTransition()
   const [isPendingImage, startTransitionImage] = useTransition()
   const [isOpen, setIsOpen] = useState(false)
-  const [selectedImage, setSelectedImage] = useState<File | null>(null)
-  const [imagePreview, setImagePreview] = useState<string>('')
+  const [selectedImages, setSelectedImages] = useState<File[]>([])
+  const [imagePreviews, setImagePreviews] = useState<string[]>([])
   const t = useTranslations('AddCarDialog')
 
   // Initialize form data when editing
@@ -158,7 +158,7 @@ export const AddCarDialog = ({ mode = 'add', car = null, profileId, onUpdate }: 
         })
 
         if (car.imageUrl) {
-          setImagePreview(car.imageUrl)
+          setImagePreviews([car.imageUrl])
         }
       }
     }
@@ -209,58 +209,61 @@ export const AddCarDialog = ({ mode = 'add', car = null, profileId, onUpdate }: 
   }
 
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      // Validate file type
-      if (!file.type.startsWith('image/')) {
-        setErrors((prev) => ({ ...prev, image: ['Please select a valid image file'] }))
-        return
-      }
+    const files = Array.from(e.target.files || [])
+    if (files.length === 0) return
 
-      // Show original file size
-      console.log(`Original file size: ${(file.size / 1024 / 1024).toFixed(2)} MB`)
+    try {
+      const processedImages: File[] = []
+      const newPreviews: string[] = []
 
-      try {
+      for (const file of files) {
+        if (!file.type.startsWith('image/')) {
+          console.warn(`File ${file.name} is not an image, skipping`)
+          continue
+        }
+
+        console.log(`Processing: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`)
+
         // Resize the image
-        const resizedFile = await resizeImage(file, 800, 600, 0.8) // Max 800x600, 80% quality
+        const resizedFile = await resizeImage(file, 800, 600, 0.8)
+        console.log(`Resized: ${(resizedFile.size / 1024 / 1024).toFixed(2)} MB`)
 
-        console.log(`Resized file size: ${(resizedFile.size / 1024 / 1024).toFixed(2)} MB`)
-
-        // Check resized file size (should be much smaller now)
         if (resizedFile.size > 2 * 1024 * 1024) {
-          // 2MB limit after resize
-          setErrors((prev) => ({ ...prev, image: ['Image is still too large after compression'] }))
-          return
+          console.warn(`${file.name} is still too large after compression, skipping`)
+          continue
         }
 
-        setSelectedImage(resizedFile)
+        processedImages.push(resizedFile)
 
-        // Create preview from resized image
-        const reader = new FileReader()
-        reader.onload = (e) => {
-          setImagePreview(e.target?.result as string)
-        }
-        reader.readAsDataURL(resizedFile)
-
-        // Clear any previous image errors
-        setErrors((prev) => {
-          const { image, ...rest } = prev
-          return rest
+        // Create preview
+        const preview = await new Promise<string>((resolve) => {
+          const reader = new FileReader()
+          reader.onload = (e) => resolve(e.target?.result as string)
+          reader.readAsDataURL(resizedFile)
         })
-      } catch (error) {
-        console.error('Image resize error:', error)
-        setErrors((prev) => ({ ...prev, image: ['Failed to process image. Please try another image.'] }))
+        newPreviews.push(preview)
       }
+
+      setSelectedImages((prev) => [...prev, ...processedImages])
+      setImagePreviews((prev) => [...prev, ...newPreviews])
+
+      // Clear errors
+      setErrors((prev) => {
+        const { image, ...rest } = prev
+        return rest
+      })
+
+      // Clear the file input
+      e.target.value = ''
+    } catch (error) {
+      console.error('Image processing error:', error)
+      setErrors((prev) => ({ ...prev, image: ['Failed to process images. Please try again.'] }))
     }
   }
 
-  const handleRemoveImage = () => {
-    setSelectedImage(null)
-    setImagePreview('')
-    setCarData((prev) => ({ ...prev, imageHash: '', imageUrl: '' }))
-    // Clear the file input
-    const fileInput = document.getElementById('car-image') as HTMLInputElement
-    if (fileInput) fileInput.value = ''
+  const handleRemoveImage = (index: number) => {
+    setSelectedImages((prev) => prev.filter((_, i) => i !== index))
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index))
   }
 
   const handleSubmit = async (e: MouseEvent) => {
@@ -270,47 +273,69 @@ export const AddCarDialog = ({ mode = 'add', car = null, profileId, onUpdate }: 
     startTransitionSubmit(async () => {
       const finalCarData = profileId ? { ...carData, profileId } : { ...carData }
 
-      // Upload image to Pinata if selected
-      if (selectedImage) {
-        try {
-          startTransitionImage(async () => {
-            const uploadResult = await uploadImageToServer(selectedImage)
+      if (selectedImages.length > 0) {
+        startTransitionImage(async () => {
+          try {
+            // Upload first image as main image
+            const mainUpload = await uploadImageToServer(selectedImages[0])
 
-            if (uploadResult.success) {
-              finalCarData.imageHash = uploadResult.cid
-              finalCarData.imageUrl = uploadResult.url
-            } else {
+            if (!mainUpload.success) {
               setErrors((prev) => ({
                 ...prev,
-                image: [uploadResult.error],
+                image: [mainUpload.error || 'Upload failed'],
               }))
               return
             }
 
-            // Now submit the car AFTER image upload
+            finalCarData.imageHash = mainUpload.cid
+            finalCarData.imageUrl = mainUpload.url
+
+            // Create or update the car
             const result = mode === 'edit' && car ? await updateCar(car.id, finalCarData) : await createCar(finalCarData)
-            if (result.success) {
-              setCarData(initialData)
-              setSelectedImage(null)
-              setImagePreview('')
-              // onSuccess ? onSuccess() : onUpdate?.()
-              onUpdate?.()
-              setIsOpen(false)
-            } else {
+
+            if (!result.success) {
               setErrors(result.errors || {})
+              return
             }
-          })
-        } catch (error) {
-          const e = error as Error
-          setErrors((prev) => ({ ...prev, image: [e.message] }))
-          return
-        }
+
+            const carId = mode === 'edit' && car ? car.id : result.data?.id
+
+            // Upload additional images to gallery
+            if (selectedImages.length > 1 && carId) {
+              for (let i = 1; i < selectedImages.length; i++) {
+                const upload = await uploadImageToServer(selectedImages[i])
+
+                if (upload.success) {
+                  await fetch('/api/car-images', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      carId: carId,
+                      imageUrl: upload.url,
+                      imageHash: upload.cid,
+                      order: i,
+                    }),
+                  })
+                }
+              }
+            }
+
+            // Reset form
+            setCarData(initialData)
+            setSelectedImages([])
+            setImagePreviews([])
+            onUpdate?.()
+            setIsOpen(false)
+          } catch (error) {
+            const e = error as Error
+            setErrors((prev) => ({ ...prev, image: [e.message] }))
+          }
+        })
       } else {
-        // No image selected, submit immediately
+        // No images selected
         const result = mode === 'edit' && car ? await updateCar(car.id, finalCarData) : await createCar(finalCarData)
         if (result.success) {
           setCarData(initialData)
-          // onSuccess ? onSuccess() : onUpdate?.()
           onUpdate?.()
           setIsOpen(false)
         } else {
@@ -337,27 +362,43 @@ export const AddCarDialog = ({ mode = 'add', car = null, profileId, onUpdate }: 
           <DialogTitle>{mode === 'edit' ? 'Edit Car' : t('title')}</DialogTitle>
           <DialogDescription>{mode === 'edit' ? 'Update car information' : t('description')}</DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col items-center mb-6">
-          {imagePreview ? (
-            <div className="relative">
-              <img src={imagePreview} alt="Car preview" className="size-32 object-cover rounded-md border-2 border-neutral-300" />
-              <Button type="button" variant="destructive" size="sm" className="absolute -top-2 -right-2 size-6 p-0" onClick={handleRemoveImage}>
-                <FaTrash className="size-3" />
-              </Button>
+        {/* Image Upload Section */}
+        <div className="mb-6">
+          <Label className="block mb-2">{t('uploadImage')}</Label>
+
+          {/* Image Previews Grid */}
+          {imagePreviews.length > 0 && (
+            <div className="grid grid-cols-4 gap-2 mb-4">
+              {imagePreviews.map((preview, index) => (
+                <div key={index} className="relative">
+                  <img src={preview} alt={`Preview ${index + 1}`} className="w-full h-24 object-cover rounded-md border-2 border-neutral-300" />
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="sm"
+                    className="absolute -top-2 -right-2 size-6 p-0"
+                    onClick={() => handleRemoveImage(index)}
+                  >
+                    <FaTrash className="size-3" />
+                  </Button>
+                  {index === 0 && <span className="absolute bottom-1 left-1 bg-blue-500 text-white text-xs px-2 py-0.5 rounded">Main</span>}
+                </div>
+              ))}
             </div>
-          ) : (
-            <Label className="flex flex-col justify-center items-center size-32 gap-2 border-2 border-dashed border-neutral-700 dark:border-neutral-300 rounded-md cursor-pointer bg-cyan-100 hover:bg-cyan-200 dark:bg-cyan-900 dark:hover:bg-cyan-800">
-              {isPendingImage ? (
-                <FaSpinner className="size-8 animate-spin text-neutral-700 dark:text-neutral-300" />
-              ) : (
-                <>
-                  <FaImage className="size-8 text-neutral-700 dark:text-neutral-300" />
-                  <span className="text-xs text-neutral-700 dark:text-neutral-300">{t('uploadImage')}</span>
-                </>
-              )}
-              <input type="file" id="car-image" className="hidden" accept="image/*" onChange={handleImageChange} disabled={isPendingImage} />
-            </Label>
           )}
+
+          {/* Upload Button */}
+          <Label className="flex flex-col justify-center items-center h-24 gap-2 border-2 border-dashed border-neutral-700 dark:border-neutral-300 rounded-md cursor-pointer bg-cyan-100 hover:bg-cyan-200 dark:bg-cyan-900 dark:hover:bg-cyan-800">
+            {isPendingImage ? (
+              <FaSpinner className="size-8 animate-spin text-neutral-700 dark:text-neutral-300" />
+            ) : (
+              <>
+                <FaImage className="size-8 text-neutral-700 dark:text-neutral-300" />
+                <span className="text-xs text-neutral-700 dark:text-neutral-300">{imagePreviews.length > 0 ? 'Add More Images' : t('uploadImage')}</span>
+              </>
+            )}
+            <input type="file" id="car-image" className="hidden" accept="image/*" multiple onChange={handleImageChange} disabled={isPendingImage} />
+          </Label>
           {getFieldError('image') && <sub className="mt-1 text-red-600">{getFieldError('image')}</sub>}
         </div>
 
