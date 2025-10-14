@@ -3,7 +3,11 @@
 import { useState } from 'react'
 import { FaPhone } from 'react-icons/fa'
 
-export const WebsiteHeader = () => {
+interface WebsiteHeaderProps {
+  profileSlug: string
+}
+
+export const WebsiteHeader = ({ profileSlug }: WebsiteHeaderProps) => {
   const [menuOpen, setMenuOpen] = useState(false)
   const phoneNumber = '4915257539557' // <-- change to your number (without +)
   const message = 'Hallo, ich interessiere mich für Ihre Autos!'
@@ -11,18 +15,18 @@ export const WebsiteHeader = () => {
   return (
     <header className="w-full bg-cyan-900 text-white shadow-md">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <a href="/website" className="flex items-center gap-2">
+        <a href={`/${profileSlug}`} className="flex items-center gap-2">
           <span className="text-2xl font-bold tracking-wide">Firmenname</span>
         </a>
 
         <nav className="hidden md:flex items-center gap-6 text-lg">
-          <a href="/website" className="hover:text-cyan-200 transition">
+          <a href={`/${profileSlug}`} className="hover:text-cyan-200 transition">
             Startseite
           </a>
-          <a href="/website/location" className="hover:text-cyan-200 transition">
+          <a href={`/${profileSlug}/location`} className="hover:text-cyan-200 transition">
             Standort
           </a>
-          <a href="/website/contact" className="hover:text-cyan-200 transition">
+          <a href={`/${profileSlug}/contact`} className="hover:text-cyan-200 transition">
             Kontakt
           </a>
           <a
@@ -42,13 +46,13 @@ export const WebsiteHeader = () => {
 
       {menuOpen && (
         <div className="md:hidden bg-cyan-600 px-6 py-4 space-y-4">
-          <a href="/website" className="block hover:text-cyan-200 transition">
+          <a href={`/${profileSlug}`} className="block hover:text-cyan-200 transition">
             Startseite
           </a>
-          <a href="/website/location" className="block hover:text-cyan-200 transition">
+          <a href={`/${profileSlug}/location`} className="block hover:text-cyan-200 transition">
             Standort
           </a>
-          <a href="/website/contact" className="block hover:text-cyan-200 transition">
+          <a href={`/${profileSlug}/contact`} className="block hover:text-cyan-200 transition">
             Kontakt
           </a>
           <a

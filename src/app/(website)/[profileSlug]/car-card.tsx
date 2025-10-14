@@ -3,14 +3,14 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 
 interface CarCardProps {
-  slug: string
+  profileSlug: string
 }
 
-export const CarCard = async ({ slug }: CarCardProps) => {
+export const CarCard = async ({ profileSlug }: CarCardProps) => {
   // Find Profile by slug (not User!)
   const profile = await prisma.profile.findUnique({
     where: {
-      slug: slug,
+      slug: profileSlug,
     },
   })
 
@@ -71,7 +71,7 @@ export const CarCard = async ({ slug }: CarCardProps) => {
                       }).format(car.price)
                     : '—'}
                 </span>
-                <Link href={`/${slug}/${car.id}`}>
+                <Link href={`/${profileSlug}/${car.id}`}>
                   <Button className="cursor-pointer" variant="outline" size="sm">
                     Details
                   </Button>

@@ -2,13 +2,13 @@ import { CarCard } from './car-card'
 
 interface PageProps {
   params: {
-    slug: string
+    profileSlug: string
   }
 }
 
 export default async function WebsiteHomePage(props: PageProps) {
   const params = await props.params
-  const { slug } = params
+  const { profileSlug } = params
 
   return (
     <>
@@ -18,7 +18,7 @@ export default async function WebsiteHomePage(props: PageProps) {
           <p className="text-lg">Entdecken Sie unsere Auswahl an Fahrzeugen für jeden Lebensstil.</p>
         </div>
       </section>
-      <CarCard slug={slug} />
+      <CarCard profileSlug={profileSlug} />
     </>
   )
 }

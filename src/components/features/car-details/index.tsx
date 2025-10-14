@@ -1,21 +1,31 @@
 import { prisma } from '@/db/prisma'
+import CarGallery from './car-gallery'
 import Link from 'next/link'
 import PrintButton from '@/components/features/car-details/print-button'
 import { getTranslations } from 'next-intl/server'
 
 interface PageProps {
-  params: { id: string }
-  searchParams?: { source?: string }
+  profileSlug: string
+  params: Promise<{
+    id: string
+  }>
+  searchParams?: Promise<{ source?: string }>
 }
 
-export default async function CarDetailsPage({ params, searchParams }: PageProps) {
-  const backLink = searchParams?.source === 'admin' ? '/admin' : `/${searchParams?.source || ''}`
+export default async function CarDetailsPage({ profileSlug, ...props }: PageProps) {
+  const params = await props.params
+  const searchParams = await props.searchParams
+  const { id } = params
+  const backLink = searchParams?.source === 'admin' ? '/admin' : `/${profileSlug}`
   const t = await getTranslations('AddCarDialog')
-  const id = params.id
 
   const car = await prisma.car.findUnique({
     where: { id },
-    include: { brand: true, model: true },
+    include: {
+      brand: true,
+      model: true,
+      images: { orderBy: { order: 'asc' } },
+    },
   })
 
   if (!car) {
@@ -62,25 +72,20 @@ export default async function CarDetailsPage({ params, searchParams }: PageProps
 
       {/* Layout */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-        <div className="md:col-span-2">
-          <div className="w-full h-80 bg-muted flex items-center justify-center rounded-xl border border-dashed overflow-hidden">
-            {car.imageUrl ? (
-              <img src={car.imageUrl} alt={`${car.brand?.name} ${car.model?.name}`} className="w-full h-full object-cover" />
-            ) : (
-              <span className="text-muted-foreground">No image available</span>
-            )}
-          </div>
+        {/* Gallery and Description */}
+        <div className="md:col-span-2 space-y-6">
+          <CarGallery images={car.images} mainImageUrl={car.imageUrl} carName={`${car.brand?.name} ${car.model?.name}`} />
 
           {car.description && (
-            <div className="mt-6">
+            <div>
               <h2 className="text-xl font-semibold mb-2">Description</h2>
               <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">{car.description}</p>
             </div>
           )}
         </div>
 
-        {/* Sidebar details */}
-        <aside className="space-y-4 text-sm mx-auto w-full md:w-64">
+        {/* Sidebar Details */}
+        <aside className="space-y-4 text-sm">
           <div className="flex justify-between border-b pb-2">
             <span className="font-medium">{t('power')}</span>
             <span>
@@ -113,14 +118,14 @@ export default async function CarDetailsPage({ params, searchParams }: PageProps
           </div>
           <div className="flex justify-between border-b pb-2">
             <span className="font-medium">{t('vin')}</span>
-            <span>{car.vin ?? '—'}</span>
+            <span className="text-xs break-all">{car.vin ?? '—'}</span>
           </div>
-          <div className="flex justify-between border-b pb-2">
-            <span className="font-medium">{t('price')}</span>
-            <span>{formatCurrency(car.price as number)}</span>
+          <div className="flex justify-between border-b pb-2 text-lg font-semibold">
+            <span>{t('price')}</span>
+            <span className="text-blue-600">{formatCurrency(car.price as number)}</span>
           </div>
-          <div className="flex justify-between pt-8">
-            <span className="font-medium">{t('created')}</span>
+          <div className="flex justify-between pt-4 text-xs text-muted-foreground">
+            <span>Created</span>
             <span>{formatDate(car.createdAt)}</span>
           </div>
         </aside>
