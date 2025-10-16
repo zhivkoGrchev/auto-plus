@@ -123,9 +123,10 @@ export const columns = (
     },
     cell: ({ row }) => {
       const amount = Number.parseFloat(row.getValue('price'))
-      const formatted = new Intl.NumberFormat('en-US', {
+      const formatted = new Intl.NumberFormat('de-DE', {
         style: 'currency',
         currency: 'EUR',
+        maximumFractionDigits: 2,
       }).format(amount)
       return <div className="text-right font-medium">{formatted}</div>
     },

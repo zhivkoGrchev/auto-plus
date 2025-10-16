@@ -16,7 +16,8 @@ export default async function CarDetailsPage({ profileSlug, ...props }: PageProp
   const params = await props.params
   const searchParams = await props.searchParams
   const { id } = params
-  const backLink = searchParams?.source === 'admin' ? '/admin' : `/${profileSlug}`
+  const source = searchParams?.source
+  const backLink = source === 'admin' ? '/admin' : source === 'embed' ? `/embed/${profileSlug}` : `/${profileSlug}`
   const t = await getTranslations('AddCarDialog')
 
   const car = await prisma.car.findUnique({
@@ -43,7 +44,7 @@ export default async function CarDetailsPage({ profileSlug, ...props }: PageProp
   const formatCurrency = (v: number | null | undefined) =>
     v == null
       ? '—'
-      : new Intl.NumberFormat('en-US', {
+      : new Intl.NumberFormat('de-DE', {
           style: 'currency',
           currency: 'EUR',
           maximumFractionDigits: 0,

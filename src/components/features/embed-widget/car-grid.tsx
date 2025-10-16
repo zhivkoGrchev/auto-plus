@@ -80,7 +80,13 @@ export function CarGrid({ cars, theme = 'light', profileSlug }: CarGridProps) {
                     isDark ? 'bg-blue-600/90 text-white' : 'bg-white/95 text-blue-600'
                   }`}
                 >
-                  €{car.price.toLocaleString()}
+                  {car.price
+                    ? new Intl.NumberFormat('de-DE', {
+                        style: 'currency',
+                        currency: 'EUR',
+                        maximumFractionDigits: 0,
+                      }).format(car.price)
+                    : '—'}
                 </div>
               </div>
 
@@ -163,7 +169,7 @@ export function CarGrid({ cars, theme = 'light', profileSlug }: CarGridProps) {
 
                 {/* View Details Button */}
                 <a
-                  href={`/embed/${profileSlug}/${car.id}${theme === 'dark' ? '?theme=dark' : ''}`}
+                  href={`/embed/${profileSlug}/${car.id}?source=embed`}
                   rel="noopener noreferrer"
                   className={`block w-full text-center px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${
                     isDark
