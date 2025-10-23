@@ -1,5 +1,5 @@
 import { APP_NAME } from '@/lib/constants'
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Nunito_Sans } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
 import { NextIntlClientProvider } from 'next-intl'
@@ -12,6 +12,11 @@ const fontNunitoSans = Nunito_Sans({
   variable: '--font-nunito-sans',
   subsets: ['latin'],
 })
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+}
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Metadata')
@@ -30,7 +35,7 @@ export default async function RootLayout({ children }: LayoutProps) {
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body className={`${fontNunitoSans.variable} min-h-screen flex flex-col antialiased`}>
+      <body className={`${fontNunitoSans.variable} min-h-screen flex flex-col antialiased overflow-x-hidden`}>
         <ThemeProvider attribute="class" defaultTheme={defaultTheme} enableSystem disableTransitionOnChange>
           <NextIntlClientProvider>
             {children}
