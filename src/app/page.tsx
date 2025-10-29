@@ -9,7 +9,7 @@ export default function HomePage() {
       <Header>
         <Navbar />
       </Header>
-      <main className="flex grow">
+      <main className="flex-1 w-full">
         <Hero />
       </main>
       <Footer />
