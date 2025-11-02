@@ -1,10 +1,9 @@
-import { Header } from '@/components/layouts/header'
 import { Footer } from '@/components/layouts/footer'
+import { Header } from '@/components/layouts/header'
 import { Navbar } from '@/components/layouts/navbar'
 import { ToolBar } from '@/components/widgets/toolbar'
-import { Hero } from '@/components/layouts/hero'
 
-export default function HomePage() {
+export default function CustomerLayout({ children }: LayoutProps) {
   return (
     <>
       <Header>
@@ -12,9 +11,7 @@ export default function HomePage() {
           <ToolBar />
         </Navbar>
       </Header>
-      <main className="flex-1 w-full">
-        <Hero />
-      </main>
+      <main className="p-4 flex grow">{children}</main>
       <Footer />
     </>
   )

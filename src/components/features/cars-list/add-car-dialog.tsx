@@ -97,6 +97,7 @@ interface AddCarDialogProps {
 
 const initialData: AddCarData = {
   profileId: '',
+  locationId: '',
   brandId: '',
   modelId: '',
   year: 0,
@@ -137,6 +138,7 @@ export const AddCarDialog = ({ mode = 'add', car = null, profileId, onUpdate }: 
       if (isOpen) {
         setCarData({
           profileId: car.profileId,
+          locationId: car.locationId,
           brandId: car.brandId,
           modelId: car.modelId,
           year: car.year,

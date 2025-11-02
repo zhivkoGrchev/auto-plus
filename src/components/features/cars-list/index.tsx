@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { FaSpinner } from 'react-icons/fa'
-import { getProfiles } from '@/lib/actions/profile.actions'
+import { getProfilesWithLocations } from '@/lib/actions/profile.actions'
 import { getAllCars, deleteCar, toggleCarListing } from '@/lib/actions/car.actions'
 import type { Profile } from '@prisma/client'
 import type { CarExtended } from '@/lib/interfaces/car-extended'
@@ -21,7 +21,7 @@ export const CarsList = () => {
   const fetchProfiles = async () => {
     setLoading(true)
     try {
-      const { data, error } = await getProfiles()
+      const { data, error } = await getProfilesWithLocations()
       if (error || !data.length) {
         toast.error(error?.message || 'There are no profiles')
         return

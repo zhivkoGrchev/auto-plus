@@ -3,54 +3,17 @@
 import { headers } from 'next/headers'
 import { prisma } from '@/db/prisma'
 import { auth } from '@/lib/auth'
-import type { UserWithProfiles } from '@/lib/types/profile'
-import { CreateProfileData, EditProfileData, EditUserData } from '../validators/profile'
-import { Profile } from '@prisma/client'
+import type { ProfileWithLocations } from '../types/profile'
+import type { CreateProfileData, EditProfileData } from '../validators/profile'
+import type { CreateLocationData } from '../validators/location'
 
-export const getUserWithProfile = async (): Promise<Return<UserWithProfiles>> => {
+export const getProfilesWithLocations = async (): Promise<Return<ProfileWithLocations[]>> => {
   try {
     const session = await auth.api.getSession({ headers: await headers() })
     if (!session) {
       return { data: undefined, error: { message: 'You are not signed in' } }
     }
-    const user = await prisma.user.findFirst({ where: { id: session.user.id }, include: { profiles: true } })
-    if (!user) {
-      return { data: undefined, error: { message: 'You are not signed in' } }
-    }
-    return { data: user as UserWithProfiles, error: undefined }
-  } catch (error) {
-    const e = error as Error
-    console.error('Error fetching user with profile:', e.message)
-    throw error
-  } finally {
-    prisma.$disconnect()
-  }
-}
-
-export const editUser = async (formData: EditUserData): Promise<Return<string>> => {
-  try {
-    const session = await auth.api.getSession({ headers: await headers() })
-    if (!session) {
-      return { data: undefined, error: { message: 'You are not signed in' } }
-    }
-    await prisma.user.update({ data: formData, where: { id: session.user.id } })
-    return { data: 'User`s data has been successfully changed', error: undefined }
-  } catch (error) {
-    const e = error as Error
-    console.error('Error editing user:', e.message)
-    return { data: undefined, error: { message: e.message } }
-  } finally {
-    prisma.$disconnect()
-  }
-}
-
-export const getProfiles = async (): Promise<Return<Profile[]>> => {
-  try {
-    const session = await auth.api.getSession({ headers: await headers() })
-    if (!session) {
-      return { data: undefined, error: { message: 'You are not signed in' } }
-    }
-    const profiles = await prisma.profile.findMany({ where: { userId: session.user.id } })
+    const profiles = await prisma.profile.findMany({ where: { userId: session.user.id }, include: { locations: true } })
     if (!profiles) {
       return { data: undefined, error: { message: 'There are no profiles' } }
     }
@@ -116,6 +79,25 @@ export const deleteProfile = async (id: string): Promise<Return<string>> => {
   } catch (error) {
     const e = error as Error
     console.error('Error deleting profile:', e.message)
+    return { data: undefined, error: { message: e.message } }
+  } finally {
+    await prisma.$disconnect()
+  }
+}
+
+export const createLocation = async (locationData: CreateLocationData, profileId: string): Promise<Return<string>> => {
+  try {
+    const session = await auth.api.getSession({ headers: await headers() })
+    if (!session) {
+      return { data: undefined, error: { message: 'You are not signed in' } }
+    }
+    await prisma.location.create({
+      data: { ...locationData, profileId },
+    })
+    return { data: 'Location was successfully created', error: undefined }
+  } catch (error) {
+    const e = error as Error
+    console.error('Error creating profile:', e.message)
     return { data: undefined, error: { message: e.message } }
   } finally {
     await prisma.$disconnect()

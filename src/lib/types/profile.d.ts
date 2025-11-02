@@ -1,11 +1,5 @@
-import type { Account, User } from '@prisma/client'
-import type { Profile } from '@prisma/client'
+import type { Account, Location, Profile, User } from '@prisma/client'
 
-export interface UserWithProfiles extends User {
-  profiles: Profile[]
+export interface ProfileWithLocations extends Profile {
+  locations: Location[]
 }
-
-export type EditUserData = Partial<Pick<User, 'name' | 'email'>>
-export type EditPassword = NonNullableFields<Pick<Account, 'password'>, 'password'>
-
-export type EditProfileData = Pick<Profile, 'organization' | 'address' | 'phoneNumber'>
