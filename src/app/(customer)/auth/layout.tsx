@@ -3,7 +3,7 @@ import { Header } from '@/components/layouts/header'
 import { Navbar } from '@/components/layouts/navbar'
 import { ToolBar } from '@/components/widgets/toolbar'
 
-export default function CustomerLayout({ children }: LayoutProps) {
+export default function CustomerAuthLayout({ children }: LayoutProps) {
   return (
     <>
       <Header>
