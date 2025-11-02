@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from 'next-intl'
 import { FaSpinner } from 'react-icons/fa'
 import { setUserLocale } from '@/services/locale'
 import type { Locale } from '@/lib/config/locale'
-import { Select, SelectContent, SelectItem, SelectTrigger } from '../ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/select'
 
 export const LocaleTool = () => {
   const [isPending, startTransition] = useTransition()

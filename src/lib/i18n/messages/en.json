@@ -10,6 +10,8 @@
   },
   "AuthTool": {
     "sign-in": "Sign in",
+    "editUser": "Edit user",
+    "changePassword": "Change password",
     "sign-out": "Sign out",
     "sign-out-message": "You are signed out"
   },
@@ -59,43 +61,31 @@
   "SignUpPage": {
     "title": "Sign up",
     "description": "Create your Account",
-    "logo": "Company logo",
-    "name": "Company name",
+    "image": "Avatar",
+    "name": "Username",
     "email": "E-Mail",
     "password": "Password",
+    "confirmPassword": "Confirm Password",
     "signUpButton": "Sign up",
     "alreadyHaveAccount": "Already have an account?",
     "signIn": "Sign in now!"
   },
   "EditUserDialog": {
-    "title": "Edit company data",
+    "title": "Edit user",
     "description": "Fill in the fields that you want to change",
-    "trigger": "Edit company data",
-    "logo": "Company logo",
-    "name": "Company name",
+    "image": "Avatar",
+    "name": "Username",
     "email": "E-Mail",
-    "password": "Password",
     "save": "Save"
   },
   "ChangePasswordDialog": {
     "title": "Change password",
     "description": "Fill in the following fields to change your password",
-    "trigger": "Change password",
     "currentPassword": "Current password",
     "newPassword": "New password",
-    "save": "Save"
-  },
-  "ProfileDialog": {
-    "creationTitle": "Create new profile",
-    "editingTitle": "Edit profile",
-    "creationDescription": "Fill in all the fields",
-    "editingDescription": "Fill in the fields that you want to change",
-    "creationTrigger": "Create profile",
-    "editingTrigger": "Edit profile",
-    "slug": "Slug",
-    "address": "Address",
-    "phoneNumber": "Phone number",
-    "save": "Save"
+    "confirmPassword": "Confirm Password",
+    "save": "Save",
+    "success": "The password has been successfully changed"
   },
   "AddCarDialog": {
     "addCar": "Add Car",
@@ -133,6 +123,25 @@
     "backToList": "Back to list",
     "print": "Print"
   },
+  "ProfilesList": {
+    "createProfile": "Create profile",
+    "editProfile": "Edit profile"
+  },
+  "ProfileDialog": {
+    "create": { "title": "Create new profile", "description": "Fill in all the fields" },
+    "edit": { "title": "Edit profile", "description": "Fill in the fields that you want to change" },
+    "slug": "Slug",
+    "logo": "Logo",
+    "company": "Company",
+    "save": "Save"
+  },
+  "LocationsDialog": {
+    "title": "Locations",
+    "description": "",
+    "create": { "title": "Create new location", "description": "Fill in all the fields" },
+    "edit": { "title": "Edit location", "description": "Fill in the fields that you want to change" },
+    "save": "Save"
+  },
   "MyWebsite": {
     "openWebsite": "Open my Website",
     "developerMode": "This feature is under development."
@@ -140,7 +149,15 @@
   "AuthValidations": {
     "name": "Name is required",
     "email": "Invalid E-Mail",
-    "password": "Password must contain at least 8 characters"
+    "password": "Password must contain at least 8 characters",
+    "confirmPassword": "Passwords not a match"
+  },
+  "ProfileValidations": {
+    "slug": "Invalid slug"
+  },
+  "LocationValidations": {
+    "phone": "Invalid phone number",
+    "email": "Invalid E-Mail"
   },
   "Validations": {
     "brand": "Brand is required",

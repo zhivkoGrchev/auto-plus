@@ -7,7 +7,8 @@ export const createInsertCarSchema = async () => {
   const t = await getTranslations('Validations')
 
   return z.object({
-    profileId: z.string().min(1, t('brand')),
+    profileId: z.string().min(1),
+    locationId: z.string().min(1),
     brandId: z.string().min(1, t('brand')),
     modelId: z.string().min(1, t('model')),
     powerKW: z.number().int().min(1, t('powerKW')),

@@ -4,18 +4,18 @@ import { type ChangeEvent, type MouseEvent, useState, useTransition } from 'reac
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { FaGoogle, FaSignInAlt, FaSpinner } from 'react-icons/fa'
 import { ZodError } from 'zod'
+import { Loader, LogIn } from 'lucide-react'
+import { FaGoogle } from 'react-icons/fa'
 import { toast } from 'sonner'
 import { signIn } from '@/lib/actions/auth.actions'
 import { useSession } from '@/lib/auth/client'
-import { useSignInSchema } from '@/lib/validators/auth'
+import { useSignInSchema, type SignInData } from '@/lib/validators/auth'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import type { SignInData } from '@/lib/types/auth'
 
 const initialFormData: SignInData = {
   email: '',
@@ -33,10 +33,7 @@ export const SignIn = () => {
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
+    setFormData((prev) => ({ ...prev, [name]: value }))
   }
   const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault()
@@ -99,19 +96,19 @@ export const SignIn = () => {
             {t('email')}
           </Label>
           <Input id="email" name="email" value={formData.email} onChange={handleInputChange} />
-          {formErrors['email'] && <sub className="mx-2 text-red-600">{formErrors['email'][0]}</sub>}
+          {formErrors.email && <span className="mx-2 text-xs text-red-600">{formErrors.email[0]}</span>}
         </fieldset>
         <fieldset className="flex flex-col gap-2">
           <Label className="mx-2" htmlFor="password">
             {t('password')}
           </Label>
           <Input id="password" name="password" type="password" value={formData.password} onChange={handleInputChange} />
-          {formErrors['password'] && <sub className="mx-2 text-red-600">{formErrors['password'][0]}</sub>}
+          {formErrors.password && <span className="mx-2 text-xs text-red-600">{formErrors.password[0]}</span>}
         </fieldset>
       </CardContent>
       <CardFooter className="flex flex-col items-stretch gap-4">
         <Button type="button" onClick={handleSubmit} disabled={isPendingSubmit}>
-          {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaSignInAlt />} {t('loginButton')}
+          {isPendingSubmit ? <Loader className="animate-spin" /> : <LogIn />} {t('loginButton')}
         </Button>
         <Link className="text-center" href="/auth/sign-up">
           {t('noAccount')}

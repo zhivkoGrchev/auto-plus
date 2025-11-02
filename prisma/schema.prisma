@@ -24,6 +24,7 @@ enum Transmission {
 model Car {
   id              String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   profileId       String       @db.Uuid
+  locationId      String       @db.Uuid
   brandId         String       @db.Uuid
   modelId         String       @db.Uuid
   powerKW         Int
@@ -37,16 +38,17 @@ model Car {
   vin             String?
   price           Float
   description     String?
-  imageHash       String? // IPFS hash from Pinata
   imageUrl        String? // Gateway URL
+  imageHash       String? // IPFS hash from Pinata
   images          CarImage[]
   listedOnWebsite Boolean      @default(false)
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
 
-  profile Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  brand   CarBrand @relation(fields: [brandId], references: [id])
-  model   CarModel @relation(fields: [modelId], references: [id])
+  brand    CarBrand @relation(fields: [brandId], references: [id])
+  model    CarModel @relation(fields: [modelId], references: [id])
+  profile  Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  location Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
 }
 
 model CarImage {
@@ -54,7 +56,7 @@ model CarImage {
   carId     String   @db.Uuid
   car       Car      @relation(fields: [carId], references: [id], onDelete: Cascade)
   imageUrl  String
-  imageHash String?  // IPFS hash from Pinata
+  imageHash String? // IPFS hash from Pinata
   order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -146,18 +148,38 @@ model Verification {
 }
 
 model Profile {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  slug        String   @unique
-  userId      String
-  address     String
-  phoneNumber String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  cars        Car[]
+  id        String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String
+  slug      String     @unique
+  logo      String?
+  company   String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  locations Location[]
+  cars      Car[]
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("profile")
+}
+
+model Location {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  profileId String   @db.Uuid
+  employee  String
+  phone     String
+  email     String
+  address   String
+  city      String
+  postcode  String
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  cars      Car[]
+
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@map("location")
 }
 
 model OpeningHours {

@@ -1,28 +1,27 @@
-import { ChangeEvent, MouseEvent, useState, useTransition } from 'react'
+import { type ChangeEvent, type ComponentProps, type MouseEvent, useState, useTransition } from 'react'
 import { useTranslations } from 'next-intl'
-import { FaCheck, FaSpinner } from 'react-icons/fa'
-import { LuKeyRound } from 'react-icons/lu'
+import { Check, Loader } from 'lucide-react'
 import { toast } from 'sonner'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { authClient } from '@/lib/auth/client'
+import { useChangePasswordSchema, type ChangePasswordData } from '@/lib/validators/user'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { authClient } from '@/lib/auth/client'
-import { useChangePasswordSchema, type ChangePasswordData } from '@/lib/validators/profile'
+import { Button } from '@/components/ui/button'
 
-const initialData: ChangePasswordData = {
+const initialFormData: ChangePasswordData = {
   currentPassword: '',
   newPassword: '',
+  confirmPassword: '',
 }
 
-export interface PasswordDialogProps {
+export interface PasswordDialogProps extends ComponentProps<typeof Dialog> {
   onUpdate?: () => void
 }
 
-export const PasswordDialog = ({ onUpdate }: PasswordDialogProps) => {
-  const [isOpen, setOpen] = useState(false)
-  const [formData, setFormData] = useState<ChangePasswordData>(initialData)
+export const PasswordDialog = ({ open, onOpenChange, onUpdate }: PasswordDialogProps) => {
+  const [formData, setFormData] = useState<ChangePasswordData>(initialFormData)
   const [formErrors, setFormErrors] = useState<Record<string, string[]>>({})
   const [isPendingSubmit, startTransitionSubmit] = useTransition()
   const schema = useChangePasswordSchema()
@@ -30,14 +29,13 @@ export const PasswordDialog = ({ onUpdate }: PasswordDialogProps) => {
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
+    setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
   const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault()
+
+    setFormErrors({})
     startTransitionSubmit(async () => {
       const validation = schema.safeParse(formData)
       if (validation.success) {
@@ -50,11 +48,10 @@ export const PasswordDialog = ({ onUpdate }: PasswordDialogProps) => {
           toast.error(error.message)
           return
         }
-        if (onUpdate) {
-          onUpdate()
-        }
-        toast.success('The password has been successfully changed')
-        setOpen(false)
+        onUpdate?.()
+        onOpenChange?.(false)
+        setFormData(initialFormData)
+        toast.success(t('success'))
       } else {
         const formattedErrors: Record<string, string[]> = {}
         for (const e of validation.error.errors) {
@@ -70,13 +67,7 @@ export const PasswordDialog = ({ onUpdate }: PasswordDialogProps) => {
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button>
-          <LuKeyRound />
-          {t('trigger')}
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{t('title')}</DialogTitle>
@@ -97,17 +88,22 @@ export const PasswordDialog = ({ onUpdate }: PasswordDialogProps) => {
               {t('currentPassword')}
             </Label>
             <Input id="currentPassword" name="currentPassword" type="password" value={formData.currentPassword} onChange={handleInputChange} />
-            {formErrors['currentPassword'] && <span className="col-start-2 mx-2 text-xs text-red-600">{formErrors['currentPassword'][0]}</span>}
+            {formErrors.currentPassword && <span className="col-start-2 mx-2 text-xs text-red-600">{formErrors.currentPassword[0]}</span>}
             <Label className="self-center" htmlFor="newPassword">
               {t('newPassword')}
             </Label>
             <Input id="newPassword" name="newPassword" type="password" value={formData.newPassword} onChange={handleInputChange} />
-            {formErrors['newPassword'] && <span className="col-start-2 mx-2 text-xs text-red-600">{formErrors['newPassword'][0]}</span>}
+            {formErrors.newPassword && <span className="col-start-2 mx-2 text-xs text-red-600">{formErrors.newPassword[0]}</span>}
+            <Label className="self-center" htmlFor="confirmPassword">
+              {t('confirmPassword')}
+            </Label>
+            <Input id="confirmPassword" name="confirmPassword" type="password" value={formData.confirmPassword} onChange={handleInputChange} />
+            {formErrors.confirmPassword && <span className="col-start-2 mx-2 text-xs text-red-600">{formErrors.confirmPassword[0]}</span>}
           </div>
         </div>
         <DialogFooter>
           <Button onClick={handleSubmit} disabled={isPendingSubmit}>
-            {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaCheck />} {t('save')}
+            {isPendingSubmit ? <Loader className="animate-spin" /> : <Check />} {t('save')}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,28 +1,26 @@
-import { ChangeEvent, MouseEvent, useState, useTransition } from 'react'
+import { type ChangeEvent, type ComponentProps, type MouseEvent, useState, useTransition } from 'react'
 import { useTranslations } from 'next-intl'
-import { FaCheck, FaSpinner } from 'react-icons/fa'
 import { toast } from 'sonner'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Check, Loader } from 'lucide-react'
+import { editUser } from '@/lib/actions/auth.actions'
+import { useEditUserSchema, type EditUserData } from '@/lib/validators/user'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { editUser } from '@/lib/actions/profile.actions'
-import { useEditUserSchema, type EditUserData } from '@/lib/validators/profile'
-import { LuBuilding } from 'react-icons/lu'
+import { Button } from '@/components/ui/button'
 
-const initialData: EditUserData = {
+const initialFormData: EditUserData = {
   name: '',
   email: '',
 }
 
-export interface UserDialogProps {
+export interface UserDialogProps extends ComponentProps<typeof Dialog> {
   onUpdate?: () => void
 }
 
-export const UserDialog = ({ onUpdate }: UserDialogProps) => {
-  const [isOpen, setOpen] = useState(false)
-  const [formData, setFormData] = useState<EditUserData>(initialData)
+export const UserDialog = ({ open, onOpenChange, onUpdate }: UserDialogProps) => {
+  const [formData, setFormData] = useState<EditUserData>(initialFormData)
   const [formErrors, setFormErrors] = useState<Record<string, string[]>>({})
   const [isPendingSubmit, startTransitionSubmit] = useTransition()
   const schema = useEditUserSchema()
@@ -30,10 +28,7 @@ export const UserDialog = ({ onUpdate }: UserDialogProps) => {
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
+    setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
   const handleSubmit = async (e: MouseEvent) => {
@@ -47,8 +42,9 @@ export const UserDialog = ({ onUpdate }: UserDialogProps) => {
           return
         }
         onUpdate?.()
+        onOpenChange?.(false)
+        setFormData(initialFormData)
         toast.success(data)
-        setOpen(false)
       } else {
         const formattedErrors: Record<string, string[]> = {}
         for (const e of validation.error.errors) {
@@ -64,13 +60,7 @@ export const UserDialog = ({ onUpdate }: UserDialogProps) => {
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button>
-          <LuBuilding />
-          {t('trigger')}
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{t('title')}</DialogTitle>
@@ -95,12 +85,12 @@ export const UserDialog = ({ onUpdate }: UserDialogProps) => {
               {t('email')}
             </Label>
             <Input id="email" name="email" type="email" value={formData.email} onChange={handleInputChange} />
-            {formErrors['email'] && <span className="col-start-2 mx-2 text-xs text-red-600">{formErrors['email'][0]}</span>}
+            {formErrors.email && <span className="col-start-2 mx-2 text-xs text-red-600">{formErrors.email[0]}</span>}
           </div>
         </div>
         <DialogFooter>
           <Button onClick={handleSubmit} disabled={isPendingSubmit}>
-            {isPendingSubmit ? <FaSpinner className="animate-spin" /> : <FaCheck />} {t('save')}
+            {isPendingSubmit ? <Loader className="animate-spin" /> : <Check />} {t('save')}
           </Button>
         </DialogFooter>
       </DialogContent>
