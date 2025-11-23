@@ -70,7 +70,7 @@
     "alreadyHaveAccount": "Haben Sie bereits ein Konto?",
     "signIn": "Jetzt anmelden!"
   },
-  "EditUserDialog": {
+  "UserDialog": {
     "title": "Benutzer bearbeiten",
     "description": "Füllen Sie die Felder aus, die Sie ändern möchten",
     "image": "Avatar",
@@ -78,7 +78,7 @@
     "email": "E-Mail",
     "save": "Speichern"
   },
-  "ChangePasswordDialog": {
+  "PasswordDialog": {
     "title": "Passwort ändern",
     "description": "Füllen Sie die folgenden Felder aus, um Ihr Passwort zu ändern",
     "currentPassword": "Aktuelles Passwort",
@@ -133,13 +133,19 @@
     "slug": "Slug",
     "logo": "Firmenzeichen",
     "company": "Unternehmen",
+    "location": {
+      "contactPerson": "Name",
+      "phone": "Phonenummer",
+      "email": "E-Mail",
+      "address": "Addresse",
+      "city": "Stadt",
+      "postcode": "Postcode"
+    },
     "save": "Speichern"
   },
   "LocationsDialog": {
     "title": "Standort",
     "description": "",
-    "create": { "title": "Neuen Standort erstellen", "description": "Füllen Sie alle Felder aus" },
-    "edit": { "title": "Standort bearbeiten", "description": "Füllen Sie die Felder aus, die Sie ändern möchten" },
     "save": "Speichern"
   },
   "MyWebsite": {
@@ -153,7 +159,9 @@
     "confirmPassword": "Passwörter stimmen nicht überein"
   },
   "ProfileValidations": {
-    "slug": "Ungültiges Slug"
+    "slug": "Ungültiges Slug",
+    "phone": "Ungültige Telefonnummer",
+    "email": "Ungültige E-Mail-Adresse"
   },
   "LocationValidations": {
     "phone": "Ungültige Telefonnummer",
@@ -171,5 +179,6 @@
     "price": "Preis ist erforderlich",
     "cubicCapacity": "Hubraum muss mindestens 49cc sein",
     "powerKW": "Leistung ist erforderlich"
-  }
+  },
+  "errors": {}
 }

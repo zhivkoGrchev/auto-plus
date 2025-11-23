@@ -4,8 +4,8 @@ import { headers } from 'next/headers'
 import { prisma } from '@/db/prisma'
 import { auth } from '@/lib/auth'
 import type { ProfileWithLocations } from '../types/profile'
-import type { CreateProfileData, EditProfileData } from '../validators/profile'
-import type { CreateLocationData } from '../validators/location'
+import type { CreateProfileWithLocationData, EditProfileData } from '../validators/profile'
+import type { CreateLocationData, EditLocationData } from '../validators/location'
 
 export const getProfilesWithLocations = async (): Promise<Return<ProfileWithLocations[]>> => {
   try {
@@ -27,15 +27,14 @@ export const getProfilesWithLocations = async (): Promise<Return<ProfileWithLoca
   }
 }
 
-export const createProfile = async (profileData: CreateProfileData): Promise<Return<string>> => {
+export const createProfileWithLocation = async ({ location: locationData, ...profileData }: CreateProfileWithLocationData): Promise<Return<string>> => {
   try {
     const session = await auth.api.getSession({ headers: await headers() })
     if (!session) {
       return { data: undefined, error: { message: 'You are not signed in' } }
     }
-    await prisma.profile.create({
-      data: { ...profileData, userId: session.user.id },
-    })
+    const profile = await prisma.profile.create({ data: { ...profileData, userId: session.user.id } })
+    await prisma.location.create({ data: { ...locationData, profileId: profile.id } })
     return { data: 'Profile was successfully created', error: undefined }
   } catch (error) {
     const e = error as Error
@@ -93,6 +92,25 @@ export const createLocation = async (locationData: CreateLocationData, profileId
     }
     await prisma.location.create({
       data: { ...locationData, profileId },
+    })
+    return { data: 'Location was successfully created', error: undefined }
+  } catch (error) {
+    const e = error as Error
+    console.error('Error creating profile:', e.message)
+    return { data: undefined, error: { message: e.message } }
+  } finally {
+    await prisma.$disconnect()
+  }
+}
+
+export const editLocation = async (locationData: EditLocationData): Promise<Return<string>> => {
+  try {
+    const session = await auth.api.getSession({ headers: await headers() })
+    if (!session) {
+      return { data: undefined, error: { message: 'You are not signed in' } }
+    }
+    await prisma.location.update({
+      data: { ...locationData },
     })
     return { data: 'Location was successfully created', error: undefined }
   } catch (error) {
