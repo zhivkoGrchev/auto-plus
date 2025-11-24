@@ -1,38 +1,39 @@
-import { useState, type ComponentProps } from 'react'
+import { useState, type JSX, type ComponentProps } from 'react'
 import { useTranslations } from 'next-intl'
-import { toast } from 'sonner'
 import { MapPinMinus, MapPinPen, MapPinPlus } from 'lucide-react'
-import { createLocation } from '@/lib/actions/profile.actions'
-import { LocationForm } from './location.form'
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
+import { CreateLocationForm } from './create-location.form'
 import type { ProfileWithLocations } from '@/lib/types/profile'
-import type { CreateLocationData, EditLocationData } from '@/lib/validators/location'
 
 export interface LocationsDialogProps extends ComponentProps<typeof Dialog> {
   profile: ProfileWithLocations
+  trigger?: JSX.Element
   onUpdate?: () => void
 }
 
-export const LocationsDialog = ({ open, onOpenChange, profile, onUpdate }: LocationsDialogProps) => {
-  const [showCreateLocationForm, setShowCreateLocationForm] = useState(false)
+export const LocationsDialog = ({ open, onOpenChange, profile, trigger, onUpdate }: LocationsDialogProps) => {
   const t = useTranslations('LocationsDialog')
+  const [showCreateLocationForm, setShowCreateLocationForm] = useState(false)
 
-  const handleSubmit = async (location: CreateLocationData | EditLocationData, show: boolean) => {
-    const { data, error } = await createLocation(location as CreateLocationData, profile.id)
-    if (error) {
-      toast.error(error.message)
-      return
-    }
+  const handleUpdate = () => {
     onUpdate?.()
-    setShowCreateLocationForm(show)
-    toast.success(data)
+    setShowCreateLocationForm(false)
   }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogTrigger asChild>
+        {!trigger ? (
+          <Button>
+            <MapPinPen /> Locations
+          </Button>
+        ) : (
+          trigger
+        )}
+      </DialogTrigger>
       <DialogContent className="min-w-4xl">
         <DialogHeader>
           <DialogTitle>{t('title')}</DialogTitle>
@@ -43,7 +44,7 @@ export const LocationsDialog = ({ open, onOpenChange, profile, onUpdate }: Locat
             <TableHeader>
               <TableRow>
                 <TableHead>Default</TableHead>
-                <TableHead>Employee</TableHead>
+                <TableHead>Contact Person</TableHead>
                 <TableHead>Phone number</TableHead>
                 <TableHead>E-Mail</TableHead>
                 <TableHead>Address</TableHead>
@@ -53,14 +54,14 @@ export const LocationsDialog = ({ open, onOpenChange, profile, onUpdate }: Locat
               </TableRow>
             </TableHeader>
             <TableBody>
-              {showCreateLocationForm && <LocationForm onSubmit={handleSubmit} />}
+              {showCreateLocationForm && <CreateLocationForm profileId={profile.id} onUpdate={handleUpdate} />}
               {profile.locations.length ? (
                 profile.locations.map((item) => (
                   <TableRow key={item.id}>
                     <TableCell>
                       <Switch checked={item.isDefault} />
                     </TableCell>
-                    <TableCell>{item.employee}</TableCell>
+                    <TableCell>{item.contactPerson}</TableCell>
                     <TableCell>{item.phone}</TableCell>
                     <TableCell>{item.email}</TableCell>
                     <TableCell>{item.address}</TableCell>

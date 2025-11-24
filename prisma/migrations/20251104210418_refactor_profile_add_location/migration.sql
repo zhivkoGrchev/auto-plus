@@ -7,19 +7,19 @@
 
 */
 -- AlterTable
-ALTER TABLE "public"."Car" ADD COLUMN     "locationId" UUID NOT NULL;
+ALTER TABLE "Car" ADD COLUMN     "locationId" UUID NOT NULL;
 
 -- AlterTable
-ALTER TABLE "public"."profile" DROP COLUMN "address",
+ALTER TABLE "profile" DROP COLUMN "address",
 DROP COLUMN "phoneNumber",
 ADD COLUMN     "company" TEXT,
 ADD COLUMN     "logo" TEXT;
 
 -- CreateTable
-CREATE TABLE "public"."location" (
+CREATE TABLE "location" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "profileId" UUID NOT NULL,
-    "employee" TEXT NOT NULL,
+    "contactPerson" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "address" TEXT NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE "public"."location" (
 );
 
 -- AddForeignKey
-ALTER TABLE "public"."Car" ADD CONSTRAINT "Car_locationId_fkey" FOREIGN KEY ("locationId") REFERENCES "public"."location"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Car" ADD CONSTRAINT "Car_locationId_fkey" FOREIGN KEY ("locationId") REFERENCES "location"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."location" ADD CONSTRAINT "location_profileId_fkey" FOREIGN KEY ("profileId") REFERENCES "public"."profile"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "location" ADD CONSTRAINT "location_profileId_fkey" FOREIGN KEY ("profileId") REFERENCES "profile"("id") ON DELETE CASCADE ON UPDATE CASCADE;

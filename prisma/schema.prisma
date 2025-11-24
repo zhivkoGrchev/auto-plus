@@ -164,18 +164,18 @@ model Profile {
 }
 
 model Location {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  profileId String   @db.Uuid
-  employee  String
-  phone     String
-  email     String
-  address   String
-  city      String
-  postcode  String
-  isDefault Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  cars      Car[]
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  profileId     String   @db.Uuid
+  contactPerson String
+  phone         String
+  email         String
+  address       String
+  city          String
+  postcode      String
+  isDefault     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  cars          Car[]
 
   profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 

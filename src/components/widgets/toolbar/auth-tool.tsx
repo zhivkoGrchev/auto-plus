@@ -7,8 +7,8 @@ import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 import { KeyRound, Loader, LogIn, LogOut, UserPen } from 'lucide-react'
 import { signOut, useSession } from '@/lib/auth/client'
-import { UserDialog } from '@/components/features/user/user.dialog'
-import { PasswordDialog } from '@/components/features/user/password.dialog'
+import { UserDialog } from '@/components/features/auth/user.dialog'
+import { PasswordDialog } from '@/components/features/auth/password.dialog'
 import {
   DropdownMenu,
   DropdownMenuContent,

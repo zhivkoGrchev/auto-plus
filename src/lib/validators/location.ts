@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl'
 export const useCreateLocationSchema = () => {
   const t = useTranslations('LocationValidations')
   return z.object({
-    employee: z.string().min(2),
+    contactPerson: z.string().min(2),
     phone: z
       .string()
       .regex(/^\+?[0-9]\d{1,14}$/, t('phone'))
@@ -20,15 +20,20 @@ export const useCreateLocationSchema = () => {
 export const useEditLocationSchema = () => {
   const t = useTranslations('LocationValidations')
   return z.object({
-    employee: z.string().optional(),
-    phone: z.preprocess(
-      (v) => (typeof v === 'string' && v === '' ? undefined : v),
-      z
-        .string()
-        .regex(/^\+?[0-9]\d{1,14}$/, t('phone'))
-        .optional()
-    ),
-    email: z.preprocess((v) => (typeof v === 'string' && v === '' ? undefined : v), z.string().email(t('email')).optional()),
+    contactPerson: z.string().optional(),
+    phone: z
+      .string()
+      .transform((v) => (v === '' ? undefined : v))
+      .pipe(
+        z
+          .string()
+          .regex(/^\+?[0-9]\d{1,14}$/, t('phone'))
+          .optional()
+      ),
+    email: z
+      .string()
+      .transform((v) => (v === '' ? undefined : v))
+      .pipe(z.string().email(t('email')).optional()),
     address: z
       .string()
       .transform((v) => (v === '' ? undefined : v))

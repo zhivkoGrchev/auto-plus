@@ -70,7 +70,7 @@
     "alreadyHaveAccount": "Already have an account?",
     "signIn": "Sign in now!"
   },
-  "EditUserDialog": {
+  "UserDialog": {
     "title": "Edit user",
     "description": "Fill in the fields that you want to change",
     "image": "Avatar",
@@ -78,7 +78,7 @@
     "email": "E-Mail",
     "save": "Save"
   },
-  "ChangePasswordDialog": {
+  "PasswordDialog": {
     "title": "Change password",
     "description": "Fill in the following fields to change your password",
     "currentPassword": "Current password",
@@ -133,13 +133,19 @@
     "slug": "Slug",
     "logo": "Logo",
     "company": "Company",
+    "location": {
+      "contactPerson": "Name",
+      "phone": "Phone",
+      "email": "E-Mail",
+      "address": "Address",
+      "city": "City",
+      "postcode": "Postcode"
+    },
     "save": "Save"
   },
   "LocationsDialog": {
     "title": "Locations",
     "description": "",
-    "create": { "title": "Create new location", "description": "Fill in all the fields" },
-    "edit": { "title": "Edit location", "description": "Fill in the fields that you want to change" },
     "save": "Save"
   },
   "MyWebsite": {
@@ -153,7 +159,9 @@
     "confirmPassword": "Passwords not a match"
   },
   "ProfileValidations": {
-    "slug": "Invalid slug"
+    "slug": "Invalid slug",
+    "phone": "Invalid phone number",
+    "email": "Invalid E-Mail"
   },
   "LocationValidations": {
     "phone": "Invalid phone number",
@@ -171,5 +179,6 @@
     "price": "Price is required",
     "cubicCapacity": "Cubic Capacity must be at least 49cc",
     "powerKW": "Power is required"
-  }
+  },
+  "errors": {}
 }

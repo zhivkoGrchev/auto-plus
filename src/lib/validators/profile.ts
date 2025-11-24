@@ -1,12 +1,14 @@
 import { z } from 'zod'
 import { useTranslations } from 'next-intl'
+import { useCreateLocationSchema } from './location'
 
-export const useCreateProfileSchema = () => {
+export const useCreateProfileWithLocationSchema = () => {
   const t = useTranslations('ProfileValidations')
   return z.object({
     slug: z.string().min(2, t('slug')),
     logo: z.string().optional(),
     company: z.string().optional(),
+    location: useCreateLocationSchema(),
   })
 }
 
@@ -29,5 +31,5 @@ export const useEditProfileSchema = () => {
   })
 }
 
-export type CreateProfileData = z.infer<ReturnType<typeof useCreateProfileSchema>>
+export type CreateProfileWithLocationData = z.infer<ReturnType<typeof useCreateProfileWithLocationSchema>>
 export type EditProfileData = z.infer<ReturnType<typeof useEditProfileSchema>>
