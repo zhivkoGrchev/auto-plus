@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, useTransition } from 'react'
+import Image from 'next/image'
 import { toast } from 'sonner'
 import { Loader, Trash } from 'lucide-react'
 import { deleteProfile, getProfilesWithLocations } from '@/lib/actions/profile.actions'
@@ -85,8 +86,10 @@ export const ProfilesList = () => {
           profiles?.map((item) => (
             <Card className="" key={item.id}>
               <CardContent className="flex flex-col gap-4">
-                <div className="flex gap-4">
-                  <div className="w-xs h-xs flex justify-center items-center rounded-xl border">{item.logo}</div>
+                <div className="flex items-center gap-4">
+                  <div className="p-2 flex flex-col justify-center items-center gap-2 rounded-xl border border-dashed">
+                    <Image src="/images/no-image.svg" width={96} height={96} alt="Logo" />
+                  </div>
                   <ul className="flex flex-col">
                     <li>
                       Company: <span className="font-bold">{item.company}</span>
