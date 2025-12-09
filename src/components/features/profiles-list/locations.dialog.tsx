@@ -1,38 +1,32 @@
-import { useState, type JSX, type ComponentProps } from 'react'
+import { useState, type ComponentProps } from 'react'
 import { useTranslations } from 'next-intl'
-import { MapPinMinus, MapPinPen, MapPinPlus } from 'lucide-react'
+import { MapPinPen, MapPinPlus } from 'lucide-react'
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
-import { Switch } from '@/components/ui/switch'
 import { CreateLocationForm } from './create-location.form'
 import type { ProfileWithLocations } from '@/lib/types/profile'
+import { EditLocationForm } from './edit-location.form'
 
 export interface LocationsDialogProps extends ComponentProps<typeof Dialog> {
   profile: ProfileWithLocations
-  trigger?: JSX.Element
   onUpdate?: () => void
 }
 
-export const LocationsDialog = ({ open, onOpenChange, profile, trigger, onUpdate }: LocationsDialogProps) => {
+export const LocationsDialog = ({ open, onOpenChange, profile, onUpdate }: LocationsDialogProps) => {
   const t = useTranslations('LocationsDialog')
   const [showCreateLocationForm, setShowCreateLocationForm] = useState(false)
 
   const handleUpdate = () => {
     onUpdate?.()
-    setShowCreateLocationForm(false)
   }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
-        {!trigger ? (
-          <Button>
-            <MapPinPen /> Locations
-          </Button>
-        ) : (
-          trigger
-        )}
+        <Button>
+          <MapPinPen /> Locations
+        </Button>
       </DialogTrigger>
       <DialogContent className="min-w-4xl">
         <DialogHeader>
@@ -56,27 +50,7 @@ export const LocationsDialog = ({ open, onOpenChange, profile, trigger, onUpdate
             <TableBody>
               {showCreateLocationForm && <CreateLocationForm profileId={profile.id} onUpdate={handleUpdate} />}
               {profile.locations.length ? (
-                profile.locations.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell>
-                      <Switch checked={item.isDefault} />
-                    </TableCell>
-                    <TableCell>{item.contactPerson}</TableCell>
-                    <TableCell>{item.phone}</TableCell>
-                    <TableCell>{item.email}</TableCell>
-                    <TableCell>{item.address}</TableCell>
-                    <TableCell>{item.city}</TableCell>
-                    <TableCell>{item.postcode}</TableCell>
-                    <TableCell className="flex justify-end gap-2">
-                      <Button variant="outline" disabled>
-                        <MapPinPen />
-                      </Button>
-                      <Button variant="destructive" disabled>
-                        <MapPinMinus />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))
+                profile.locations.map((item) => <EditLocationForm key={item.id} location={item} onUpdate={handleUpdate} />)
               ) : (
                 <TableRow>
                   <TableCell colSpan={8} className="p-4 text-xl text-center">

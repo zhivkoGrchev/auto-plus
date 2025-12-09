@@ -7,6 +7,7 @@ import { useCreateLocationSchema, type CreateLocationData } from '@/lib/validato
 import { TableCell, TableRow } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Switch } from '@/components/ui/switch'
 
 const initialFormData: CreateLocationData = {
   contactPerson: '',
@@ -27,6 +28,8 @@ export const CreateLocationForm = ({ profileId, onUpdate }: CreateLocationFormPr
   const schema = useCreateLocationSchema()
   const {
     register,
+    watch,
+    setValue,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<CreateLocationData>({ defaultValues: initialFormData, resolver: zodResolver(schema) })
@@ -43,7 +46,9 @@ export const CreateLocationForm = ({ profileId, onUpdate }: CreateLocationFormPr
 
   return (
     <TableRow>
-      <TableCell>&nbsp;</TableCell>
+      <TableCell>
+        <Switch name="isDefault" checked={watch('isDefault')} onCheckedChange={(value) => setValue('isDefault', value)} />
+      </TableCell>
       <TableCell>
         <Input className="w-full" {...register('contactPerson')} />
         {errors.contactPerson && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{errors.contactPerson.message}</span>}
@@ -69,7 +74,7 @@ export const CreateLocationForm = ({ profileId, onUpdate }: CreateLocationFormPr
         {errors.postcode && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{errors.postcode.message}</span>}
       </TableCell>
       <TableCell className="flex justify-end gap-2">
-        <Button onClick={handleSubmit(handleFormSubmit)} disabled={isSubmitting}>
+        <Button className="w-full" onClick={handleSubmit(handleFormSubmit)} disabled={isSubmitting}>
           {isSubmitting ? <Loader className="animate-spin" /> : <Check />} Save
         </Button>
       </TableCell>
