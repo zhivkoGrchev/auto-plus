@@ -101,7 +101,7 @@ export function DataTable<
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-2">
-        <Input placeholder="Search brand or model…" value={query} onChange={(e) => setQuery(e.target.value)} className="max-w-sm" />
+        <Input placeholder={t('search')} value={query} onChange={(e) => setQuery(e.target.value)} className="max-w-sm" />
         {query && (
           <Button variant="ghost" size="sm" onClick={() => setQuery('')}>
             Clear
@@ -110,7 +110,7 @@ export function DataTable<
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              Columns
+              {t('columns')}
               <BsChevronDown />
             </Button>
           </DropdownMenuTrigger>
@@ -158,7 +158,7 @@ export function DataTable<
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results.
+                  {t('noResults')}
                 </TableCell>
               </TableRow>
             )}
@@ -167,15 +167,17 @@ export function DataTable<
       </div>
 
       <div className="flex items-center justify-between">
+        {/*
         <div className="flex items-center justify-end space-x-2">
           {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
+        */}
         <div className="flex items-center justify-end space-x-2">
           <Button variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
-            Previous
+            {t('pervious')}
           </Button>
           <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
-            Next
+            {t('next')}
           </Button>
         </div>
       </div>
