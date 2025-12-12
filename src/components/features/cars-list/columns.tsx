@@ -1,6 +1,7 @@
 'use client'
 
 import type { ColumnDef } from '@tanstack/react-table'
+import type { useTranslations } from 'next-intl'
 import type { CarExtended } from '@/lib/interfaces/car-extended'
 import type { FuelType } from '@prisma/client'
 import { Switch } from '@/components/ui/switch'
@@ -20,14 +21,16 @@ import {
 export const columns = (
   handleDelete: (id: string) => void,
   handleToggleListing: (id: string, value: boolean) => Promise<void>,
-  handleEdit: (car: CarExtended) => void
+  handleEdit: (car: CarExtended) => void,
+  t: ReturnType<typeof useTranslations<'AddCarDialog'>>
 ): ColumnDef<CarExtended>[] => [
   {
     id: 'listOnWebsite',
     header: () => (
       <div className="py-2">
-        List on
-        <br /> Website
+        {t('listOnWebsite1')}
+        <br />
+        {t('listOnWebsite2')}
       </div>
     ),
     cell: ({ row }) => (
@@ -42,15 +45,15 @@ export const columns = (
   },
   {
     accessorKey: 'brand.name',
-    header: 'Brand',
+    header: () => <div className="text-right">{t('brand')}</div>,
   },
   {
     accessorKey: 'model.name',
-    header: 'Model',
+    header: () => <div className="text-right">{t('model')}</div>,
   },
   {
     id: 'power',
-    header: () => <div className="text-right">Power</div>,
+    header: () => <div className="text-right">{t('power')}</div>,
     cell: ({ row }) => {
       const car = row.original
       return <div className="text-right font-medium">{`${car.powerKW} kW / ${car.powerPS} PS`}</div>
@@ -58,7 +61,7 @@ export const columns = (
   },
   {
     accessorKey: 'cubicCapacity',
-    header: () => <div className="text-right">Cubic Capacity</div>,
+    header: () => <div className="text-right">{t('cubicCapacity')}</div>,
     cell: ({ row }) => {
       const capacity = row.getValue('cubicCapacity') as number
       return <div className="text-right font-medium">{capacity ? `${capacity.toLocaleString()} cm³` : '—'}</div>
@@ -66,7 +69,7 @@ export const columns = (
   },
   {
     accessorKey: 'fuelType',
-    header: () => <div className="text-right">Fuel Type</div>,
+    header: () => <div className="text-right">{t('fuelType')}</div>,
     cell: ({ row }) => {
       const fuelType = row.getValue('fuelType') as FuelType | null
       const formatted = fuelType ? fuelType.charAt(0).toUpperCase() + fuelType.slice(1).toLowerCase() : '—'
@@ -79,7 +82,7 @@ export const columns = (
       return (
         <div className="text-right">
           <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-            First Registration
+            {t('year')}
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         </div>
@@ -93,7 +96,7 @@ export const columns = (
   },
   {
     accessorKey: 'color',
-    header: () => <div className="text-right">Color</div>,
+    header: () => <div className="text-right">{t('color')}</div>,
     cell: ({ row }) => {
       const Color = row.getValue('color') as string
       const formatted = Color.charAt(0).toUpperCase() + Color.slice(1).toLowerCase()
@@ -102,7 +105,7 @@ export const columns = (
   },
   {
     accessorKey: 'transmission',
-    header: () => <div className="text-right">Transmission</div>,
+    header: () => <div className="text-right">{t('transmission')}</div>,
     cell: ({ row }) => {
       const Transmission = row.getValue('transmission') as 'manual' | 'automatic'
       const formatted = Transmission.charAt(0).toUpperCase() + Transmission.slice(1).toLowerCase()
@@ -115,7 +118,7 @@ export const columns = (
       return (
         <div className="text-right">
           <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-            Price
+            {t('price')}
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         </div>

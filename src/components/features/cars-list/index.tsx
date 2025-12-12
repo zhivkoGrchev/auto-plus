@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 import { FaSpinner } from 'react-icons/fa'
 import { getProfilesWithLocations } from '@/lib/actions/profile.actions'
@@ -17,6 +18,7 @@ export const CarsList = () => {
   const [cars, setCars] = useState<CarExtended[]>([])
   const [loading, setLoading] = useState(true)
   const [editingCar, setEditingCar] = useState<CarExtended | null>(null)
+  const t = useTranslations('AddCarDialog')
 
   const fetchProfiles = async () => {
     setLoading(true)
@@ -93,7 +95,7 @@ export const CarsList = () => {
         {profiles.length ? null : <ProfileDialog />}
         <AddCarDialog profileId={profiles?.[0]?.id} onUpdate={fetchCars} />
       </div>
-      <DataTable columns={columns(handleDelete, handleToggleListing, handleEdit)} data={cars} />
+      <DataTable columns={columns(handleDelete, handleToggleListing, handleEdit, t)} data={cars} />
       {editingCar && (
         <AddCarDialog
           mode="edit"
