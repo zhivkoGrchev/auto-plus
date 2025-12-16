@@ -121,7 +121,14 @@
     "actions": "Aktionen",
     "created": "Erstellt am",
     "backToList": "Zurück zur Liste",
-    "print": "Drucken"
+    "print": "Drucken",
+    "listOnWebsite1": "Auf Website",
+    "listOnWebsite2": "anzeigen",
+    "columns": "Spalten",
+    "search": "Marke oder Modell suchen…",
+    "noResults": "Keine Ergebnisse.",
+    "pervious": "Vorherige",
+    "next": "Nächste"
   },
   "ProfilesList": {
     "createProfile": "Profil erstellen",

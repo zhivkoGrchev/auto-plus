@@ -121,7 +121,14 @@
     "actions": "Actions",
     "created": "Created at",
     "backToList": "Back to list",
-    "print": "Print"
+    "print": "Print",
+    "listOnWebsite1": "List on",
+    "listOnWebsite2": "Website",
+    "columns": "Columns",
+    "search": "Search brand or model…",
+    "noResults": "No results.",
+    "pervious": "Pervious",
+    "next": "Next"
   },
   "ProfilesList": {
     "createProfile": "Create profile",
