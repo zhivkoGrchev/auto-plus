@@ -1,28 +1,20 @@
 'use client'
 
-import type { ColumnDef } from '@tanstack/react-table'
 import type { useTranslations } from 'next-intl'
-import type { CarExtended } from '@/lib/interfaces/car-extended'
-import type { FuelType } from '@prisma/client'
-import { Switch } from '@/components/ui/switch'
-import { ArrowUpDown } from 'lucide-react'
-import { MoreHorizontal } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { Switch } from '@/components/ui/switch'
+import type { CarExtended } from '@/lib/types/car'
+import type { FuelType } from '@prisma/client'
+import type { ColumnDef } from '@tanstack/react-table'
+import { ArrowUpDown, FileText, MoreHorizontal, Pencil, Trash } from 'lucide-react'
 import Link from 'next/link'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 
 export const columns = (
-  handleDelete: (id: string) => void,
-  handleToggleListing: (id: string, value: boolean) => Promise<void>,
-  handleEdit: (car: CarExtended) => void,
-  t: ReturnType<typeof useTranslations<'AddCarDialog'>>
+  onEdit: (car: CarExtended) => void | Promise<void>,
+  onDelete: (id: string) => void | Promise<void>,
+  onToggleListing: (id: string, value: boolean) => void | Promise<void>,
+  t: ReturnType<typeof useTranslations<'CarDialog'>>
 ): ColumnDef<CarExtended>[] => [
   {
     id: 'listOnWebsite',
@@ -34,11 +26,7 @@ export const columns = (
       </div>
     ),
     cell: ({ row }) => (
-      <Switch
-        checked={row.original.listedOnWebsite}
-        onCheckedChange={(value) => handleToggleListing(row.original.id, value)}
-        aria-label="Toggle website listing"
-      />
+      <Switch checked={row.original.listedOnWebsite} onCheckedChange={(value) => onToggleListing(row.original.id, value)} aria-label="Toggle website listing" />
     ),
     enableSorting: false,
     enableHiding: false,
@@ -137,8 +125,6 @@ export const columns = (
   {
     id: 'actions',
     cell: ({ row }) => {
-      const car = row.original
-
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -149,12 +135,20 @@ export const columns = (
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem asChild>
-              <Link href={`/cars/${car.id}`}>Details</Link>
+              <Link href={`/cars/${row.original.id}`}>
+                <FileText />
+                Details
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => handleEdit(row.original)}>Edit</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => handleDelete(car.id)}>Delete</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => onEdit(row.original)}>
+              <Pencil />
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => onDelete(row.original.id)}>
+              <Trash />
+              Delete
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )

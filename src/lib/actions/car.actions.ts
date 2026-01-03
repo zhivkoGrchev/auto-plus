@@ -1,443 +1,155 @@
 'use server'
 
 import { prisma } from '@/db/prisma'
-import { getCurrentUser } from './auth.actions'
+import type { CarExtended } from '@/lib/types/car'
+import type { AddCarData, AddCarImageData, EditCarData } from '@/lib/validators/car'
 import type { CarBrand, CarModel } from '@prisma/client'
-import type { CarExtended } from '../interfaces/car-extended'
-import { toJson } from '../utils'
-import { createInsertCarSchema } from '../validators/car'
-import type AddCarData from '../interfaces/add-car-data'
-import { ZodError } from 'zod'
+import { deleteImage } from './pinata.actions'
+import { getProfile } from './profile.actions'
 
-export async function getCarBrands(): Promise<CarBrand[]> {
-  try {
-    const carBrands = await prisma.carBrand.findMany({})
-    return toJson(carBrands)
-  } catch (error) {
-    console.error('Error fetching car makes:', error)
-    throw error
-  } finally {
-    await prisma.$disconnect()
-  }
-}
-
-export async function getCarModelsByBrand(brandId: string): Promise<CarModel[]> {
-  try {
-    const carModels = await prisma.carModel.findMany({
-      where: {
-        brandId,
-      },
-    })
-    return toJson(carModels)
-  } catch (error) {
-    console.error('Error fetching car models by brand:', error)
-    throw error
-  } finally {
-    await prisma.$disconnect()
-  }
-}
-
-export async function createCar(carData: AddCarData): Promise<{ 
-  success: boolean
-  errors?: Record<string, string[]>
-  data?: { id: string }
-}> {
-  try {
-    const schema = await createInsertCarSchema()
-    const parsedData = schema.parse(carData)
-
-    console.log('Parsed Car Data:', parsedData)
-
-    const newCar = await prisma.car.create({
-      data: {
-        ...parsedData,
-      },
-    })
-
-    return { 
-      success: true,
-      data: { id: newCar.id }  // Return the car ID
-    }
-  } catch (error) {
-    console.error('Error creating car:', error)
-    if (error instanceof ZodError) {
-      const formattedErrors: Record<string, string[]> = {}
-
-      for (const err of error.errors) {
-        const field = err.path.join('.') || 'form'
-        if (!formattedErrors[field]) {
-          formattedErrors[field] = []
-        }
-        formattedErrors[field].push(err.message)
-      }
-
-      return { success: false, errors: formattedErrors }
-    }
-
-    return {
-      success: false,
-      errors: { form: ['An unexpected error occurred. Please try again.'] },
-    }
-  } finally {
-    await prisma.$disconnect()
-  }
-}
-
-export async function getAllCars(): Promise<CarExtended[]> {
+export async function getCars(profileId: string, locationId: string): Promise<Return<CarExtended[]>> {
   try {
     const cars = await prisma.car.findMany({
-      include: {
-        brand: true,
-        model: true,
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
+      include: { brand: true, model: true, images: { orderBy: { order: 'asc' } } },
+      where: { profileId, locationId },
+      orderBy: { createdAt: 'desc' },
     })
-    return toJson(cars)
+    if (!cars.length) return { data: undefined, error: { message: 'There are no cars' } }
+    return { data: cars, error: undefined }
   } catch (error) {
-    console.error('Error fetching cars:', error)
-    throw error
+    const e = error as Error
+    console.error('Error fetching cars:', e.message)
+    return { data: undefined, error: { message: e.message } }
   } finally {
     await prisma.$disconnect()
   }
 }
 
-export async function getCarsWithPagination(
-  page = 1,
-  pageSize = 10
-): Promise<{
-  cars: CarExtended[]
-  totalCount: number
-  totalPages: number
-  currentPage: number
-}> {
+export async function addCar(formData: AddCarData, images: AddCarImageData[]): Promise<Return<Record<string, string>>> {
   try {
-    const skip = (page - 1) * pageSize
-
-    const [cars, totalCount] = await Promise.all([
-      prisma.car.findMany({
-        include: {
-          brand: true,
-          model: true,
-        },
-        orderBy: {
-          createdAt: 'desc',
-        },
-        skip,
-        take: pageSize,
-      }),
-      prisma.car.count(),
-    ])
-
-    const totalPages = Math.ceil(totalCount / pageSize)
-
-    return {
-      cars: toJson(cars),
-      totalCount,
-      totalPages,
-      currentPage: page,
-    }
+    const car = await prisma.car.create({
+      data: { ...formData, images: { create: images } },
+    })
+    return { data: { id: car.id, message: 'Car was created successfully' }, error: undefined }
   } catch (error) {
-    console.error('Error fetching cars with pagination:', error)
-    throw error
+    const e = error as Error
+    console.error('Error creating car:', e.message)
+    return { data: undefined, error: { message: 'An unexpected error occurred. Please try again.' } }
   } finally {
     await prisma.$disconnect()
   }
 }
 
-export async function searchCars(searchTerm: string): Promise<CarExtended[]> {
+export async function editCar(carId: string, formData: EditCarData): Promise<Return<Record<string, string>>> {
   try {
-    const cars = await prisma.car.findMany({
-      where: {
-        OR: [
-          {
-            brand: {
-              name: {
-                contains: searchTerm,
-                mode: 'insensitive',
-              },
-            },
-          },
-          {
-            model: {
-              name: {
-                contains: searchTerm,
-                mode: 'insensitive',
-              },
-            },
-          },
-          {
-            color: {
-              contains: searchTerm,
-              mode: 'insensitive',
-            },
-          },
-          {
-            vin: {
-              contains: searchTerm,
-              mode: 'insensitive',
-            },
-          },
-        ],
-      },
-      include: {
-        brand: true,
-        model: true,
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
+    await prisma.car.update({
+      where: { id: carId },
+      data: { ...formData, updatedAt: new Date() },
     })
-    return toJson(cars)
+    return { data: { id: carId, message: 'The car was updated' }, error: undefined }
   } catch (error) {
-    console.error('Error searching cars:', error)
-    throw error
+    const e = error as Error
+    console.error('Error updating car:', e.message)
+    return { data: undefined, error: { message: 'Failed to update car. Please try again.' } }
   } finally {
     await prisma.$disconnect()
   }
 }
 
-async function deleteFromPinata(cid: string) {
+export async function deleteCar(id: string): Promise<Return<string>> {
   try {
-    const response = await fetch(`https://api.pinata.cloud/pinning/unpin/${cid}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${process.env.PINATA_JWT}`,
-      },
-    })
+    const car = await prisma.car.findUnique({ where: { id }, include: { images: true } })
+    if (!car) return { data: undefined, error: { message: 'Car not found.' } }
 
-    if (!response.ok) {
-      console.error(`Failed to delete ${cid} from Pinata:`, await response.text())
-      return false
-    }
-
-    console.log(`Successfully deleted ${cid} from Pinata`)
-    return true
-  } catch (error) {
-    console.error(`Error deleting ${cid} from Pinata:`, error)
-    return false
-  }
-}
-
-export async function deleteCar(id: string): Promise<{ success: boolean; errors?: Record<string, string[]> }> {
-  try {
-    // First, get the car with all its images
-    const car = await prisma.car.findUnique({
-      where: { id },
-      include: {
-        images: true,
-      },
-    })
-
-    if (!car) {
-      return { success: false, errors: { form: ['Car not found.'] } }
-    }
-
-    // Collect all CIDs to delete from Pinata
     const cidsToDelete: string[] = []
-    
-    // Add main image CID if exists
-    if (car.imageHash) {
-      cidsToDelete.push(car.imageHash)
-    }
-
-    // Add gallery image CIDs
+    if (car.imageHash) cidsToDelete.push(car.imageHash)
     for (const image of car.images) {
-      if (image.imageHash) {
-        cidsToDelete.push(image.imageHash)
-      }
+      if (image.imageHash) cidsToDelete.push(image.imageHash)
     }
 
-    // Delete the car (this will cascade delete the CarImage records)
-    await prisma.car.delete({
-      where: { id },
-    })
+    await prisma.car.delete({ where: { id } })
 
-    // Delete images from Pinata (do this after DB deletion to ensure data integrity)
-    const deletePromises = cidsToDelete.map(cid => deleteFromPinata(cid))
-    await Promise.allSettled(deletePromises) // Use allSettled to not fail if some deletions fail
+    const deletePromises = cidsToDelete.map((cid) => deleteImage(cid))
+    await Promise.allSettled(deletePromises)
 
-    return { success: true }
+    return { data: 'The car was Successfully deleted', error: undefined }
   } catch (error) {
-    console.error('Error deleting car:', error)
-    return { success: false, errors: { form: ['Failed to delete car.'] } }
+    const e: Error = error as Error
+    console.error('Error deleting car:', e.message)
+    return { data: undefined, error: { message: 'Failed to delete car.' } }
   } finally {
     await prisma.$disconnect()
   }
 }
 
-export async function getCarById(id: string): Promise<CarExtended | null> {
+export async function toggleCarListing(carId: string, isListed: boolean): Promise<Return<string>> {
   try {
-    const car = await prisma.car.findUnique({
-      where: { id },
-      include: {
-        brand: true,
-        model: true,
-      },
-    })
-
-    return car ? toJson(car) : null
+    await prisma.car.update({ where: { id: carId }, data: { listedOnWebsite: isListed, updatedAt: new Date() } })
+    return { data: 'Listing status was successfully updated', error: undefined }
   } catch (error) {
-    console.error('Error fetching car by ID:', error)
-    throw error
+    const e = error as Error
+    console.error('Error toggling car listing:', e.message)
+    return { data: undefined, error: { message: 'Failed to update listing status' } }
   } finally {
     await prisma.$disconnect()
   }
 }
 
-async function getCurrentUserProfile() {
-  const { data: user, error } = await getCurrentUser()
-  
-  if (error || !user) {
-    throw new Error('Not authenticated')
-  }
-
-  const profile = await prisma.profile.findFirst({
-    where: {
-      userId: user.id,
-    },
-  })
-
-  if (!profile) {
-    throw new Error('Profile not found')
-  }
-
-  return profile
-}
-
-export async function getCarsCount(): Promise<number> {
+export async function getCarBrands(): Promise<Return<CarBrand[]>> {
   try {
-    const profile = await getCurrentUserProfile() 
-    
-    return await prisma.car.count({
-      where: {
-        profileId: profile.id, 
-        listedOnWebsite: true,
-      },
-    })
+    const data = await prisma.carBrand.findMany({})
+    return { data, error: undefined }
   } catch (error) {
-    console.error('Error counting cars:', error)
-    throw error
+    const e = error as Error
+    console.error('Error fetching car brands:', e.message)
+    return { data: undefined, error: { message: e.message } }
   } finally {
     await prisma.$disconnect()
   }
 }
 
-export async function getCarsTotalPrice(): Promise<number> {
+export async function getCarModelsByBrand(brandId: string): Promise<Return<CarModel[]>> {
   try {
-    const profile = await getCurrentUserProfile() 
-    
+    const data = await prisma.carModel.findMany({ where: { brandId } })
+    return { data, error: undefined }
+  } catch (error) {
+    const e = error as Error
+    console.error('Error fetching car models by brand:', error)
+    return { data: undefined, error: { message: e.message } }
+  } finally {
+    await prisma.$disconnect()
+  }
+}
+
+export async function getCarsCount(): Promise<Return<number>> {
+  try {
+    const { data: profile, error } = await getProfile()
+    if (error) return { data: profile, error }
+    const count = await prisma.car.count({ where: { profileId: profile.id, listedOnWebsite: true } })
+    return { data: count, error: undefined }
+  } catch (error) {
+    const e = error as Error
+    console.error('Error counting cars:', e.message)
+    return { data: undefined, error: { message: e.message } }
+  } finally {
+    await prisma.$disconnect()
+  }
+}
+
+export async function getCarsTotalPrice(): Promise<Return<number>> {
+  try {
+    const { data: profile, error } = await getProfile()
+    if (error) return { data: profile, error }
     const result = await prisma.car.aggregate({
-      where: {
-        profileId: profile.id, 
-        listedOnWebsite: true,
-      },
-      _sum: {
-        price: true,
-      },
+      where: { profileId: profile.id, listedOnWebsite: true },
+      _sum: { price: true },
     })
-
-    return result._sum.price ?? 0
+    return { data: result._sum.price ?? 0, error: undefined }
   } catch (error) {
-    console.error('Error calculating total car price:', error)
-    throw error
+    const e = error as Error
+    console.error('Error calculating total car price:', e.message)
+    return { data: undefined, error: { message: e.message } }
   } finally {
     await prisma.$disconnect()
   }
 }
-
-export async function toggleCarListing(
-  carId: string, 
-  isListed: boolean
-): Promise<{ success: boolean; error?: string }> {
-  try {
-    await prisma.car.update({
-      where: { id: carId },
-      data: { 
-        listedOnWebsite: isListed,
-        updatedAt: new Date()
-      },
-    })
-
-    return { success: true }
-  } catch (error) {
-    console.error('Error toggling car listing:', error)
-    return { success: false, error: 'Failed to update listing status' }
-  } finally {
-    await prisma.$disconnect()
-  }
-}
-
-export async function updateCar(
-  carId: string,
-  carData: Partial<AddCarData>
-): Promise<{ 
-  success: boolean
-  errors?: Record<string, string[]>
-  data?: { id: string }
-}> {
-  try {
-    const schema = await createInsertCarSchema()
-    const parsedData = schema.partial().parse(carData)
-
-    await prisma.car.update({
-      where: { id: carId },
-      data: {
-        ...parsedData,
-        updatedAt: new Date(),
-      },
-    })
-
-    return { 
-      success: true,
-      data: { id: carId }  // Return the car ID for consistency
-    }
-  } catch (error) {
-    console.error('Error updating car:', error)
-    if (error instanceof ZodError) {
-      const formattedErrors: Record<string, string[]> = {}
-
-      for (const err of error.errors) {
-        const field = err.path.join('.') || 'form'
-        if (!formattedErrors[field]) {
-          formattedErrors[field] = []
-        }
-        formattedErrors[field].push(err.message)
-      }
-
-      return { success: false, errors: formattedErrors }
-    }
-
-    return {
-      success: false,
-      errors: { form: ['Failed to update car. Please try again.'] },
-    }
-  } finally {
-    await prisma.$disconnect()
-  }
-}
-
-export async function getCurrentUserProfileSlug(): Promise<string | null> {
-  try {
-    const { data: user, error } = await getCurrentUser()
-    
-    if (error || !user) {
-      return null
-    }
-
-    const profile = await prisma.profile.findFirst({
-      where: {
-        userId: user.id,
-      },
-    })
-
-    return profile?.slug || null
-  } catch (error) {
-    console.error('Error getting profile slug:', error)
-    return null
-  } finally {
-    await prisma.$disconnect()
-  }
-}
-

@@ -1,10 +1,13 @@
 'use client'
 
-import * as React from 'react'
-import { useTranslations } from 'next-intl'
-import { BsChevronDown } from 'react-icons/bs'
+import { Button } from '@/components/ui/button'
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { Input } from '@/components/ui/input'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { useDebouncedValue } from '@/lib/hooks/debounced-value'
+import type { CarExtended } from '@/lib/types/car'
+import { normalize } from '@/lib/utils'
 import {
-  type ColumnDef,
   type SortingState,
   type VisibilityState,
   flexRender,
@@ -14,56 +17,28 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Button } from '@/components/ui/button'
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { Input } from '@/components/ui/input'
+import { ChevronDown } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { useState } from 'react'
+import { columns } from './columns'
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+export interface CarsTableProps {
+  data: CarExtended[]
+  onEdit: (car: CarExtended) => void | Promise<void>
+  onDelete: (id: string) => void | Promise<void>
+  onToggleListing: (id: string, value: boolean) => void | Promise<void>
 }
 
-// small debounce hook
-function useDebouncedValue<T>(value: T, delay = 200) {
-  const [debounced, setDebounced] = React.useState(value)
-  React.useEffect(() => {
-    const id = setTimeout(() => setDebounced(value), delay)
-    return () => clearTimeout(id)
-  }, [value, delay])
-  return debounced
-}
-
-// normalize for case/accents
-const normalize = (s: unknown) =>
-  String(s ?? '')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/\p{M}/gu, '')
-    .trim()
-
-export function DataTable<
-  TData extends {
-    brand_name?: string
-    model_name?: string
-    brand?: { name?: string } | null
-    model?: { name?: string } | null
-  },
-  TValue,
->({ columns, data }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [query, setQuery] = React.useState('')
+export function CarsTable({ data, onEdit, onDelete, onToggleListing }: CarsTableProps) {
+  const t = useTranslations('CarDialog')
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [query, setQuery] = useState('')
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = useState({})
   const debouncedQuery = useDebouncedValue(query, 200)
-
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
-
-  const [rowSelection, setRowSelection] = React.useState({})
-
-  const t = useTranslations('AddCarDialog')
-
   const table = useReactTable({
     data,
-    columns,
+    columns: columns(onEdit, onDelete, onToggleListing, t),
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onGlobalFilterChange: setQuery,
@@ -111,7 +86,7 @@ export function DataTable<
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
               {t('columns')}
-              <BsChevronDown />
+              <ChevronDown />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">

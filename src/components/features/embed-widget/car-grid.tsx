@@ -1,4 +1,4 @@
-import type { CarExtended } from '@/lib/interfaces/car-extended'
+import type { CarExtended } from '@/lib/types/car'
 
 interface CarGridProps {
   cars: CarExtended[]

@@ -3,20 +3,33 @@
 import { headers } from 'next/headers'
 import { prisma } from '@/db/prisma'
 import { auth } from '@/lib/auth'
-import type { ProfileWithLocations } from '../types/profile'
 import type { CreateProfileWithLocationData, EditProfileData } from '../validators/profile'
 import type { CreateLocationData, EditLocationData } from '../validators/location'
+import type { ProfileExtended } from '../types/profile'
+import type { Profile } from '@prisma/client'
 
-export const getProfilesWithLocations = async (): Promise<Return<ProfileWithLocations[]>> => {
+export const getProfile = async (): Promise<Return<Profile>> => {
   try {
     const session = await auth.api.getSession({ headers: await headers() })
-    if (!session) {
-      return { data: undefined, error: { message: 'You are not signed in' } }
-    }
+    if (!session) return { data: undefined, error: { message: 'You are not signed in' } }
+    const profile = await prisma.profile.findFirst({ where: { userId: session.user.id } })
+    if (!profile) return { data: undefined, error: { message: 'There are no profiles' } }
+    return { data: profile, error: undefined }
+  } catch (error) {
+    const e = error as Error
+    console.error('Error fetching profile:', e.message)
+    return { data: undefined, error: { message: e.message } }
+  } finally {
+    await prisma.$disconnect()
+  }
+}
+
+export const getProfilesWithLocations = async (): Promise<Return<ProfileExtended[]>> => {
+  try {
+    const session = await auth.api.getSession({ headers: await headers() })
+    if (!session) return { data: undefined, error: { message: 'You are not signed in' } }
     const profiles = await prisma.profile.findMany({ where: { userId: session.user.id }, include: { locations: true } })
-    if (!profiles) {
-      return { data: undefined, error: { message: 'There are no profiles' } }
-    }
+    if (!profiles.length) return { data: undefined, error: { message: 'There are no profiles' } }
     return { data: profiles, error: undefined }
   } catch (error) {
     const e = error as Error
