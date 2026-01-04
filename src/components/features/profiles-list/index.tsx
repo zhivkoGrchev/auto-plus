@@ -9,11 +9,11 @@ import { ProfileDialog } from './profile.dialog'
 import { LocationsDialog } from './locations.dialog'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import type { ProfileWithLocations } from '@/lib/types/profile'
+import type { ProfileExtended } from '@/lib/types/profile'
 import type { Location } from '@prisma/client'
 
 export const ProfilesList = () => {
-  const [profiles, setProfiles] = useState<ProfileWithLocations[] | undefined>(undefined)
+  const [profiles, setProfiles] = useState<ProfileExtended[] | undefined>(undefined)
   const [isPendingFetch, startTransitionFetch] = useTransition()
 
   const fetchProfiles = () => {
@@ -27,6 +27,8 @@ export const ProfilesList = () => {
     })
   }
 
+  useEffect(() => fetchProfiles(), [])
+
   const handleDeleteProfile = async (id: string) => {
     const { data, error } = await deleteProfile(id)
     if (error) {
@@ -36,8 +38,6 @@ export const ProfilesList = () => {
     fetchProfiles()
     toast.success(data)
   }
-
-  useEffect(() => fetchProfiles(), [])
 
   if (isPendingFetch) {
     return (

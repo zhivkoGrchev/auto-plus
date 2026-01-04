@@ -87,11 +87,10 @@
     "save": "Save",
     "success": "The password has been successfully changed"
   },
-  "AddCarDialog": {
+  "CarDialog": {
     "addCar": "Add Car",
     "title": "Add a new car",
     "description": "Fill in the details of the car here. Click save when you&apos;re done.",
-    "uploadImage": "Upload Image",
     "brand": "Brand",
     "brand_name": "Brand",
     "selectBrand": "Select a brand",
@@ -129,6 +128,9 @@
     "noResults": "No results.",
     "pervious": "Pervious",
     "next": "Next"
+  },
+  "EditGalery": {
+    "title": "Upload Image"
   },
   "ProfilesList": {
     "createProfile": "Create profile",
@@ -175,17 +177,27 @@
     "email": "Invalid E-Mail"
   },
   "Validations": {
-    "brand": "Brand is required",
-    "model": "Model is required",
-    "yearMin": "Year must be at least 1886",
-    "yearMax": "Year cannot be in the future",
-    "color": "Color is required",
-    "transmission": "Transmission is required",
-    "fuelType": "Fuel Type is required",
-    "mileage": "Mileage is required",
-    "price": "Price is required",
-    "cubicCapacity": "Cubic Capacity must be at least 49cc",
-    "powerKW": "Power is required"
-  },
-  "errors": {}
+    "message": {
+      "requiredName": "Name is required",
+      "minPassword": "Password must contain at least 8 characters",
+      "confirmPassword": "Passwords not a match",
+      "invalidPhoneNumber": "Invalid phone number",
+      "invalidEmail": "Invalid E-Mail",
+      "invalidSlug": "Invalid slug",
+      "requiredProfile": "Profile is required",
+      "requiredLocation": "Location is required",
+      "requiredBrand": "Brand is required",
+      "requiredModel": "Model is required",
+      "minYear": "Year must be at least 1886",
+      "maxYear": "Year cannot be in the future",
+      "requiredColor": "Color is required",
+      "requiredTransmission": "Transmission is required",
+      "requiredFuelType": "Fuel Type is required",
+      "requiredMileage": "Mileage is required",
+      "requiredPrice": "Price is required",
+      "minCubicCapacity": "Cubic Capacity must be at least 49cc",
+      "requiredPowerKW": "Power is required",
+      "unknownError": "An unknown error occurred"
+    }
+  }
 }

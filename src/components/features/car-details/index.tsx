@@ -18,7 +18,7 @@ export default async function CarDetailsPage({ profileSlug, ...props }: PageProp
   const { id } = params
   const source = searchParams?.source
   const backLink = source === 'admin' ? '/admin' : source === 'embed' ? `/embed/${profileSlug}` : `/${profileSlug}`
-  const t = await getTranslations('AddCarDialog')
+  const t = await getTranslations('CarDialog')
 
   const car = await prisma.car.findUnique({
     where: { id },

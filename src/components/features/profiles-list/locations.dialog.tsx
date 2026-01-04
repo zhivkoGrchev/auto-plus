@@ -5,11 +5,11 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
 import { CreateLocationForm } from './create-location.form'
-import type { ProfileWithLocations } from '@/lib/types/profile'
+import type { ProfileExtended } from '@/lib/types/profile'
 import { EditLocationForm } from './edit-location.form'
 
 export interface LocationsDialogProps extends ComponentProps<typeof Dialog> {
-  profile: ProfileWithLocations
+  profile: ProfileExtended
   onUpdate?: () => void
 }
 
