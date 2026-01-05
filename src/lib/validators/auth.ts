@@ -1,12 +1,12 @@
-import { z } from 'zod'
 import { useTranslations } from 'next-intl'
+import { z } from 'zod'
 
 export const useSignUpSchema = () => {
   const t = useTranslations('AuthValidations')
   return z
     .object({
       name: z.string().min(1, t('name')),
-      email: z.string().email(t('email')),
+      email: z.email(t('email')),
       password: z.string().min(8, t('password')),
       confirmPassword: z.string().min(8, t('password')),
     })
@@ -19,7 +19,7 @@ export const useSignUpSchema = () => {
 export const useSignInSchema = () => {
   const t = useTranslations('AuthValidations')
   return z.object({
-    email: z.string().email(t('email')),
+    email: z.email(t('email')),
     password: z.string().min(8, t('password')),
   })
 }
@@ -34,7 +34,7 @@ export const useEditUserSchema = () => {
     email: z
       .string()
       .transform((v) => (v === '' ? undefined : v))
-      .pipe(z.string().email(t('email')).optional()),
+      .pipe(z.email(t('email')).optional()),
   })
 }
 

@@ -1,10 +1,10 @@
-import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
-import type { GaleryImage } from '@/lib/types/galery'
 import { Plus, Trash } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import type { ChangeEvent } from 'react'
 import { toast } from 'sonner'
+import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
+import type { GaleryImage } from '@/lib/types/galery'
 
 export interface EditGaleryProps {
   images: GaleryImage[]

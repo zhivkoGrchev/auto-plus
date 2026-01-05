@@ -1,5 +1,5 @@
-import { z } from 'zod'
 import { useTranslations } from 'next-intl'
+import { z } from 'zod'
 
 export const useCreateLocationSchema = () => {
   const t = useTranslations('LocationValidations')
@@ -9,7 +9,7 @@ export const useCreateLocationSchema = () => {
       .string()
       .regex(/^\+?[0-9]\d{1,14}$/, t('phone'))
       .min(1),
-    email: z.string().email(t('email')),
+    email: z.email(t('email')),
     address: z.string().min(2),
     city: z.string().min(2),
     postcode: z.string().min(5).max(6),
@@ -33,7 +33,7 @@ export const useEditLocationSchema = () => {
     email: z
       .string()
       .transform((v) => (v === '' ? undefined : v))
-      .pipe(z.string().email(t('email')).optional()),
+      .pipe(z.email(t('email')).optional()),
     address: z
       .string()
       .transform((v) => (v === '' ? undefined : v))

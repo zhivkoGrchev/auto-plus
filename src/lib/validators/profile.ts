@@ -1,5 +1,5 @@
-import { z } from 'zod'
 import { useTranslations } from 'next-intl'
+import { z } from 'zod'
 import { useCreateLocationSchema } from './location'
 
 export const useCreateProfileWithLocationSchema = () => {
