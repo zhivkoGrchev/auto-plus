@@ -1,6 +1,6 @@
-import { prisma } from '@/db/prisma'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { prisma } from '@/prisma'
 
 interface CarCardProps {
   profileSlug: string

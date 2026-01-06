@@ -1,8 +1,8 @@
-import { prisma } from '@/db/prisma'
-import CarGallery from './car-gallery'
 import Link from 'next/link'
-import PrintButton from '@/components/features/car-details/print-button'
 import { getTranslations } from 'next-intl/server'
+import PrintButton from '@/components/features/car-details/print-button'
+import { prisma } from '@/prisma'
+import CarGallery from './car-gallery'
 
 interface PageProps {
   profileSlug: string

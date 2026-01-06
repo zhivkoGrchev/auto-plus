@@ -1,11 +1,11 @@
-import type { ComponentProps } from 'react'
-import { useTranslations } from 'next-intl'
+import type { Profile } from '@prisma/client'
 import { Building, Pencil } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import type { ComponentProps } from 'react'
+import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { CreateProfileForm } from './create-profile.form'
 import { EditProfileForm } from './edit-profile.form'
-import { Button } from '@/components/ui/button'
-import type { Profile } from '@prisma/client'
 
 export interface ProfileDialogProps extends ComponentProps<typeof Dialog> {
   profile?: Profile

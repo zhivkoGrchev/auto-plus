@@ -1,8 +1,8 @@
 'use server'
 
-import { prisma } from '@/db/prisma'
 import { revalidatePath } from 'next/cache'
 import type { OpeningHoursData, OpeningHoursDB, TimeSlot } from '@/lib/interfaces/opening-hours'
+import { prisma } from '@/prisma'
 
 // Helper function to convert UI format to DB format
 function convertToDBFormat(data: OpeningHoursData) {
@@ -49,9 +49,9 @@ function convertToUIFormat(dbData: OpeningHoursDB | null): OpeningHoursData {
 export async function getOpeningHours(): Promise<OpeningHoursData> {
   try {
     const openingHours = await prisma.openingHours.findFirst({
-      orderBy: { updatedAt: 'desc' }
+      orderBy: { updatedAt: 'desc' },
     })
-    
+
     return convertToUIFormat(openingHours as OpeningHoursDB)
   } catch (error) {
     console.error('Error fetching opening hours:', error)
@@ -62,29 +62,29 @@ export async function getOpeningHours(): Promise<OpeningHoursData> {
   }
 }
 
-export async function saveOpeningHours(data: OpeningHoursData): Promise<{ 
-  success: boolean 
-  errors?: Record<string, string[]> 
+export async function saveOpeningHours(data: OpeningHoursData): Promise<{
+  success: boolean
+  errors?: Record<string, string[]>
 }> {
   try {
     const dbData = convertToDBFormat(data)
-    
+
     // Check if opening hours already exist
     const existingHours = await prisma.openingHours.findFirst()
-    
+
     if (existingHours) {
       // Update existing record
       await prisma.openingHours.update({
         where: { id: existingHours.id },
         data: {
           ...dbData,
-          updatedAt: new Date()
-        }
+          updatedAt: new Date(),
+        },
       })
     } else {
       // Create new record
       await prisma.openingHours.create({
-        data: dbData
+        data: dbData,
       })
     }
 
@@ -92,9 +92,9 @@ export async function saveOpeningHours(data: OpeningHoursData): Promise<{
     return { success: true }
   } catch (error) {
     console.error('Error saving opening hours:', error)
-    return { 
-      success: false, 
-      errors: { form: ['Failed to save opening hours. Please try again.'] } 
+    return {
+      success: false,
+      errors: { form: ['Failed to save opening hours. Please try again.'] },
     }
   } finally {
     await prisma.$disconnect()
@@ -109,9 +109,7 @@ export async function getFormattedOpeningHours(): Promise<Record<string, string>
 
     for (const [day, schedule] of Object.entries(data)) {
       if (schedule.isOpen && schedule.slots.length > 0) {
-        formatted[day] = schedule.slots
-          .map((slot: TimeSlot) => `${slot.open}-${slot.close}`)
-          .join(', ')
+        formatted[day] = schedule.slots.map((slot: TimeSlot) => `${slot.open}-${slot.close}`).join(', ')
       } else {
         formatted[day] = 'Closed'
       }

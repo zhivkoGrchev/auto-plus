@@ -1,6 +1,6 @@
 // app/api/car-images/route.ts
 import { NextResponse } from 'next/server'
-import { prisma } from '@/db/prisma'
+import { prisma } from '@/prisma'
 
 export async function POST(request: Request) {
   try {
@@ -17,9 +17,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true, data: carImage })
   } catch (error) {
-    return NextResponse.json(
-      { success: false, error: 'Failed to create car image' },
-      { status: 500 }
-    )
+    return NextResponse.json({ success: false, error: 'Failed to create car image' }, { status: 500 })
   }
 }
