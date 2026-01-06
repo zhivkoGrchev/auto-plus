@@ -1,10 +1,10 @@
 'use server'
 
+import type { User } from '@prisma/client'
 import { headers } from 'next/headers'
 import { auth } from '@/lib/auth'
-import { prisma } from '@/db/prisma'
-import type { User } from '@prisma/client'
-import type { SignInData, SignUpData, EditUserData } from '../validators/auth'
+import { prisma } from '@/prisma'
+import type { EditUserData, SignInData, SignUpData } from '../validators/auth'
 
 export async function getCurrentUser(): Promise<Return<User>> {
   try {

@@ -1,11 +1,11 @@
-import { useState, type ComponentProps } from 'react'
-import { useTranslations } from 'next-intl'
 import { MapPinPen, MapPinPlus } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { type ComponentProps, useState } from 'react'
+import { Button } from '@/components/ui/button'
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Button } from '@/components/ui/button'
-import { CreateLocationForm } from './create-location.form'
 import type { ProfileExtended } from '@/lib/types/profile'
+import { CreateLocationForm } from './create-location.form'
 import { EditLocationForm } from './edit-location.form'
 
 export interface LocationsDialogProps extends ComponentProps<typeof Dialog> {

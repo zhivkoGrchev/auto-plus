@@ -1,11 +1,10 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["driverAdapters"]
+  provider = "prisma-client"
+  output   = "../src/prisma/generated"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 enum FuelType {
@@ -38,8 +37,6 @@ model Car {
   vin             String?
   price           Float
   description     String?
-  imageUrl        String? // Gateway URL
-  imageHash       String? // IPFS hash from Pinata
   images          CarImage[]
   listedOnWebsite Boolean      @default(false)
   createdAt       DateTime     @default(now())

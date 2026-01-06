@@ -1,5 +1,5 @@
-import { prisma } from '@/db/prisma'
 import { CarGrid } from '@/components/features/embed-widget/car-grid'
+import { prisma } from '@/prisma'
 
 interface PageProps {
   params: Promise<{ profileSlug: string }>

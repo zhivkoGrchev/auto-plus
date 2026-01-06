@@ -1,9 +1,9 @@
 'use server'
 
-import { prisma } from '@/db/prisma'
+import type { CarBrand, CarModel } from '@prisma/client'
 import type { CarExtended } from '@/lib/types/car'
 import type { AddCarData, AddCarImageData, EditCarData } from '@/lib/validators/car'
-import type { CarBrand, CarModel } from '@prisma/client'
+import { prisma } from '@/prisma'
 import { deleteImage } from './pinata.actions'
 import { getProfile } from './profile.actions'
 
@@ -62,7 +62,7 @@ export async function deleteCar(id: string): Promise<Return<string>> {
     if (!car) return { data: undefined, error: { message: 'Car not found.' } }
 
     const cidsToDelete: string[] = []
-    if (car.imageHash) cidsToDelete.push(car.imageHash)
+    //if (car.imageHash) cidsToDelete.push(car.imageHash)
     for (const image of car.images) {
       if (image.imageHash) cidsToDelete.push(image.imageHash)
     }

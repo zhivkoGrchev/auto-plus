@@ -1,8 +1,8 @@
-import { Header } from '@/components/layouts/header'
 import { Footer } from '@/components/layouts/footer'
+import { Header } from '@/components/layouts/header'
+import { Hero } from '@/components/layouts/hero'
 import { Navbar } from '@/components/layouts/navbar'
 import { ToolBar } from '@/components/widgets/toolbar'
-import { Hero } from '@/components/layouts/hero'
 
 export default function HomePage() {
   return (

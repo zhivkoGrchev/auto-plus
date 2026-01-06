@@ -1,5 +1,18 @@
 'use client'
 
+import {
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  type SortingState,
+  useReactTable,
+  type VisibilityState,
+} from '@tanstack/react-table'
+import { ChevronDown } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
@@ -7,19 +20,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { useDebouncedValue } from '@/lib/hooks/debounced-value'
 import type { CarExtended } from '@/lib/types/car'
 import { normalize } from '@/lib/utils'
-import {
-  type SortingState,
-  type VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from '@tanstack/react-table'
-import { ChevronDown } from 'lucide-react'
-import { useTranslations } from 'next-intl'
-import { useState } from 'react'
 import { columns } from './columns'
 
 export interface CarsTableProps {
