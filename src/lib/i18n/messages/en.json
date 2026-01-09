@@ -108,6 +108,7 @@
     "fuelType": "Fuel Type",
     "selectFuelType": "Select a Fuel Type",
     "diesel": "Diesel",
+    "petrol": "Petrol",
     "gasoline": "Gasoline",
     "gas": "Gas",
     "electric": "Electric",
