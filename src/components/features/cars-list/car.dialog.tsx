@@ -16,7 +16,8 @@ import type { GaleryImage } from '@/lib/types/galery'
 import { getChangedFields } from '@/lib/utils'
 import { type AddCarData, AddCarSchema, type EditCarData, EditCarSchema, type AddCarImageData } from '@/lib/validators/car'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { type CarBrand, type CarModel, FuelType, Transmission } from '@prisma/client'
+import { type CarBrand, type CarModel, type FuelType, type Transmission } from '@prisma/client'
+import { Transmission as TransmissionValues, FuelType as FuelTypeValues } from '@/lib/constants/car'
 import { Check, ChevronDown, Loader } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { type ComponentProps, useEffect, useState } from 'react'
@@ -30,11 +31,11 @@ const initialFormData: AddCarData = {
   modelId: '',
   year: 0,
   color: '',
-  transmission: Transmission.manual,
+  transmission: TransmissionValues.manual,
   powerKW: 0,
   powerPS: 0,
   cubicCapacity: 0,
-  fuelType: FuelType.diesel,
+  fuelType: FuelTypeValues.diesel,
   mileage: 0,
   vin: '',
   price: 0,
@@ -280,7 +281,7 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
                     </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.keys(Transmission).map((item) => (
+                    {Object.keys(TransmissionValues).map((item) => (
                       <SelectItem key={item} value={item}>
                         {t(item)}
                       </SelectItem>
@@ -298,7 +299,7 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
                     <SelectValue id="fuelType" placeholder={t('selectFuelType')} />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.keys(FuelType).map((item) => (
+                    {Object.keys(FuelTypeValues).map((item) => (
                       <SelectItem key={item} value={item}>
                         {t(item)}
                       </SelectItem>

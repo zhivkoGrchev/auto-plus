@@ -56,8 +56,11 @@ export const WebsiteAdmin = ({ profileSlug }: WebsiteAdminProps) => {
     setError(null)
 
     try {
-      const [count, totalPrice] = await Promise.all([getCarsCount(), getCarsTotalPrice()])
+      const countResult = await getCarsCount()
+      const priceResult = await getCarsTotalPrice()
 
+      const count = countResult.data ?? 0
+      const totalPrice = priceResult.data ?? 0
       const avgPrice = count && count > 0 ? totalPrice / count : 0
 
       setStats({

@@ -1,4 +1,4 @@
-import { FuelType, Transmission } from '@prisma/client'
+import { Transmission, FuelType } from '@/lib/constants/car'
 import { z } from 'zod'
 
 export const AddCarSchema = z.object({
@@ -11,8 +11,8 @@ export const AddCarSchema = z.object({
   cubicCapacity: z.coerce.number().int().min(49, 'message.minCubicCapacity'),
   year: z.coerce.number().int().min(1886, 'message.minYear').max(new Date().getFullYear(), 'message.maxYear'),
   color: z.string().min(1, 'message.requiredColor'),
-  transmission: z.nativeEnum(Transmission, { errorMap: () => ({ message: 'message.requiredTransmission' }) }),
-  fuelType: z.nativeEnum(FuelType, { errorMap: () => ({ message: 'message.requiredFuelType' }) }),
+  transmission: z.enum([Transmission.manual, Transmission.automatic], { errorMap: () => ({ message: 'message.requiredTransmission' }) }),
+  fuelType: z.enum([FuelType.diesel, FuelType.petrol, FuelType.hybrid, FuelType.electric], { errorMap: () => ({ message: 'message.requiredFuelType' }) }),
   mileage: z.coerce.number().int().min(1, 'message.requiredMileage'),
   vin: z.string().nullable(),
   price: z.coerce.number().int().min(1, 'message.requiredPrice'),
