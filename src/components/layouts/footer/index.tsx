@@ -7,7 +7,7 @@ export const Footer = () => {
   const t = useTranslations('Footer')
 
   return (
-    <footer className="bg-cyan-700 text-neutral-50 dark:bg-cyan-950 py-12">
+    <footer className="bg-cyan-700 text-neutral-50 dark:bg-cyan-900 py-12">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}

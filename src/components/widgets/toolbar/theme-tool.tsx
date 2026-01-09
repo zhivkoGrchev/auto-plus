@@ -17,8 +17,8 @@ export const ThemeTool = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon">
-          <FaRegMoon className="hidden dark:flex" />
-          <BsSun className="flex dark:hidden" />
+          <BsSun className="hidden dark:flex" />
+          <FaRegMoon className="flex dark:hidden" />
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
