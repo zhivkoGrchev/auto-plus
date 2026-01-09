@@ -163,7 +163,7 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[640px]">
+      <DialogContent className="sm:max-w-160">
         <DialogHeader>
           <DialogTitle>{car ? 'Edit Car' : t('title')}</DialogTitle>
           <DialogDescription>{car ? 'Update car information' : t('description')}</DialogDescription>
