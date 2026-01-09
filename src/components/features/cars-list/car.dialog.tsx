@@ -42,6 +42,8 @@ const initialFormData: AddCarData = {
   description: '',
 } as const
 
+const POWER_CONVERSION = 1.35962
+
 interface CarDialogProps extends ComponentProps<typeof Dialog> {
   car?: CarExtended
   profileId?: string
@@ -221,8 +223,28 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
                   {t('power')}
                 </Label>
                 <div className="flex gap-2">
-                  <Input className="w-1/2" id="powerKW" placeholder="kW" {...register('powerKW')} />
-                  <Input className="w-1/2" id="powerPS" placeholder="PS" {...register('powerPS')} />
+                  <Input
+                    className="w-1/2"
+                    id="powerKW"
+                    placeholder="kW"
+                    {...register('powerKW', {
+                      onChange: (e) => {
+                        const value = parseFloat(e.target.value)
+                        setValue('powerPS', !Number.isNaN(value) ? Math.round(value * POWER_CONVERSION).toString() : '')
+                      },
+                    })}
+                  />
+                  <Input
+                    className="w-1/2"
+                    id="powerPS"
+                    placeholder="PS"
+                    {...register('powerPS', {
+                      onChange: (e) => {
+                        const value = parseFloat(e.target.value)
+                        setValue('powerKW', !Number.isNaN(value) ? Math.round(value / POWER_CONVERSION).toString() : '')
+                      },
+                    })}
+                  />
                 </div>
                 {errors.powerKW?.message && <span className="mx-2 text-red-600">{m(errors.powerKW.message)}</span>}
               </fieldset>
