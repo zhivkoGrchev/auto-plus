@@ -20,10 +20,13 @@ export const Hero = () => {
         <Image src={heroImgPortrait} alt={t('imgAlt')} fill style={{ objectFit: 'cover' }} priority />
       </div>
 
-      <div className="mt-20 sm:mt-32 md:mt-40 mb-auto px-4 sm:px-6 z-10 text-center max-w-4xl">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">{t('title')}</h1>
-        <h2 className="text-lg sm:text-xl md:text-2xl mt-4">{t('description')}</h2>
-        <Button className="mt-8 sm:mt-10 md:mt-14 font-medium" asChild>
+      <div className="mt-20 sm:mt-32 md:mt-40 mb-auto px-4 sm:px-6 z-10 text-center max-w-4xl transform -translate-y-6 sm:-translate-y-8 md:-translate-y-10">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-cyan-50 dark:text-cyan-50">{t('title')}</h1>
+        <h2 className="text-lg sm:text-xl md:text-2xl mt-4 text-cyan-50 dark:text-cyan-50">{t('description')}</h2>
+        <Button
+          className="mt-8 sm:mt-10 md:mt-14 font-medium bg-orange-400 dark:bg-orange-400 hover:bg-orange-600 dark:hover:bg-orange-600 text-white shadow-md"
+          asChild
+        >
           <Link href="/admin">{t('startDemo')}</Link>
         </Button>
       </div>

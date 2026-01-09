@@ -55,7 +55,7 @@ export const ProfilesList = () => {
           <div className="flex flex-col gap-2">
             <div className="flex flex-col">
               <h5 className="px-4 py-2 text-xl font-bold">Contact person</h5>
-              <ul className="p-4 rounded-xl border bg-cyan-100 dark:bg-cyan-900">
+              <ul className="p-4 rounded-xl border bg-cyan-50 dark:bg-cyan-950">
                 <li>Name: {location.contactPerson}</li>
                 <li>Phone: {location.phone}</li>
                 <li>E-Mail: {location.email}</li>
@@ -63,7 +63,7 @@ export const ProfilesList = () => {
             </div>
             <div className="flex flex-col">
               <h5 className="px-4 py-2 text-xl font-bold">Location</h5>
-              <ul className="p-4 rounded-xl border bg-cyan-100 dark:bg-cyan-900">
+              <ul className="p-4 rounded-xl border bg-cyan-50 dark:bg-cyan-950">
                 <li>Address: {location.address}</li>
                 <li>City: {location.city}</li>
                 <li>Postcode: {location.postcode}</li>
@@ -77,7 +77,7 @@ export const ProfilesList = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 flex flex-col gap-4">
+    <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
       <div className="flex justify-end">
         <ProfileDialog onUpdate={fetchProfiles} />
       </div>
@@ -104,7 +104,7 @@ export const ProfilesList = () => {
               <CardFooter className="flex justify-end gap-2">
                 <LocationsDialog profile={item} onUpdate={fetchProfiles} />
                 <ProfileDialog profile={item} onUpdate={fetchProfiles} />
-                <Button variant="destructive" onClick={() => handleDeleteProfile(item.id)}>
+                <Button variant="destructive" onClick={() => handleDeleteProfile(item.id)} className="hover:cursor-pointer">
                   <Trash />
                 </Button>
               </CardFooter>

@@ -24,7 +24,7 @@ export const LocationsDialog = ({ open, onOpenChange, profile, onUpdate }: Locat
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
-        <Button>
+        <Button className="bg-cyan-700 text-cyan-50 hover:bg-cyan-800 hover:cursor-pointer">
           <MapPinPen /> Locations
         </Button>
       </DialogTrigger>

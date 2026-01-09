@@ -24,11 +24,11 @@ export const ProfileDialog = ({ open, onOpenChange, profile, onUpdate }: Profile
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
         {!profile ? (
-          <Button>
+          <Button className="bg-cyan-700 text-cyan-50 hover:bg-cyan-800 hover:cursor-pointer">
             <Building /> Create profile
           </Button>
         ) : (
-          <Button>
+          <Button className="bg-cyan-700 text-cyan-50 hover:bg-cyan-800 hover:cursor-pointer">
             <Pencil /> Edit profile
           </Button>
         )}
