@@ -1,11 +1,11 @@
-import { APP_NAME } from '@/lib/constants'
 import type { Metadata, Viewport } from 'next'
 import { Nunito_Sans } from 'next/font/google'
-import { ThemeProvider } from 'next-themes'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getTranslations } from 'next-intl/server'
+import { ThemeProvider } from 'next-themes'
 import { Toaster } from '@/components/ui/sonner'
 import { defaultTheme } from '@/lib/config/theme'
+import { APP_NAME } from '@/lib/constants'
 import './globals.css'
 
 const fontNunitoSans = Nunito_Sans({

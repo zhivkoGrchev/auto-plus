@@ -1,9 +1,9 @@
 'use server'
 
-import type { Profile } from '@prisma/client'
 import { headers } from 'next/headers'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/prisma'
+import type { Profile } from '@/prisma/generated'
 import type { ProfileExtended } from '../types/profile'
 import type { CreateLocationData, EditLocationData } from '../validators/location'
 import type { CreateProfileWithLocationData, EditProfileData } from '../validators/profile'

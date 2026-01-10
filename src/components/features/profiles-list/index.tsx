@@ -1,16 +1,16 @@
 'use client'
 
-import { useEffect, useState, useTransition } from 'react'
-import Image from 'next/image'
-import { toast } from 'sonner'
 import { Loader, Trash } from 'lucide-react'
-import { deleteProfile, getProfilesWithLocations } from '@/lib/actions/profile.actions'
-import { ProfileDialog } from './profile.dialog'
-import { LocationsDialog } from './locations.dialog'
-import { Card, CardContent, CardFooter } from '@/components/ui/card'
+import Image from 'next/image'
+import { useEffect, useState, useTransition } from 'react'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardFooter } from '@/components/ui/card'
+import { deleteProfile, getProfilesWithLocations } from '@/lib/actions/profile.actions'
 import type { ProfileExtended } from '@/lib/types/profile'
-import type { Location } from '@prisma/client'
+import type { Location } from '@/prisma/generated'
+import { LocationsDialog } from './locations.dialog'
+import { ProfileDialog } from './profile.dialog'
 
 export const ProfilesList = () => {
   const [profiles, setProfiles] = useState<ProfileExtended[] | undefined>(undefined)
