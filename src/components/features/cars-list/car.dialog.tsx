@@ -1,5 +1,12 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
+import type { CarBrand, CarModel, FuelType, Transmission } from '@prisma/client'
+import { Check, ChevronDown, Loader } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { type ComponentProps, useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { EditGalery } from '@/components/features/cars-list/edit-galery'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
@@ -10,21 +17,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea'
 import { addCar, editCar, getCarBrands, getCarModelsByBrand } from '@/lib/actions/car.actions'
 import { uploadImage } from '@/lib/actions/pinata.actions'
+import { FuelType as FuelTypeValues, Transmission as TransmissionValues } from '@/lib/constants/car'
 import { COLORS } from '@/lib/constants/colors'
 import type { CarExtended } from '@/lib/types/car'
 import type { GaleryImage } from '@/lib/types/galery'
 import { getChangedFields } from '@/lib/utils'
-import { type AddCarData, AddCarSchema, type EditCarData, EditCarSchema, type AddCarImageData } from '@/lib/validators/car'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { type CarBrand, type CarModel, type FuelType, type Transmission } from '@prisma/client'
-import { Transmission as TransmissionValues, FuelType as FuelTypeValues } from '@/lib/constants/car'
-import { Check, ChevronDown, Loader } from 'lucide-react'
-import { useTranslations } from 'next-intl'
-import { type ComponentProps, useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
+import { type AddCarData, type AddCarImageData, AddCarSchema, type EditCarData, EditCarSchema } from '@/lib/validators/car'
 
-const initialFormData: AddCarData = {
+const INITIAL_FORM_DATA: AddCarData = {
   profileId: '',
   locationId: '',
   brandId: '',
@@ -41,6 +41,7 @@ const initialFormData: AddCarData = {
   price: 0,
   description: '',
 } as const
+const POWER_CONVERSION_FACTOR = 1.35962
 
 interface CarDialogProps extends ComponentProps<typeof Dialog> {
   car?: CarExtended
@@ -62,7 +63,7 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(car ? EditCarSchema : AddCarSchema),
-    defaultValues: initialFormData,
+    defaultValues: INITIAL_FORM_DATA,
   })
   const [carImages, setCarImages] = useState<GaleryImage[]>([])
   const [carBrands, setCarBrands] = useState<CarBrand[]>([])
@@ -110,7 +111,7 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
       reset({ ...car, profileId, locationId })
       setCarImages(car.images.map((item) => ({ imageUrl: item.imageUrl, imageHash: item.imageHash })))
     } else {
-      reset({ ...initialFormData, profileId, locationId })
+      reset({ ...INITIAL_FORM_DATA, profileId, locationId })
       setCarImages([])
     }
   }, [car, profileId, locationId, reset])
@@ -161,7 +162,7 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[640px]">
+      <DialogContent className="sm:max-w-160">
         <DialogHeader>
           <DialogTitle>{car ? 'Edit Car' : t('title')}</DialogTitle>
           <DialogDescription>{car ? 'Update car information' : t('description')}</DialogDescription>
@@ -221,8 +222,28 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
                   {t('power')}
                 </Label>
                 <div className="flex gap-2">
-                  <Input className="w-1/2" id="powerKW" placeholder="kW" {...register('powerKW')} />
-                  <Input className="w-1/2" id="powerPS" placeholder="PS" {...register('powerPS')} />
+                  <Input
+                    className="w-1/2"
+                    id="powerKW"
+                    placeholder="kW"
+                    {...register('powerKW', {
+                      onChange: (e) => {
+                        const value = parseFloat(e.target.value)
+                        setValue('powerPS', !Number.isNaN(value) ? Math.round(value * POWER_CONVERSION_FACTOR).toString() : '')
+                      },
+                    })}
+                  />
+                  <Input
+                    className="w-1/2"
+                    id="powerPS"
+                    placeholder="PS"
+                    {...register('powerPS', {
+                      onChange: (e) => {
+                        const value = parseFloat(e.target.value)
+                        setValue('powerKW', !Number.isNaN(value) ? Math.round(value / POWER_CONVERSION_FACTOR).toString() : '')
+                      },
+                    })}
+                  />
                 </div>
                 {errors.powerKW?.message && <span className="mx-2 text-red-600">{m(errors.powerKW.message)}</span>}
               </fieldset>
