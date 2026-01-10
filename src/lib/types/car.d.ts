@@ -1,4 +1,4 @@
-import type { Car, CarBrand, CarModel, Transmission, FuelType, CarImage } from '@prisma/client'
+import type { Car, CarBrand, CarImage, CarModel, FuelType, Transmission } from '@/prisma/generated'
 
 export interface CarExtended extends Car {
   brand: CarBrand

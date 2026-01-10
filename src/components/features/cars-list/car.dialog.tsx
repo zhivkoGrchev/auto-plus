@@ -1,7 +1,6 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import type { CarBrand, CarModel, FuelType, Transmission } from '@prisma/client'
 import { Check, ChevronDown, Loader } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { type ComponentProps, useEffect, useState } from 'react'
@@ -17,12 +16,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea'
 import { addCar, editCar, getCarBrands, getCarModelsByBrand } from '@/lib/actions/car.actions'
 import { uploadImage } from '@/lib/actions/pinata.actions'
-import { FuelType as FuelTypeValues, Transmission as TransmissionValues } from '@/lib/constants/car'
 import { COLORS } from '@/lib/constants/colors'
 import type { CarExtended } from '@/lib/types/car'
 import type { GaleryImage } from '@/lib/types/galery'
 import { getChangedFields } from '@/lib/utils'
 import { type AddCarData, type AddCarImageData, AddCarSchema, type EditCarData, EditCarSchema } from '@/lib/validators/car'
+import { type CarBrand, type CarModel, FuelType, Transmission } from '@/prisma/generated'
 
 const INITIAL_FORM_DATA: AddCarData = {
   profileId: '',
@@ -31,11 +30,11 @@ const INITIAL_FORM_DATA: AddCarData = {
   modelId: '',
   year: 0,
   color: '',
-  transmission: TransmissionValues.manual,
+  transmission: Transmission.manual,
   powerKW: 0,
   powerPS: 0,
   cubicCapacity: 0,
-  fuelType: FuelTypeValues.diesel,
+  fuelType: FuelType.diesel,
   mileage: 0,
   vin: '',
   price: 0,
@@ -302,7 +301,7 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
                     </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.keys(TransmissionValues).map((item) => (
+                    {Object.keys(Transmission).map((item) => (
                       <SelectItem key={item} value={item}>
                         {t(item)}
                       </SelectItem>
@@ -320,7 +319,7 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
                     <SelectValue id="fuelType" placeholder={t('selectFuelType')} />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.keys(FuelTypeValues).map((item) => (
+                    {Object.keys(FuelType).map((item) => (
                       <SelectItem key={item} value={item}>
                         {t(item)}
                       </SelectItem>

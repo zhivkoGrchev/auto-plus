@@ -1,15 +1,15 @@
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Check, Loader, MapPinMinus, MapPinPen, X } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
-import { Check, Loader, MapPinMinus, MapPinPen, X } from 'lucide-react'
-import { deleteLocation, editLocation } from '@/lib/actions/profile.actions'
-import { type EditLocationData, useEditLocationSchema } from '@/lib/validators/location'
-import { TableCell, TableRow } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
-import type { Location } from '@prisma/client'
+import { TableCell, TableRow } from '@/components/ui/table'
+import { deleteLocation, editLocation } from '@/lib/actions/profile.actions'
+import { type EditLocationData, useEditLocationSchema } from '@/lib/validators/location'
+import type { Location } from '@/prisma/generated'
 
 const initialFormData: EditLocationData = {
   contactPerson: '',

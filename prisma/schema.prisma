@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../src/prisma/generated"
 }
 
@@ -9,7 +9,7 @@ datasource db {
 
 enum FuelType {
   diesel
-  gasoline
+  petrol
   gas
   electric
   hybrid

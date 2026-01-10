@@ -1,14 +1,14 @@
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Check, Loader } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
-import { Check, Loader } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { editProfile } from '@/lib/actions/profile.actions'
 import { type EditProfileData, useEditProfileSchema } from '@/lib/validators/profile'
-import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import type { Profile } from '@prisma/client'
+import type { Profile } from '@/prisma/generated'
 
 const initialFormData: EditProfileData = {
   slug: '',

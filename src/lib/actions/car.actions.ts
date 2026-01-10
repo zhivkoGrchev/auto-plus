@@ -1,9 +1,9 @@
 'use server'
 
-import type { CarBrand, CarModel } from '@prisma/client'
 import type { CarExtended } from '@/lib/types/car'
 import type { AddCarData, AddCarImageData, EditCarData } from '@/lib/validators/car'
 import { prisma } from '@/prisma'
+import type { CarBrand, CarModel } from '@/prisma/generated'
 import { deleteImage } from './pinata.actions'
 import { getProfile } from './profile.actions'
 

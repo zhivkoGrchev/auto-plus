@@ -2,7 +2,7 @@ import { neonConfig } from '@neondatabase/serverless'
 import { PrismaNeon } from '@prisma/adapter-neon'
 import { PrismaPg } from '@prisma/adapter-pg'
 import ws from 'ws'
-import { PrismaClient } from './generated/client'
+import { PrismaClient } from '@/prisma/generated/client'
 
 function createPrismaClient() {
   const isProduction = process.env.NODE_ENV === 'production'
