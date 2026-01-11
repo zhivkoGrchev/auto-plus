@@ -28,12 +28,12 @@ const INITIAL_FORM_DATA: AddCarData = {
   locationId: '',
   brandId: '',
   modelId: '',
-  year: 0,
-  color: '',
-  transmission: Transmission.manual,
   powerKW: 0,
   powerPS: 0,
   cubicCapacity: 0,
+  year: 0,
+  color: '',
+  transmission: Transmission.manual,
   fuelType: FuelType.diesel,
   mileage: 0,
   vin: '',
@@ -297,7 +297,7 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
                 <Select value={watch('transmission')} onValueChange={(value) => setValue('transmission', value as Transmission)}>
                   <SelectTrigger className="w-full" aria-label="Transmission">
                     <SelectValue id="transmission" placeholder={t('selectTransmission')}>
-                      {getValues('transmission') || t('selectTransmission')}
+                      {t(getValues('transmission') || 'selectTransmission')}
                     </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
@@ -316,7 +316,9 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
                 </Label>
                 <Select value={watch('fuelType') || ''} onValueChange={(value) => setValue('fuelType', value as FuelType)}>
                   <SelectTrigger className="w-full" aria-label="Fuel Type">
-                    <SelectValue id="fuelType" placeholder={t('selectFuelType')} />
+                    <SelectValue id="fuelType" placeholder={t('selectFuelType')}>
+                      {t(getValues('fuelType') || 'selectFuelType')}
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     {Object.keys(FuelType).map((item) => (
