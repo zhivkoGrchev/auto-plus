@@ -44,8 +44,8 @@
   },
   "AdminPage": {
     "myCars": "My Cars",
-    "myProfile": "My Profile",
-    "myWebsite": "My Website"
+    "Profiles": "Profiles",
+    "websiteAdmin": "Website admin"
   },
   "SignInPage": {
     "title": "Welcome back!",
@@ -88,7 +88,7 @@
     "success": "The password has been successfully changed"
   },
   "CarDialog": {
-    "addCar": "Add Car",
+    "addCarButton": "Add a new car",
     "title": "Add a new car",
     "description": "Fill in the details of the car here. Click save when you&apos;re done.",
     "brand": "Brand",
@@ -127,7 +127,8 @@
     "search": "Search brand or model…",
     "noResults": "No results.",
     "pervious": "Pervious",
-    "next": "Next"
+    "next": "Next",
+    "loading": "Loading..."
   },
   "EditGalery": {
     "title": "Upload Image"

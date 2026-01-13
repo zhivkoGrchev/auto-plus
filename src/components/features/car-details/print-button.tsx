@@ -5,7 +5,7 @@ import { FaPrint } from 'react-icons/fa'
 import { useTranslations } from 'next-intl'
 
 export default function PrintButton() {
-  const t = useTranslations('AddCarDialog')
+  const t = useTranslations('CarDialog')
 
   return (
     <Button className="no-print cursor-pointer" variant="outline" onClick={() => window.print()}>
