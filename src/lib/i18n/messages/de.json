@@ -44,8 +44,8 @@
   },
   "AdminPage": {
     "myCars": "Meine Autos",
-    "myProfile": "Mein Profil",
-    "myWebsite": "Meine Website"
+    "Profiles": "Profile",
+    "websiteAdmin": "Admin-Panel"
   },
   "SignInPage": {
     "title": "Willkommen zurück!",
@@ -88,7 +88,7 @@
     "success": "Das Passwort wurde erfolgreich geändert"
   },
   "CarDialog": {
-    "addCar": "Auto hinzufügen",
+    "addCarButton": "Auto hinzufügen",
     "title": "Auto hinzufügen",
     "description": "Füllen Sie hier die Details des Autos aus. Klicken Sie auf Speichern, wenn Sie fertig sind.",
     "brand": "Marke",
@@ -127,7 +127,8 @@
     "search": "Marke oder Modell suchen…",
     "noResults": "Keine Ergebnisse.",
     "pervious": "Vorherige",
-    "next": "Nächste"
+    "next": "Nächste",
+    "loading": "Wird geladen..."
   },
   "EditGalery": {
     "title": "Bild hochladen"

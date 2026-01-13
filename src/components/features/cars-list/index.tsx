@@ -1,6 +1,7 @@
 'use client'
 
 import { Loader, Plus } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState, useTransition } from 'react'
 import { toast } from 'sonner'
@@ -24,6 +25,7 @@ export const CarsList = () => {
   const [editingCar, setEditingCar] = useState<CarExtended | undefined>()
   const [openCarDialog, setOpenCarDialog] = useState<boolean>(false)
   const [isPending, startTransition] = useTransition()
+  const t = useTranslations('CarDialog')
   const router = useRouter()
 
   useEffect(() => {
@@ -159,7 +161,7 @@ export const CarsList = () => {
   if (isPending) {
     return (
       <div className="flex flex-col justify-center items-center grow gap-4 text-5xl">
-        <Loader size="1em" className="animate-spin" /> Loading ...
+        <Loader size="1em" className="animate-spin" /> {t('loading')}
       </div>
     )
   }
@@ -195,7 +197,7 @@ export const CarsList = () => {
             </Select>
             <Button onClick={() => openAddCarDialog()}>
               <Plus />
-              Add a new car
+              {t('addCarButton')}
             </Button>
           </div>
         </CardContent>
