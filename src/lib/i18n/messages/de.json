@@ -45,7 +45,27 @@
   "AdminPage": {
     "myCars": "Meine Autos",
     "Profiles": "Profile",
-    "websiteAdmin": "Admin-Panel"
+    "websiteAdmin": "Admin-Panel",
+    "openWebsiteButton": "Meine Website öffnen",
+    "refreshDataButton": "Daten aktualisieren",
+    "title-links": "Admin-Panel",
+    "description": "Verwalten Sie Ihre Website",
+    "overview": "Übersicht",
+    "openingHours": "Öffnungszeiten",
+    "developerTools": "Entwickler-Tools",
+    "users": "Benutzer",
+    "analytics": "Analytik",
+    "settings": "Einstellungen",
+    "title-page": "Website-Übersicht",
+    "title-1": "Website-Status",
+    "desc-1": "Ihre Website ist derzeit online und zugänglich",
+    "title-2": "Aufgelistete Autos",
+    "desc-2": "Anzahl der Autos auf der Website",
+    "title-3": "Gesamtinventarwert",
+    "desc-3": "Gesamtwert aller auf der Website verfügbaren Autos",
+    "title-4": "Durchschnittlicher Autopreis",
+    "desc-4": "Durchschnittspreis über das gesamte Inventar",
+    "title-5": "Schnellaktionen"
   },
   "SignInPage": {
     "title": "Willkommen zurück!",
@@ -157,10 +177,6 @@
     "title": "Standort",
     "description": "",
     "save": "Speichern"
-  },
-  "MyWebsite": {
-    "openWebsite": "Meine Website öffnen",
-    "developerMode": "Diese Funktion wird entwickelt."
   },
   "AuthValidations": {
     "name": "Name ist erforderlich",

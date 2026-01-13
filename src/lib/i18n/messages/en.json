@@ -45,7 +45,27 @@
   "AdminPage": {
     "myCars": "My Cars",
     "Profiles": "Profiles",
-    "websiteAdmin": "Website admin"
+    "websiteAdmin": "Website admin",
+    "openWebsiteButton": "Open my Website",
+    "refreshDataButton": "Refresh data",
+    "title-links": "Website admin",
+    "description": "Manage your website",
+    "overview": "Overview",
+    "openingHours": "Opening Hours",
+    "developerTools": "Developer Tools",
+    "users": "Users",
+    "analytics": "Analytics",
+    "settings": "Settings",
+    "title-page": "Website Overview",
+    "title-1": "Website Status",
+    "desc-1": "Your website is currently online and accessible",
+    "title-2": "Cars Listed",
+    "desc-2": "Total cars available on the website",
+    "title-3": "Total Inventory Value",
+    "desc-3": "Total cars available on the website",
+    "title-4": "Average Car Price",
+    "desc-4": "Average price across all inventory",
+    "title-5": "Quick Actions"
   },
   "SignInPage": {
     "title": "Welcome back!",
@@ -157,10 +177,6 @@
     "title": "Locations",
     "description": "",
     "save": "Save"
-  },
-  "MyWebsite": {
-    "openWebsite": "Open my Website",
-    "developerMode": "This feature is under development."
   },
   "AuthValidations": {
     "name": "Name is required",
