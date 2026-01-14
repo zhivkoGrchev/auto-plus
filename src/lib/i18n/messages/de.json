@@ -81,7 +81,25 @@
     "friday": "Freitag",
     "saturday": "Samstag",
     "sunday": "Sonntag",
-    "to": "bis"
+    "to": "bis",
+    "devToolsDescription": "Bitte erstellen Sie zunächst ein Profil, um auf Einbettungscodes zugreifen zu können",
+    "devToolsDescription1": "Betten Sie Ihren Fahrzeugbestand auf externen Websites ein",
+    "embedCodeLabel": "Embed-Code",
+    "embedCodeDescription": "Kopieren Sie diesen Code, um Ihren Fahrzeugbestand auf einer beliebigen externen Website einzubetten. Das Widget ist schreibgeschützt und wird automatisch aktualisiert, wenn Sie Fahrzeuge hinzufügen oder entfernen.",
+    "embedCodeLight": "Light-Thema:",
+    "embedCodeDark": "Dark-Thema:",
+    "embedCodeLightButton": "Kopiere Light-Thema Code",
+    "embedCodeDarkButton": "Kopiere Dark-Thema Code",
+    "preview": "Vorschau:",
+    "previewLightTheme": "Light-Thema Vorschau",
+    "previewDarkTheme": "Dark-Thema Vorschau",
+    "howToUse": "Anwendung:",
+    "usageInstructions": {
+      "step1": "Kopieren Sie den obigen Einbettungscode (wählen Sie Light- oder Dark-Thema)",
+      "step2": "Fügen Sie den Code in das HTML Ihrer Website ein, wo der Fahrzeugbestand angezeigt werden soll",
+      "step3": "Das Widget zeigt automatisch alle Fahrzeuge an, die als 'Auf Website listen' markiert sind",
+      "step4": "Änderungen, die Sie im Admin-Panel vornehmen, werden sofort in der Einbettung übernommen"
+    }
   },
   "SignInPage": {
     "title": "Willkommen zurück!",

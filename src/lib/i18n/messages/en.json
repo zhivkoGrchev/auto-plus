@@ -81,7 +81,25 @@
     "friday": "Friday",
     "saturday": "Saturday",
     "sunday": "Sunday",
-    "to": "to"
+    "to": "to",
+    "devToolsDescription": "Please create a profile first to access embed codes",
+    "devToolsDescription1": "Embed your car inventory on external websites",
+    "embedCodeLabel": "Embed Code",
+    "embedCodeDescription": "Copy this code to embed your car inventory on any external website. The widget is read-only and updates automatically when you add or remove cars.",
+    "embedCodeLight": "Light Theme:",
+    "embedCodeDark": "Dark Theme:",
+    "embedCodeLightButton": "Copy Light Theme Code",
+    "embedCodeDarkButton": "Copy Dark Theme Code",
+    "preview": "Preview:",
+    "previewLightTheme": "Light Theme Preview",
+    "previewDarkTheme": "Dark Theme Preview",
+    "howToUse": "How to use:",
+    "usageInstructions": {
+      "step1": "Copy the embed code above (choose light or dark theme)",
+      "step2": "Paste the code into your website's HTML where you want the car inventory to appear",
+      "step3": "The widget will automatically display all cars marked as 'List on Website'",
+      "step4": "Changes you make in the admin panel will reflect immediately in the embed"
+    }
   },
   "SignInPage": {
     "title": "Welcome back!",
