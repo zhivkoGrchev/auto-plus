@@ -32,7 +32,7 @@ const DAYS = [
 ]
 
 export const OpeningHours = ({ profileSlug }: OpeningHoursProps) => {
-  const t = useTranslations('MyWebsite')
+  const t = useTranslations('AdminPage')
 
   const [openingHours, setOpeningHours] = useState<OpeningHoursData | null>(null)
   const [loading, setLoading] = useState(true)
@@ -190,8 +190,8 @@ export const OpeningHours = ({ profileSlug }: OpeningHoursProps) => {
       {/* Header with Buttons */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-2xl font-bold">Opening Hours</h2>
-          <p className="text-sm text-muted-foreground mt-1">Manage your business hours for each day of the week</p>
+          <h2 className="text-2xl font-bold">{t('openingHours')}</h2>
+          <p className="text-sm text-muted-foreground mt-1">{t('openingHoursDescription')}</p>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="default" size="sm" asChild disabled={!profileSlug}>
@@ -201,7 +201,7 @@ export const OpeningHours = ({ profileSlug }: OpeningHoursProps) => {
               rel="noopener noreferrer"
             >
               <ExternalLink className="h-4 w-4 mr-2" />
-              Open Website
+              {t('openWebsiteButton')}
             </a>
           </Button>
           <Button onClick={handleSaveOpeningHours} disabled={saving} size="sm">
@@ -213,7 +213,7 @@ export const OpeningHours = ({ profileSlug }: OpeningHoursProps) => {
             ) : (
               <>
                 <Save className="h-4 w-4 mr-2" />
-                Save Changes
+                {t('saveChangesButton')}
               </>
             )}
           </Button>
@@ -238,7 +238,7 @@ export const OpeningHours = ({ profileSlug }: OpeningHoursProps) => {
 
       {/* Days Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {DAYS.map(({ key, label, short }) => {
+        {DAYS.map(({ key }) => {
           const daySchedule = openingHours[key as keyof OpeningHoursData]
           const dayIndex = DAYS.findIndex((d) => d.key === key)
 
@@ -255,10 +255,12 @@ export const OpeningHours = ({ profileSlug }: OpeningHoursProps) => {
                     />
                     <div>
                       <Label htmlFor={`${key}-open`} className="text-base font-semibold cursor-pointer">
-                        {label}
+                        {t(`${key}`)}
                       </Label>
                       <p className="text-xs text-muted-foreground mt-0.5">
-                        {daySchedule.isOpen ? `${daySchedule.slots.length} time slot${daySchedule.slots.length !== 1 ? 's' : ''}` : 'Closed'}
+                        {daySchedule.isOpen
+                          ? `${daySchedule.slots.length} ${t('timeSlot')}${daySchedule.slots.length !== 1 ? t('pluralSufix') : ''}`
+                          : t('closed')}
                       </p>
                     </div>
                   </div>
@@ -266,7 +268,7 @@ export const OpeningHours = ({ profileSlug }: OpeningHoursProps) => {
                   {daySchedule.isOpen && dayIndex > 0 && (
                     <Button type="button" variant="ghost" size="sm" onClick={() => copyFromPreviousDay(key as keyof OpeningHoursData)} className="h-8">
                       <Copy className="h-3 w-3 mr-1" />
-                      Copy
+                      {t('copy')}
                     </Button>
                   )}
                 </div>
@@ -283,7 +285,7 @@ export const OpeningHours = ({ profileSlug }: OpeningHoursProps) => {
                           onChange={(e) => updateTimeSlot(key as keyof OpeningHoursData, slotIndex, 'open', e.target.value)}
                           className="w-28 h-9"
                         />
-                        <span className="text-sm text-muted-foreground">to</span>
+                        <span className="text-sm text-muted-foreground">{t('to')}</span>
                         <Input
                           type="time"
                           value={slot.close}
@@ -307,7 +309,7 @@ export const OpeningHours = ({ profileSlug }: OpeningHoursProps) => {
 
                   <Button type="button" variant="outline" size="sm" onClick={() => addTimeSlot(key as keyof OpeningHoursData)} className="w-full">
                     <Plus className="h-4 w-4 mr-2" />
-                    Add Time Slot
+                    {t('addTimeSlot')}
                   </Button>
                 </CardContent>
               )}
@@ -321,18 +323,18 @@ export const OpeningHours = ({ profileSlug }: OpeningHoursProps) => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-blue-900 dark:text-blue-100">
             <Clock className="h-5 w-5" />
-            Hours Preview
+            {t('hoursPreview')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {DAYS.map(({ key, label, short }) => {
+            {DAYS.map(({ key }) => {
               const daySchedule = openingHours[key as keyof OpeningHoursData]
               return (
                 <div key={key} className="flex justify-between items-center p-3 bg-white dark:bg-gray-900 rounded-lg shadow-sm">
-                  <span className="font-medium text-sm">{label}</span>
+                  <span className="font-medium text-sm">{t(`${key}`)}</span>
                   <span className={`text-sm ${daySchedule.isOpen ? 'text-green-600 dark:text-green-400' : 'text-gray-500'}`}>
-                    {daySchedule.isOpen ? daySchedule.slots.map((slot) => `${slot.open}-${slot.close}`).join(', ') : 'Closed'}
+                    {daySchedule.isOpen ? daySchedule.slots.map((slot) => `${slot.open}-${slot.close}`).join(', ') : t('closed')}
                   </span>
                 </div>
               )
