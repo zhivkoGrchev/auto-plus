@@ -40,7 +40,7 @@ interface WebsiteAdminProps {
 }
 
 export const WebsiteAdmin = ({ profileSlug }: WebsiteAdminProps) => {
-  const t = useTranslations('MyWebsite')
+  const t = useTranslations('AdminPage')
   const [activeSection, setActiveSection] = useState<ActiveSection>('overview')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -88,32 +88,32 @@ export const WebsiteAdmin = ({ profileSlug }: WebsiteAdminProps) => {
   const navigationItems = [
     {
       id: 'overview' as const,
-      label: 'Overview',
+      label: t('overview'),
       icon: Home,
     },
     {
       id: 'opening-hours' as const,
-      label: 'Opening Hours',
+      label: t('openingHours'),
       icon: Clock,
     },
     {
       id: 'developer-tools' as const,
-      label: 'Developer Tools',
+      label: t('developerTools'),
       icon: Code,
     },
     {
       id: 'users' as const,
-      label: 'Users',
+      label: t('users'),
       icon: Users,
     },
     {
       id: 'analytics' as const,
-      label: 'Analytics',
+      label: t('analytics'),
       icon: BarChart3,
     },
     {
       id: 'settings' as const,
-      label: 'Settings',
+      label: t('settings'),
       icon: Settings,
     },
   ]
@@ -161,7 +161,7 @@ export const WebsiteAdmin = ({ profileSlug }: WebsiteAdminProps) => {
         return (
           <div className="space-y-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-              <h2 className="text-2xl font-bold">Website Overview</h2>
+              <h2 className="text-2xl font-bold">{t('title-page')}</h2>
               <div className="flex items-center gap-2">
                 <Button variant="default" size="sm" asChild disabled={!profileSlug}>
                   <a
@@ -170,12 +170,12 @@ export const WebsiteAdmin = ({ profileSlug }: WebsiteAdminProps) => {
                     rel="noopener noreferrer"
                   >
                     <ExternalLink className="h-4 w-4 mr-2" />
-                    Open Website
+                    {t('openWebsiteButton')}
                   </a>
                 </Button>
                 <Button variant="outline" size="sm" onClick={fetchStats} disabled={isLoading}>
                   <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
-                  Refresh
+                  {t('refreshDataButton')}
                 </Button>
               </div>
             </div>
@@ -188,41 +188,29 @@ export const WebsiteAdmin = ({ profileSlug }: WebsiteAdminProps) => {
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <StatCard
-                title="Website Status"
-                value="Live"
-                description="Your website is currently online and accessible"
-                icon={Home}
-                colorClass="text-green-600"
-              />
+              <StatCard title={t('title-1')} value="Live" description={t('desc-1')} icon={Home} colorClass="text-green-600" />
+
+              <StatCard title={t('title-2')} value={stats.carsCount ?? 0} description={t('desc-2')} icon={Car} colorClass="text-purple-600" />
 
               <StatCard
-                title="Cars Listed"
-                value={stats.carsCount ?? 0}
-                description="Total cars available on the website"
-                icon={Car}
-                colorClass="text-purple-600"
-              />
-
-              <StatCard
-                title="Total Inventory Value"
+                title={t('title-3')}
                 value={stats.totalValue !== null ? `€${stats.totalValue.toLocaleString()}` : '€0'}
-                description="Combined value of all listed cars"
+                description={t('desc-3')}
                 icon={DollarSign}
                 colorClass="text-blue-600"
               />
 
               <StatCard
-                title="Average Car Price"
+                title={t('title-4')}
                 value={stats.avgPrice !== null ? `€${stats.avgPrice.toLocaleString()}` : '€0'}
-                description="Average price across all inventory"
+                description={t('desc-4')}
                 icon={TrendingUp}
                 colorClass="text-orange-600"
               />
 
               <Card className="md:col-span-2">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Quick Actions</CardTitle>
+                  <CardTitle className="text-sm font-medium">{t('title-5')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -236,7 +224,7 @@ export const WebsiteAdmin = ({ profileSlug }: WebsiteAdminProps) => {
                       className="justify-start"
                     >
                       <Clock className="mr-2 h-4 w-4" />
-                      Update Hours
+                      {t('openingHours')}
                     </Button>
                     <Button
                       variant="outline"
@@ -248,7 +236,7 @@ export const WebsiteAdmin = ({ profileSlug }: WebsiteAdminProps) => {
                       className="justify-start"
                     >
                       <Code className="mr-2 h-4 w-4" />
-                      Developer Tools
+                      {t('developerTools')}
                     </Button>
                     <Button
                       variant="outline"
@@ -260,7 +248,7 @@ export const WebsiteAdmin = ({ profileSlug }: WebsiteAdminProps) => {
                       className="justify-start"
                     >
                       <BarChart3 className="mr-2 h-4 w-4" />
-                      View Analytics
+                      {t('analytics')}
                     </Button>
                     <Button
                       variant="outline"
@@ -272,7 +260,7 @@ export const WebsiteAdmin = ({ profileSlug }: WebsiteAdminProps) => {
                       className="justify-start"
                     >
                       <Settings className="mr-2 h-4 w-4" />
-                      Settings
+                      {t('settings')}
                     </Button>
                   </div>
                 </CardContent>
@@ -363,8 +351,8 @@ export const WebsiteAdmin = ({ profileSlug }: WebsiteAdminProps) => {
           `}
         >
           <div className="p-6">
-            <h1 className="text-xl font-bold text-gray-900 dark:text-white">Website Admin</h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Manage your website</p>
+            <h1 className="text-xl font-bold text-gray-900 dark:text-white">{t('title-links')}</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('description')}</p>
           </div>
 
           <nav className="mt-6 px-3 pb-6" aria-label="Website admin navigation">
