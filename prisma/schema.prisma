@@ -148,8 +148,9 @@ model Profile {
   id        String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId    String
   slug      String     @unique
-  logo      String?
   company   String?
+  logoUrl   String?
+  logoHash  String?
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   locations Location[]
@@ -157,6 +158,7 @@ model Profile {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([slug])
   @@map("profile")
 }
 
@@ -169,7 +171,7 @@ model Location {
   address       String
   city          String
   postcode      String
-  isDefault     Boolean  @default(false)
+  isMain        Boolean  @default(false)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   cars          Car[]

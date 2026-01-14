@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Check, Loader, MapPinMinus, MapPinPen, X } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -8,18 +9,9 @@ import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { deleteLocation, editLocation } from '@/lib/actions/profile.actions'
-import { type EditLocationData, useEditLocationSchema } from '@/lib/validators/location'
+import { getChangedFields } from '@/lib/utils'
+import { type EditLocationData, EditLocationSchema } from '@/lib/validators/location'
 import type { Location } from '@/prisma/generated'
-
-const initialFormData: EditLocationData = {
-  contactPerson: '',
-  phone: '',
-  email: '',
-  address: '',
-  city: '',
-  postcode: '',
-  isDefault: false,
-} as const
 
 export interface EditLocationFormProps {
   location: Location
@@ -27,18 +19,30 @@ export interface EditLocationFormProps {
 }
 
 export const EditLocationForm = ({ location, onUpdate }: EditLocationFormProps) => {
+  const m = useTranslations('Validations')
   const [isEditing, setEditing] = useState(false)
-  const schema = useEditLocationSchema()
   const {
     register,
     watch,
     setValue,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<EditLocationData>({ defaultValues: { ...initialFormData, isDefault: location.isDefault }, resolver: zodResolver(schema) }) //TODO solve the typing problem
+  } = useForm<EditLocationData>({
+    defaultValues: {
+      contactPerson: location.contactPerson,
+      phone: location.phone,
+      email: location.email,
+      address: location.address,
+      city: location.city,
+      postcode: location.postcode,
+      isMain: location.isMain,
+    },
+    resolver: zodResolver(EditLocationSchema),
+  })
 
   const handleFormSubmit = async (formData: EditLocationData) => {
-    const { data, error } = await editLocation(formData, location.id)
+    const changedData = getChangedFields<EditLocationData>(location, formData)
+    const { data, error } = await editLocation(changedData, location.id)
     if (error) {
       toast.error(error.message)
       return
@@ -60,31 +64,33 @@ export const EditLocationForm = ({ location, onUpdate }: EditLocationFormProps) 
   return isEditing ? (
     <TableRow>
       <TableCell>
-        <Switch name="isDefault" checked={watch('isDefault')} onCheckedChange={(value) => setValue('isDefault', value)} />
+        <Switch name="isMain" checked={watch('isMain')} onCheckedChange={(value) => setValue('isMain', value)} />
       </TableCell>
       <TableCell>
         <Input className="w-full" {...register('contactPerson')} placeholder={location.contactPerson} />
-        {errors.contactPerson && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{errors.contactPerson.message}</span>}
+        {errors.contactPerson?.message && (
+          <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{m(errors.contactPerson.message)}</span>
+        )}
       </TableCell>
       <TableCell>
         <Input className="w-full" {...register('phone')} placeholder={location.phone} />
-        {errors.phone && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{errors.phone.message}</span>}
+        {errors.phone?.message && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{m(errors.phone.message)}</span>}
       </TableCell>
       <TableCell>
         <Input className="w-full" {...register('email')} placeholder={location.email} />
-        {errors.email && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{errors.email.message}</span>}
+        {errors.email?.message && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{m(errors.email.message)}</span>}
       </TableCell>
       <TableCell>
         <Input className="w-full" {...register('address')} placeholder={location.address} />
-        {errors.address && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{errors.address.message}</span>}
+        {errors.address?.message && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{m(errors.address.message)}</span>}
       </TableCell>
       <TableCell>
         <Input className="w-full" {...register('city')} placeholder={location.city} />
-        {errors.city && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{errors.city.message}</span>}
+        {errors.city?.message && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{m(errors.city.message)}</span>}
       </TableCell>
       <TableCell>
         <Input className="w-full" {...register('postcode')} placeholder={location.postcode} />
-        {errors.postcode && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{errors.postcode.message}</span>}
+        {errors.postcode?.message && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{m(errors.postcode.message)}</span>}
       </TableCell>
       <TableCell className="flex justify-end gap-2">
         <Button onClick={handleSubmit(handleFormSubmit)} disabled={isSubmitting}>
@@ -98,7 +104,7 @@ export const EditLocationForm = ({ location, onUpdate }: EditLocationFormProps) 
   ) : (
     <TableRow key={location.id}>
       <TableCell>
-        <Switch checked={location.isDefault} />
+        <Switch checked={location.isMain} />
       </TableCell>
       <TableCell>{location.contactPerson}</TableCell>
       <TableCell>{location.phone}</TableCell>

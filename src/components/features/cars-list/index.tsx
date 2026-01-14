@@ -43,7 +43,7 @@ export const CarsList = () => {
         setLocations(selectedProfile.locations)
         const selectedLocation =
           selectedProfile.locations.length > 1
-            ? selectedProfile.locations.find((item) => item.isDefault) || selectedProfile.locations[0]
+            ? selectedProfile.locations.find((item) => item.isMain) || selectedProfile.locations[0]
             : selectedProfile.locations[0]
         if (!selectedLocation) {
           toast.error('There are no locations')
@@ -73,7 +73,7 @@ export const CarsList = () => {
     setLocations(selectedProfile.locations)
     const selectedLocation =
       selectedProfile.locations.length > 1
-        ? selectedProfile.locations.find((item) => item.isDefault) || selectedProfile.locations[0]
+        ? selectedProfile.locations.find((item) => item.isMain) || selectedProfile.locations[0]
         : selectedProfile.locations[0]
     if (!selectedLocation) {
       setCars([])
