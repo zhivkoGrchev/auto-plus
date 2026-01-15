@@ -5,8 +5,8 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/prisma'
 import type { Profile } from '@/prisma/generated'
 import type { ProfileExtended } from '../types/profile'
-import type { CreateLocationData, EditLocationData } from '../validators/location'
-import type { CreateProfileWithLocationData, EditProfileData } from '../validators/profile'
+import type { AddLocationData, EditLocationData } from '../validators/location'
+import type { AddProfileWithLocationData, EditProfileData } from '../validators/profile'
 
 export const getProfile = async (): Promise<Return<Profile>> => {
   try {
@@ -40,12 +40,10 @@ export const getProfilesWithLocations = async (): Promise<Return<ProfileExtended
   }
 }
 
-export const createProfileWithLocation = async ({ location: locationData, ...profileData }: CreateProfileWithLocationData): Promise<Return<string>> => {
+export const addProfileWithLocation = async ({ location: locationData, ...profileData }: AddProfileWithLocationData): Promise<Return<string>> => {
   try {
     const session = await auth.api.getSession({ headers: await headers() })
-    if (!session) {
-      return { data: undefined, error: { message: 'You are not signed in' } }
-    }
+    if (!session) return { data: undefined, error: { message: 'You are not signed in' } }
     const profile = await prisma.profile.create({ data: { ...profileData, userId: session.user.id } })
     await prisma.location.create({ data: { ...locationData, profileId: profile.id } })
     return { data: 'Profile was successfully created', error: undefined }
@@ -61,13 +59,8 @@ export const createProfileWithLocation = async ({ location: locationData, ...pro
 export const editProfile = async (profileData: EditProfileData, id: string): Promise<Return<string>> => {
   try {
     const session = await auth.api.getSession({ headers: await headers() })
-    if (!session) {
-      return { data: undefined, error: { message: 'You are not signed in' } }
-    }
-    await prisma.profile.update({
-      data: profileData,
-      where: { id },
-    })
+    if (!session) return { data: undefined, error: { message: 'You are not signed in' } }
+    await prisma.profile.update({ data: profileData, where: { id } })
     return { data: 'Profile was successfully updated', error: undefined }
   } catch (error) {
     const e = error as Error
@@ -81,12 +74,8 @@ export const editProfile = async (profileData: EditProfileData, id: string): Pro
 export const deleteProfile = async (id: string): Promise<Return<string>> => {
   try {
     const session = await auth.api.getSession({ headers: await headers() })
-    if (!session) {
-      return { data: undefined, error: { message: 'You are not signed in' } }
-    }
-    await prisma.profile.delete({
-      where: { id },
-    })
+    if (!session) return { data: undefined, error: { message: 'You are not signed in' } }
+    await prisma.profile.delete({ where: { id } })
     return { data: 'Profile was successfully deleted', error: undefined }
   } catch (error) {
     const e = error as Error
@@ -97,15 +86,11 @@ export const deleteProfile = async (id: string): Promise<Return<string>> => {
   }
 }
 
-export const createLocation = async (locationData: CreateLocationData, profileId: string): Promise<Return<string>> => {
+export const addLocation = async (locationData: AddLocationData, profileId: string): Promise<Return<string>> => {
   try {
     const session = await auth.api.getSession({ headers: await headers() })
-    if (!session) {
-      return { data: undefined, error: { message: 'You are not signed in' } }
-    }
-    await prisma.location.create({
-      data: { ...locationData, profileId },
-    })
+    if (!session) return { data: undefined, error: { message: 'You are not signed in' } }
+    await prisma.location.create({ data: { ...locationData, profileId } })
     return { data: 'Location was successfully created', error: undefined }
   } catch (error) {
     const e = error as Error
@@ -119,13 +104,8 @@ export const createLocation = async (locationData: CreateLocationData, profileId
 export const editLocation = async (locationData: EditLocationData, id: string): Promise<Return<string>> => {
   try {
     const session = await auth.api.getSession({ headers: await headers() })
-    if (!session) {
-      return { data: undefined, error: { message: 'You are not signed in' } }
-    }
-    await prisma.location.update({
-      data: locationData,
-      where: { id },
-    })
+    if (!session) return { data: undefined, error: { message: 'You are not signed in' } }
+    await prisma.location.update({ data: locationData, where: { id } })
     return { data: 'Location was successfully updated', error: undefined }
   } catch (error) {
     const e = error as Error
@@ -139,12 +119,8 @@ export const editLocation = async (locationData: EditLocationData, id: string): 
 export const deleteLocation = async (id: string): Promise<Return<string>> => {
   try {
     const session = await auth.api.getSession({ headers: await headers() })
-    if (!session) {
-      return { data: undefined, error: { message: 'You are not signed in' } }
-    }
-    await prisma.location.delete({
-      where: { id },
-    })
+    if (!session) return { data: undefined, error: { message: 'You are not signed in' } }
+    await prisma.location.delete({ where: { id } })
     return { data: 'Location was successfully deleted', error: undefined }
   } catch (error) {
     const e = error as Error

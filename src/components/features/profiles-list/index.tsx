@@ -1,6 +1,6 @@
 'use client'
 
-import { Loader, Trash } from 'lucide-react'
+import { Building, Loader, MapPinPen, Pencil, Trash } from 'lucide-react'
 import Image from 'next/image'
 import { useEffect, useState, useTransition } from 'react'
 import { toast } from 'sonner'
@@ -14,10 +14,13 @@ import { ProfileDialog } from './profile.dialog'
 
 export const ProfilesList = () => {
   const [profiles, setProfiles] = useState<ProfileExtended[] | undefined>(undefined)
-  const [isPendingFetch, startTransitionFetch] = useTransition()
+  const [currentProfile, setCurrentProfile] = useState<ProfileExtended | undefined>()
+  const [openProfileDialog, setOpenProfileDialog] = useState<boolean>(false)
+  const [openLocationsDialog, setOpenLocationsDialog] = useState<boolean>(false)
+  const [isPending, startTransition] = useTransition()
 
   const fetchProfiles = () => {
-    startTransitionFetch(async () => {
+    startTransition(async () => {
       const { data, error } = await getProfilesWithLocations()
       if (error) {
         toast.error(error.message)
@@ -39,7 +42,35 @@ export const ProfilesList = () => {
     toast.success(data)
   }
 
-  if (isPendingFetch) {
+  const handleUpdate = async () => {
+    setOpenProfileDialog(false)
+    setOpenLocationsDialog(false)
+    setCurrentProfile(undefined)
+    fetchProfiles()
+  }
+
+  const openAddProfileDialog = () => {
+    setCurrentProfile(undefined)
+    setOpenProfileDialog(true)
+  }
+  const openEditProfileDialog = (profile: ProfileExtended) => {
+    setCurrentProfile(profile)
+    setOpenProfileDialog(true)
+  }
+  const closeProfileDialog = () => {
+    setOpenProfileDialog(false)
+    setCurrentProfile(undefined)
+  }
+  const openEditLocationsDialog = (profile: ProfileExtended) => {
+    setCurrentProfile(profile)
+    setOpenLocationsDialog(true)
+  }
+  const closeLocationsDialog = () => {
+    setOpenLocationsDialog(false)
+    setCurrentProfile(undefined)
+  }
+
+  if (isPending) {
     return (
       <div className="flex flex-col justify-center items-center grow gap-4 text-5xl">
         <Loader size="1em" className="animate-spin" /> Loading ...
@@ -47,20 +78,12 @@ export const ProfilesList = () => {
     )
   }
 
-  const renderDefaultLocation = (locations: Location[]) => {
+  const renderMainLocation = (locations: Location[]) => {
     if (locations.length) {
-      const location = locations.find((item) => item.isDefault)
+      const location = locations.find((item) => item.isMain)
       if (location) {
         return (
           <div className="flex flex-col gap-2">
-            <div className="flex flex-col">
-              <h5 className="px-4 py-2 text-xl font-bold">Contact person</h5>
-              <ul className="p-4 rounded-xl border bg-cyan-50 dark:bg-cyan-950">
-                <li>Name: {location.contactPerson}</li>
-                <li>Phone: {location.phone}</li>
-                <li>E-Mail: {location.email}</li>
-              </ul>
-            </div>
             <div className="flex flex-col">
               <h5 className="px-4 py-2 text-xl font-bold">Location</h5>
               <ul className="p-4 rounded-xl border bg-cyan-50 dark:bg-cyan-950">
@@ -69,17 +92,27 @@ export const ProfilesList = () => {
                 <li>Postcode: {location.postcode}</li>
               </ul>
             </div>
+            <div className="flex flex-col">
+              <h5 className="px-4 py-2 text-xl font-bold">Contact person</h5>
+              <ul className="p-4 rounded-xl border bg-cyan-50 dark:bg-cyan-950">
+                <li>Name: {location.contactPerson}</li>
+                <li>Phone: {location.phone}</li>
+                <li>E-Mail: {location.email}</li>
+              </ul>
+            </div>
           </div>
         )
       }
     }
-    return <div className="p-8 flex justify-center items-center rounded-xl border bg-cyan-100 dark:bg-cyan-900">There is no default location</div>
+    return <div className="p-8 flex justify-center items-center rounded-xl border bg-cyan-100 dark:bg-cyan-900">There is no main location</div>
   }
 
   return (
     <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
       <div className="flex justify-end">
-        <ProfileDialog onUpdate={fetchProfiles} />
+        <Button className="bg-cyan-700 text-cyan-50 hover:bg-cyan-800 hover:cursor-pointer" onClick={() => openAddProfileDialog()}>
+          <Building /> Add profile
+        </Button>
       </div>
       <div className="grid grid-cols-2 gap-4">
         {profiles?.length ? (
@@ -99,11 +132,15 @@ export const ProfilesList = () => {
                     <li className="text-sm">Updated: {item.updatedAt.toDateString()}</li>
                   </ul>
                 </div>
-                {renderDefaultLocation(item.locations)}
+                {renderMainLocation(item.locations)}
               </CardContent>
               <CardFooter className="flex justify-end gap-2">
-                <LocationsDialog profile={item} onUpdate={fetchProfiles} />
-                <ProfileDialog profile={item} onUpdate={fetchProfiles} />
+                <Button className="bg-cyan-700 text-cyan-50 hover:bg-cyan-800 hover:cursor-pointer" onClick={() => openEditLocationsDialog(item)}>
+                  <MapPinPen /> Locations
+                </Button>
+                <Button className="bg-cyan-700 text-cyan-50 hover:bg-cyan-800 hover:cursor-pointer" onClick={() => openEditProfileDialog(item)}>
+                  <Pencil /> Edit profile
+                </Button>
                 <Button variant="destructive" onClick={() => handleDeleteProfile(item.id)} className="hover:cursor-pointer">
                   <Trash />
                 </Button>
@@ -114,6 +151,18 @@ export const ProfilesList = () => {
           <div className="p-8 col-span-2 flex flex-col justify-center items-center rounded-xl border">There is no Profiles</div>
         )}
       </div>
+      <ProfileDialog
+        open={openProfileDialog}
+        profile={currentProfile}
+        onOpenChange={(value) => (!value ? closeProfileDialog() : setOpenProfileDialog(value))}
+        onUpdate={handleUpdate}
+      />
+      <LocationsDialog
+        open={openLocationsDialog}
+        profile={currentProfile}
+        onOpenChange={(value) => (!value ? closeLocationsDialog() : setOpenLocationsDialog(value))}
+        onUpdate={handleUpdate}
+      />
     </div>
   )
 }

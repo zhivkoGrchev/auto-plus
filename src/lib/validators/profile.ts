@@ -1,35 +1,15 @@
-import { useTranslations } from 'next-intl'
 import { z } from 'zod'
-import { useCreateLocationSchema } from './location'
+import { AddLocationSchema } from './location'
 
-export const useCreateProfileWithLocationSchema = () => {
-  const t = useTranslations('ProfileValidations')
-  return z.object({
-    slug: z.string().min(2, t('slug')),
-    logo: z.string().optional(),
-    company: z.string().optional(),
-    location: useCreateLocationSchema(),
-  })
-}
+export const AddProfileWithLocationSchema = z.object({
+  slug: z.string().min(2, 'message.invalidSlug'),
+  company: z.string().nullable(),
+  logoUrl: z.string().nullable(),
+  logoHash: z.string().nullable(),
+  location: AddLocationSchema,
+})
 
-export const useEditProfileSchema = () => {
-  const t = useTranslations('ProfileValidations')
-  return z.object({
-    slug: z
-      .string()
-      .min(2, t('slug'))
-      .transform((v) => (v === '' ? undefined : v))
-      .optional(),
-    logo: z
-      .string()
-      .transform((v) => (v === '' ? undefined : v))
-      .optional(),
-    company: z
-      .string()
-      .transform((v) => (v === '' ? undefined : v))
-      .optional(),
-  })
-}
+export const EditProfileSchema = AddProfileWithLocationSchema.omit({ location: true }).partial()
 
-export type CreateProfileWithLocationData = z.infer<ReturnType<typeof useCreateProfileWithLocationSchema>>
-export type EditProfileData = z.infer<ReturnType<typeof useEditProfileSchema>>
+export type AddProfileWithLocationData = z.infer<typeof AddProfileWithLocationSchema>
+export type EditProfileData = z.infer<typeof EditProfileSchema>

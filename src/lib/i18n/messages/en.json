@@ -188,11 +188,11 @@
     "title": "Upload Image"
   },
   "ProfilesList": {
-    "createProfile": "Create profile",
+    "addProfile": "Add profile",
     "editProfile": "Edit profile"
   },
   "ProfileDialog": {
-    "create": { "title": "Create new profile", "description": "Fill in all the fields" },
+    "add": { "title": "Add new profile", "description": "Fill in all the fields" },
     "edit": { "title": "Edit profile", "description": "Fill in the fields that you want to change" },
     "slug": "Slug",
     "logo": "Logo",
@@ -218,23 +218,18 @@
     "password": "Password must contain at least 8 characters",
     "confirmPassword": "Passwords not a match"
   },
-  "ProfileValidations": {
-    "slug": "Invalid slug",
-    "phone": "Invalid phone number",
-    "email": "Invalid E-Mail"
-  },
-  "LocationValidations": {
-    "phone": "Invalid phone number",
-    "email": "Invalid E-Mail"
-  },
   "Validations": {
     "message": {
       "requiredName": "Name is required",
       "minPassword": "Password must contain at least 8 characters",
       "confirmPassword": "Passwords not a match",
+      "invalidSlug": "Invalid slug",
       "invalidPhoneNumber": "Invalid phone number",
       "invalidEmail": "Invalid E-Mail",
-      "invalidSlug": "Invalid slug",
+      "requiredContactPerson": "Contact person is required",
+      "requiredAddress": "Address is required",
+      "requiredCity": "City is required",
+      "requiredPostcode": "Postcode is required",
       "requiredProfile": "Profile is required",
       "requiredLocation": "Location is required",
       "requiredBrand": "Brand is required",

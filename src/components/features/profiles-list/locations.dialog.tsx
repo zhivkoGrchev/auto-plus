@@ -1,70 +1,63 @@
-import { MapPinPen, MapPinPlus } from 'lucide-react'
+import { MapPinPlus } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { type ComponentProps, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import type { ProfileExtended } from '@/lib/types/profile'
-import { CreateLocationForm } from './create-location.form'
+import { AddLocationForm } from './add-location.form'
 import { EditLocationForm } from './edit-location.form'
 
 export interface LocationsDialogProps extends ComponentProps<typeof Dialog> {
-  profile: ProfileExtended
+  profile?: ProfileExtended
   onUpdate?: () => void
 }
 
-export const LocationsDialog = ({ open, onOpenChange, profile, onUpdate }: LocationsDialogProps) => {
+export const LocationsDialog = ({ open, profile, onOpenChange, onUpdate }: LocationsDialogProps) => {
   const t = useTranslations('LocationsDialog')
   const [showCreateLocationForm, setShowCreateLocationForm] = useState(false)
 
-  const handleUpdate = () => {
-    onUpdate?.()
-  }
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>
-        <Button className="bg-cyan-700 text-cyan-50 hover:bg-cyan-800 hover:cursor-pointer">
-          <MapPinPen /> Locations
-        </Button>
-      </DialogTrigger>
       <DialogContent className="min-w-4xl">
         <DialogHeader>
           <DialogTitle>{t('title')}</DialogTitle>
           <DialogDescription>{t('description')}</DialogDescription>
         </DialogHeader>
         <div className="w-full flex flex-col gap-4 overflow-hidden rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Default</TableHead>
-                <TableHead>Contact Person</TableHead>
-                <TableHead>Phone number</TableHead>
-                <TableHead>E-Mail</TableHead>
-                <TableHead>Address</TableHead>
-                <TableHead>City</TableHead>
-                <TableHead>Postcode</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {showCreateLocationForm && <CreateLocationForm profileId={profile.id} onUpdate={handleUpdate} />}
-              {profile.locations.length ? (
-                profile.locations.map((item) => <EditLocationForm key={item.id} location={item} onUpdate={handleUpdate} />)
-              ) : (
+          {profile && (
+            <Table>
+              <TableHeader>
                 <TableRow>
-                  <TableCell colSpan={8} className="p-4 text-xl text-center">
-                    There is no locations
-                  </TableCell>
+                  <TableHead>Main</TableHead>
+                  <TableHead>Contact Person</TableHead>
+                  <TableHead>Phone number</TableHead>
+                  <TableHead>E-Mail</TableHead>
+                  <TableHead>Address</TableHead>
+                  <TableHead>City</TableHead>
+                  <TableHead>Postcode</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
-              )}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {showCreateLocationForm && <AddLocationForm profileId={profile.id} onUpdate={onUpdate} />}
+                {profile.locations.length ? (
+                  profile.locations.map((item) => <EditLocationForm key={item.id} location={item} onUpdate={onUpdate} />)
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={8} className="p-4 text-xl text-center">
+                      There is no locations
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          )}
         </div>
         <DialogFooter>
           <Button variant="default" onClick={() => setShowCreateLocationForm((show) => !show)}>
             <MapPinPlus />
-            Create location
+            Add location
           </Button>
           <DialogClose asChild>
             <Button variant="destructive">Close</Button>

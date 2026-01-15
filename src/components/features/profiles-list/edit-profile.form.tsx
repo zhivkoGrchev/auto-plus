@@ -7,14 +7,9 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { editProfile } from '@/lib/actions/profile.actions'
-import { type EditProfileData, useEditProfileSchema } from '@/lib/validators/profile'
+import { getChangedFields } from '@/lib/utils'
+import { type EditProfileData, EditProfileSchema } from '@/lib/validators/profile'
 import type { Profile } from '@/prisma/generated'
-
-const initialFormData: EditProfileData = {
-  slug: '',
-  logo: '',
-  company: '',
-} as const
 
 export interface EditProfileFormProps {
   profile: Profile
@@ -23,19 +18,24 @@ export interface EditProfileFormProps {
 
 export const EditProfileForm = ({ profile, onUpdate }: EditProfileFormProps) => {
   const t = useTranslations('ProfileDialog')
-  const schema = useEditProfileSchema()
+  const m = useTranslations('Validations')
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<EditProfileData>({ defaultValues: initialFormData, resolver: zodResolver(schema) })
+  } = useForm<EditProfileData>({
+    defaultValues: {
+      slug: profile.slug,
+      company: profile.company,
+      logoUrl: profile.logoUrl,
+      logoHash: profile.logoHash,
+    },
+    resolver: zodResolver(EditProfileSchema),
+  })
 
   const handleFormSubmit = async (formData: EditProfileData) => {
-    if (!profile) {
-      toast.error('Profile is not found')
-      return
-    }
-    const { data, error } = await editProfile(formData, profile.id)
+    const changedData = getChangedFields<EditProfileData>(profile, formData)
+    const { data, error } = await editProfile(changedData, profile.id)
     if (error) {
       toast.error(error.message)
       return
@@ -52,17 +52,15 @@ export const EditProfileForm = ({ profile, onUpdate }: EditProfileFormProps) => 
             {t('slug')}
           </Label>
           <Input id="slug" {...register('slug')} placeholder={profile.slug ? profile.slug : ''} />
-          {errors.slug && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{errors.slug.message}</span>}
-          <Label className="self-center" htmlFor="logo">
+          {errors.slug?.message && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{m(errors.slug.message)}</span>}
+          <Label className="self-center" htmlFor="logoUrl">
             {t('logo')}
           </Label>
-          <Input id="logo" {...register('logo')} placeholder={profile.logo ? profile.logo : ''} />
-          {errors.logo && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{errors.logo.message}</span>}
+          <Input id="logoUrl" {...register('logoUrl')} placeholder={profile.logoUrl ? profile.logoUrl : ''} />
           <Label className="self-center" htmlFor="company">
             {t('company')}
           </Label>
           <Input id="company" {...register('company')} placeholder={profile.company ? profile.company : ''} />
-          {errors.company && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{errors.company.message}</span>}
         </div>
         <div className="flex justify-end">
           <Button type="submit" disabled={isSubmitting}>
