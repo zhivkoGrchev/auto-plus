@@ -2,25 +2,34 @@
 
 import { useState } from 'react'
 import { ChevronLeft, ChevronRight, Moon, Sun } from 'lucide-react'
+import Image from 'next/image'
 
 const PitchDeck = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [darkMode, setDarkMode] = useState(false)
 
   const slides: Array<{
-    title: string
+    title: string | React.ReactElement
     subtitle?: string
     content: (darkMode: boolean) => React.ReactElement
   }> = [
     // Slide 1: Title
     {
-      title: 'Autohaus Plus',
-      subtitle: 'The Complete Cloud Solution for Used Car Dealerships',
+      title: (
+        <div className="flex items-center justify-left gap-4">
+          <Image src="/images/logo.png" alt="Auto Plus" width={77} height={50} className="object-contain h-12 w-auto sm:h-14 md:h-16" priority={true} />
+          <span>Auto Plus</span>
+        </div>
+      ),
+      subtitle: 'The Complete Cloud Solution for Car Dealerships',
       content: (darkMode) => (
         <div className="text-center space-y-6">
-          <div className="text-6xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Autohaus Plus</div>
-          <div className={`text-2xl ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Manage Inventory • Automate Sales • Increase Revenue</div>
-          <div className={`mt-12 text-lg ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Seeking €100,000 Seed Investment</div>
+          <div className="text-6xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Auto Plus</div>
+          <div className={`text-2xl ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+            The all-in-one cloud platform that turns car inventory chaos into streamlined success. Showcase vehicles beautifully online, all without the
+            technical headache.
+          </div>
+          <div className={`mt-12 text-xl ${darkMode ? 'text-gray-400' : 'text-blue-500'}`}>Seeking €180,000 Seed Investment</div>
         </div>
       ),
     },
@@ -31,13 +40,14 @@ const PitchDeck = () => {
       content: (darkMode) => (
         <div className="space-y-6">
           <p className={`text-xl leading-relaxed ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-            Used car dealerships face significant operational challenges:
+            Car dealerships pay excessive fees to list vehicles on third-party platforms like mobile.de and AutoScout24, losing control over their inventory and
+            customer data.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
             <div className={`p-6 rounded-lg border-l-4 border-red-500 ${darkMode ? 'bg-red-900/30' : 'bg-red-50'}`}>
-              <h3 className={`font-bold text-lg mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Fragmented Systems</h3>
+              <h3 className={`font-bold text-lg mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>High Monthly Costs</h3>
               <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>
-                Dealers juggle multiple disconnected tools for inventory, sales, and customer management
+                Dealers with larger stocks pay significantly more, €390-€1,200+ per month depending on inventory size, following successive price increases.
               </p>
             </div>
             <div className={`p-6 rounded-lg border-l-4 border-red-500 ${darkMode ? 'bg-red-900/30' : 'bg-red-50'}`}>
@@ -49,8 +59,8 @@ const PitchDeck = () => {
               <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>Lack of real-time analytics makes it difficult to optimize pricing and inventory</p>
             </div>
             <div className={`p-6 rounded-lg border-l-4 border-red-500 ${darkMode ? 'bg-red-900/30' : 'bg-red-50'}`}>
-              <h3 className={`font-bold text-lg mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>High Costs</h3>
-              <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>Expensive legacy software with complex licensing and maintenance fees</p>
+              <h3 className={`font-bold text-lg mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Multiple Platform Management</h3>
+              <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>Time-consuming manual updates across mobile.de, AutoScout24, and other portals</p>
             </div>
           </div>
         </div>
@@ -63,24 +73,36 @@ const PitchDeck = () => {
       content: (darkMode) => (
         <div className="space-y-6">
           <p className={`text-xl leading-relaxed ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-            Autohaus Plus is an all-in-one cloud platform that streamlines operations for used car dealerships:
+            Autohaus Plus is an all-in-one cloud platform that streamlines operations for car dealerships:
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
             <div className={`p-6 rounded-lg border-l-4 border-cyan-600 ${darkMode ? 'bg-cyan-900/30' : 'bg-cyan-50'}`}>
-              <h3 className={`font-bold text-lg mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>🚗 Smart Inventory Management</h3>
-              <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>Track vehicles, pricing, and status in real-time with automated workflows</p>
+              <h3 className={`font-bold text-lg mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Personal Inventory Management</h3>
+              <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>
+                Your own dedicated database with an easy-to-operate interface that gives you complete ownership and control over all your vehicle
+                data-independent from any third-party platform
+              </p>
             </div>
             <div className={`p-6 rounded-lg border-l-4 border-cyan-600 ${darkMode ? 'bg-cyan-900/30' : 'bg-cyan-50'}`}>
-              <h3 className={`font-bold text-lg mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>📊 Sales Automation</h3>
-              <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>Streamline the entire sales process from lead to closing with built-in CRM</p>
+              <h3 className={`font-bold text-lg mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Cost Reduction</h3>
+              <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>
+                Significantly reduce reliance on expensive listing portals by paying one monthly subscription to get your own sophisticated personal database
+                and inventory management system
+              </p>
             </div>
             <div className={`p-6 rounded-lg border-l-4 border-cyan-600 ${darkMode ? 'bg-cyan-900/30' : 'bg-cyan-50'}`}>
-              <h3 className={`font-bold text-lg mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>📈 Analytics Dashboard</h3>
-              <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>Real-time insights on sales performance, inventory turnover, and profitability</p>
+              <h3 className={`font-bold text-lg mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Free Website</h3>
+              <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>
+                Your professional dealership website is automatically generated upon profile creation, dynamically displaying all your business information and
+                vehicle inventory from your database in real-time with zero additional effort
+              </p>
             </div>
             <div className={`p-6 rounded-lg border-l-4 border-cyan-600 ${darkMode ? 'bg-cyan-900/30' : 'bg-cyan-50'}`}>
-              <h3 className={`font-bold text-lg mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>☁️ Cloud-First</h3>
-              <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>99.9% uptime on AWS, accessible anywhere, automatic updates, secure data</p>
+              <h3 className={`font-bold text-lg mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>iFrame Integration for Developers</h3>
+              <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>
+                Embed your live vehicle inventory directly into any existing website using a simple iFrame code, giving developers flexible integration options
+                without complex technical implementation
+              </p>
             </div>
           </div>
         </div>
@@ -95,11 +117,11 @@ const PitchDeck = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-gradient-to-br from-cyan-600 to-blue-600 text-white p-8 rounded-lg text-center">
               <div className="text-4xl font-bold mb-2">€50B+</div>
-              <div className="text-lg">European Used Car Market (Annual)</div>
+              <div className="text-lg">European Car Market (Annual)</div>
             </div>
             <div className="bg-gradient-to-br from-blue-600 to-indigo-600 text-white p-8 rounded-lg text-center">
-              <div className="text-4xl font-bold mb-2">45,000+</div>
-              <div className="text-lg">Used Car Dealers in Germany</div>
+              <div className="text-4xl font-bold mb-2">35,000+</div>
+              <div className="text-lg">Car Dealers in Germany</div>
             </div>
             <div className="bg-gradient-to-br from-indigo-600 to-purple-600 text-white p-8 rounded-lg text-center">
               <div className="text-4xl font-bold mb-2">12%</div>
@@ -107,24 +129,24 @@ const PitchDeck = () => {
             </div>
           </div>
           <div className={`mt-8 p-6 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
-            <h3 className={`font-bold text-xl mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Target Market</h3>
+            <h3 className={`font-bold text-2xl mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Target Market</h3>
             <ul className={`space-y-3 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
               <li className="flex items-start">
                 <span className="text-cyan-600 mr-2">•</span>
                 <span>
-                  <strong>Primary:</strong> Small to medium-sized used car dealerships (5-50 vehicles)
+                  <strong>Primary:</strong> Small to medium-sized used car dealerships (15-75 vehicles)
                 </span>
               </li>
               <li className="flex items-start">
                 <span className="text-cyan-600 mr-2">•</span>
                 <span>
-                  <strong>Secondary:</strong> Independent car traders and vehicle parks
+                  <strong>Secondary:</strong> Enterprise-level dealers with 100+ vehicles
                 </span>
               </li>
               <li className="flex items-start">
                 <span className="text-cyan-600 mr-2">•</span>
                 <span>
-                  <strong>Geographic Focus:</strong> Germany, expanding to Austria and Switzerland
+                  <strong>Geographic Focus:</strong> Germany, expanding to Austria and Switzerland, from 2028 all Europe.
                 </span>
               </li>
             </ul>
@@ -263,7 +285,7 @@ const PitchDeck = () => {
               <thead>
                 <tr className={darkMode ? 'bg-gray-700' : 'bg-gray-100'}>
                   <th className={`border p-3 text-left ${darkMode ? 'border-gray-600' : ''}`}>Feature</th>
-                  <th className={`border p-3 text-center font-bold ${darkMode ? 'bg-cyan-900/50 border-gray-600' : 'bg-cyan-100'}`}>Autohaus Plus</th>
+                  <th className={`border p-3 text-center font-bold ${darkMode ? 'bg-cyan-900/50 border-gray-600' : 'bg-cyan-100'}`}>Auto Plus</th>
                   <th className={`border p-3 text-center ${darkMode ? 'border-gray-600' : ''}`}>Legacy Software</th>
                   <th className={`border p-3 text-center ${darkMode ? 'border-gray-600' : ''}`}>Spreadsheets</th>
                 </tr>
@@ -318,10 +340,7 @@ const PitchDeck = () => {
                 • <strong>User Experience:</strong> Intuitive interface designed specifically for car dealers
               </li>
               <li>
-                • <strong>Pricing:</strong> 60% cheaper than legacy solutions with no hidden fees
-              </li>
-              <li>
-                • <strong>Focus:</strong> Laser-focused on the German used car market
+                • <strong>Focus:</strong> Laser-focused on the German car market
               </li>
             </ul>
           </div>
@@ -331,13 +350,17 @@ const PitchDeck = () => {
 
     // Slide 8: Use of Funds
     {
-      title: 'Use of Funds - €100,000',
+      title: (
+        <div className="flex items-center justify-left gap-4">
+          <span>Use of Funds - €180,000</span>
+        </div>
+      ),
       content: (darkMode) => (
         <div className="space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-4">
               <div className="bg-cyan-600 text-white p-4 rounded-lg">
-                <h3 className="font-bold text-lg mb-2">Product Development - €35,000 (35%)</h3>
+                <h3 className="font-bold text-lg mb-2">Product Development - €63,000 (35%)</h3>
                 <ul className="text-sm space-y-1">
                   <li>• Additional features & integrations</li>
                   <li>• Mobile app development</li>
@@ -346,7 +369,7 @@ const PitchDeck = () => {
                 </ul>
               </div>
               <div className="bg-blue-600 text-white p-4 rounded-lg">
-                <h3 className="font-bold text-lg mb-2">Marketing & Sales - €30,000 (30%)</h3>
+                <h3 className="font-bold text-lg mb-2">Marketing & Sales - €36,000 (20%)</h3>
                 <ul className="text-sm space-y-1">
                   <li>• Digital marketing campaigns</li>
                   <li>• Content creation & SEO</li>
@@ -357,7 +380,7 @@ const PitchDeck = () => {
             </div>
             <div className="space-y-4">
               <div className="bg-indigo-600 text-white p-4 rounded-lg">
-                <h3 className="font-bold text-lg mb-2">Team & Operations - €20,000 (20%)</h3>
+                <h3 className="font-bold text-lg mb-2">Team & Operations - €54,000 (30%)</h3>
                 <ul className="text-sm space-y-1">
                   <li>• Part-time sales representative</li>
                   <li>• Customer support</li>
@@ -366,7 +389,7 @@ const PitchDeck = () => {
                 </ul>
               </div>
               <div className="bg-purple-600 text-white p-4 rounded-lg">
-                <h3 className="font-bold text-lg mb-2">Infrastructure - €10,000 (10%)</h3>
+                <h3 className="font-bold text-lg mb-2">Infrastructure - €18,000 (10%)</h3>
                 <ul className="text-sm space-y-1">
                   <li>• AWS hosting & services</li>
                   <li>• Third-party integrations</li>
@@ -375,7 +398,7 @@ const PitchDeck = () => {
                 </ul>
               </div>
               <div className="bg-gray-600 text-white p-4 rounded-lg">
-                <h3 className="font-bold text-lg mb-2">Buffer - €5,000 (5%)</h3>
+                <h3 className="font-bold text-lg mb-2">Buffer - €9,000 (5%)</h3>
                 <ul className="text-sm space-y-1">
                   <li>• Contingency fund</li>
                   <li>• Unexpected opportunities</li>
@@ -466,51 +489,113 @@ const PitchDeck = () => {
       ),
     },
 
-    // Slide 10: Team
+    // Slide 10: The Team
     {
       title: 'The Team',
       content: (darkMode) => (
         <div className="space-y-8">
-          <div className="text-center mb-8">
-            <p className={`text-xl ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-              Experienced team with expertise in automotive, SaaS, and enterprise software
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className={`p-6 rounded-lg border-l-4 border-cyan-600 ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
-              <h3 className={`text-xl font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Founder & CEO</h3>
-              <p className={`mb-3 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                10+ years in automotive industry, previously at major dealership group. MBA in Business Administration.
+          {/* 1. CORE FOUNDERS SECTION */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Founder: Zhivko Grchev */}
+            <div className={`p-6 rounded-xl border shadow-sm ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+              <div className="flex flex-col items-center text-center mb-4">
+                <div className={`w-24 h-24 rounded-full mb-4 overflow-hidden border-2 border-cyan-600 relative`}>
+                  <Image src="/images/zhivko.jpg" alt="Zhivko Grchev" fill className="object-cover" priority={true} />
+                </div>
+                <h3 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Zhivko Grchev</h3>
+                <p className="text-cyan-600 font-medium">Founder & CEO</p>
+              </div>
+              <p className={`text-sm leading-relaxed ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                A software engineer and product developer who merges technical architecture and UI/UX excellence to transform strategic vision into scalable,
+                market-ready digital solutions.
               </p>
-              <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>• Strategic vision • Industry connections • Sales expertise</p>
             </div>
-            <div className={`p-6 rounded-lg border-l-4 border-blue-600 ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
-              <h3 className={`text-xl font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>CTO / Tech Lead</h3>
-              <p className={`mb-3 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                15+ years software development, led engineering at Series B SaaS startup. Computer Science degree.
+
+            {/* Co-Founder: Andrei Kiselev */}
+            <div className={`p-6 rounded-xl border shadow-sm ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+              <div className="flex flex-col items-center text-center mb-4">
+                <div className={`w-24 h-24 rounded-full mb-4 overflow-hidden border-2 border-cyan-600 relative`}>
+                  <Image src="/images/andrei.jpg" alt="Andrei Kiselev" fill className="object-cover" priority={true} />
+                </div>
+                <h3 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Andrei Kiselev</h3>
+                <p className="text-cyan-600 font-medium">Co-Founder & CTO</p>
+              </div>
+              <p className={`text-sm leading-relaxed ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                A software engineer and cloud architect with 15+ years of experience, building scalable infrastructure and leading technical teams.
               </p>
-              <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>• Full-stack development • Cloud architecture • Team leadership</p>
             </div>
           </div>
-          <div className={`mt-8 p-6 rounded-lg ${darkMode ? 'bg-cyan-900/30' : 'bg-cyan-50'}`}>
-            <h3 className={`font-bold text-xl mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Advisory Board</h3>
-            <ul className={`space-y-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-              <li>
-                • <strong>Industry Advisor:</strong> Former VP at leading automotive software company
-              </li>
-              <li>
-                • <strong>Marketing Advisor:</strong> Growth expert from successful B2B SaaS company
-              </li>
-              <li>
-                • <strong>Financial Advisor:</strong> CFO with experience scaling SaaS companies
-              </li>
-            </ul>
+
+          {/* 2. SPECIAL PARTNER (NEW SECTION) */}
+          <div className={`p-6 rounded-xl border-2 border-dashed ${darkMode ? 'bg-gray-800/40 border-gray-600' : 'bg-gray-50 border-gray-300'}`}>
+            <div className="flex flex-col md:flex-row items-center gap-6">
+              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-indigo-500 relative flex-shrink-0">
+                <Image src="/images/gjorgi.jpg" alt="Gjorgi Gjorgiev" fill className="object-cover" />
+              </div>
+              <div className="text-center md:text-left">
+                <h3 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Gjorgi Gjorgiev</h3>
+                <p className="text-indigo-500 font-bold text-sm uppercase tracking-wider mb-2">Special Partner</p>
+                <p className={`text-sm leading-relaxed ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                  A software engineer and deployment specialist responsible for the end-to-end production lifecycle, bridging complex codebases with scalable
+                  database architecture and high-availability cloud infrastructure.
+                </p>
+              </div>
+            </div>
           </div>
-          <div className={`mt-6 p-4 rounded-lg border-l-4 border-blue-500 ${darkMode ? 'bg-blue-900/30' : 'bg-blue-50'}`}>
-            <p className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Hiring Plan:</p>
-            <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>
-              With this funding, we'll hire 2 developers, 1 sales rep, and 1 customer success manager within 6 months
-            </p>
+          <div className={`p-6 rounded-xl border-2 border-dashed ${darkMode ? 'bg-gray-800/40 border-gray-600' : 'bg-gray-50 border-gray-300'}`}>
+            <div className="flex flex-col md:flex-row items-center gap-6">
+              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-indigo-500 relative flex-shrink-0">
+                <Image src="/images/dejan.jpg" alt="Gjorgi Gjorgiev" fill className="object-cover" />
+              </div>
+              <div className="text-center md:text-left">
+                <h3 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Dejan Kostadinov</h3>
+                <p className="text-indigo-500 font-bold text-sm uppercase tracking-wider mb-2">Special Partner</p>
+                <p className={`text-sm leading-relaxed ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                  A marketing specialist with a Master’s degree from the University of Varna, focusing on international brand positioning and strategic market
+                  entry to drive global growth.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* 2. STRATEGIC ADVISORY BOARD */}
+          <div className={`p-6 rounded-lg ${darkMode ? 'bg-cyan-900/20 border border-cyan-800' : 'bg-cyan-50 border border-cyan-100'}`}>
+            <h3 className={`font-bold text-lg mb-4 text-center ${darkMode ? 'text-white' : 'text-gray-900'}`}>Strategic Advisory Board</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 px-4">
+              {/* Tech/Platform Advisor: Vane Georgiev */}
+              <div className="flex flex-col">
+                <div className="flex items-baseline gap-2">
+                  <p className={`font-bold text-base ${darkMode ? 'text-white' : 'text-gray-900'}`}>Vane Georgiev</p>
+                  <p className="text-xs text-cyan-600 font-bold uppercase">Tech Advisor</p>
+                </div>
+                <p className={`text-xs font-semibold mb-1 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>Director of Engineering @ OneFootball Berlin</p>
+                <p className={`text-[11px] leading-tight ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                  13+ years of experience. Expert in Monetization, Platform scaling & Membership architecture.
+                </p>
+              </div>
+
+              {/* Finance Advisor: Simon Ristomanov */}
+              <div className="flex flex-col">
+                <div className="flex items-baseline gap-2">
+                  <p className={`font-bold text-base ${darkMode ? 'text-white' : 'text-gray-900'}`}>S. R.</p>
+                  <p className="text-xs text-cyan-600 font-bold uppercase">Finance Advisor</p>
+                </div>
+                <p className={`text-xs font-semibold mb-1 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>Finance Strategy</p>
+                <p className={`text-[11px] leading-tight ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                  Master of Arts in Banking and Finance. Providing strategic guidance on financial modeling and capital structures.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* 3. HIRING PLAN */}
+          <div className={`p-4 rounded-lg border-l-4 border-blue-500 ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
+            <div className="flex justify-between items-center">
+              <p className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                <strong className={darkMode ? 'text-white' : 'text-black'}>Hiring Plan:</strong> Expanding the core team with 2 developers and 2 sales/success
+                roles within 6 months post-funding.
+              </p>
+            </div>
           </div>
         </div>
       ),
@@ -522,8 +607,8 @@ const PitchDeck = () => {
       content: (darkMode) => (
         <div className="space-y-8">
           <div className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white p-8 rounded-lg text-center">
-            <h2 className="text-4xl font-bold mb-4">€100,000 Seed Round</h2>
-            <p className="text-xl">Convertible Note or 10% Equity</p>
+            <h2 className="text-4xl font-bold mb-4">€180,000 Seed Round</h2>
+            <p className="text-xl">Convertible Note or 20% Equity</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -533,7 +618,7 @@ const PitchDeck = () => {
                 <li className="flex items-start">
                   <span className="text-cyan-600 mr-2">•</span>
                   <span>
-                    <strong>Amount:</strong> €100,000
+                    <strong>Amount:</strong> €180,000
                   </span>
                 </li>
                 <li className="flex items-start">
@@ -545,7 +630,7 @@ const PitchDeck = () => {
                 <li className="flex items-start">
                   <span className="text-cyan-600 mr-2">•</span>
                   <span>
-                    <strong>Valuation:</strong> €1M pre-money (if equity)
+                    <strong>Valuation:</strong> €900K pre-money (if equity)
                   </span>
                 </li>
                 <li className="flex items-start">
@@ -600,15 +685,15 @@ const PitchDeck = () => {
 
     // Slide 12: Closing
     {
-      title: "Let's Transform Used Car Dealerships Together",
+      title: "Let's Transform Car Dealerships Together",
       content: (darkMode) => (
-        <div className="text-center space-y-8">
+        <div className="text-center space-y-8 animate-in fade-in duration-700">
           <div className="text-5xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Join Our Journey</div>
 
           <div className={`max-w-2xl mx-auto space-y-6 text-lg ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-            <p>Autohaus Plus is positioned to capture a significant share of the €50B+ European used car market with our modern, cloud-based platform.</p>
+            <p>Auto Plus is positioned to capture a significant share of the €50B+ European car market with our modern, cloud-based platform.</p>
             <p className="font-semibold">
-              With your €100,000 investment, we'll scale our operations, acquire customers, and build the future of automotive retail management.
+              With your €180,000 investment, we'll scale our operations, acquire customers, and build the future of automotive retail management.
             </p>
           </div>
 
@@ -616,18 +701,36 @@ const PitchDeck = () => {
             <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Contact Us</h3>
             <div className={`space-y-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
               <p>
-                <strong>Email:</strong> support@autohaus-plus.de
+                <strong>Email:</strong> z.grcev@gmail.com
               </p>
               <p>
-                <strong>Phone:</strong> +49 123 456 7890
+                <strong>Phone:</strong> +49 1525 7539557
               </p>
               <p>
-                <strong>Website:</strong> www.autohaus-plus.de
+                <strong>Website:</strong> www.autoplus.dev
               </p>
             </div>
           </div>
 
-          <div className="text-2xl font-semibold text-cyan-600 mt-8">Thank you for your time and consideration!</div>
+          <div className="space-y-6 pt-4">
+            <div className="text-2xl font-semibold text-cyan-600">Thank you for your time and consideration!</div>
+
+            {/* Action Button */}
+            <div className="flex justify-center">
+              <a
+                href="https://www.autoplus.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`flex items-center gap-2 px-8 py-4 rounded-full font-bold text-lg transition-all transform hover:scale-105 shadow-xl ${
+                  darkMode
+                    ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white hover:shadow-cyan-500/30'
+                    : 'bg-gradient-to-r from-cyan-600 to-blue-700 text-white hover:shadow-blue-500/30'
+                }`}
+              >
+                <span>Open the Project</span>
+              </a>
+            </div>
+          </div>
         </div>
       ),
     },
