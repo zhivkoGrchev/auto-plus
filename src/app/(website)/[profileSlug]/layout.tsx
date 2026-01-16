@@ -1,3 +1,4 @@
+import { getProfileBySlug } from '@/lib/actions/profile.actions'
 import { WebsiteHeader } from './header'
 import { WebsiteFooter } from './footer'
 import { WhatsAppButton } from './whatsapp'
@@ -11,12 +12,13 @@ interface LayoutProps {
 
 export default async function RootLayout({ children, params }: LayoutProps) {
   const { profileSlug } = await params
+  const { data: profile } = await getProfileBySlug(profileSlug)
 
   return (
     <div className="mx-auto w-screen flex flex-col antialiased">
-      <WebsiteHeader profileSlug={profileSlug} />
+      <WebsiteHeader profileSlug={profileSlug} companyName={profile?.company || 'Firmenname'} />
       {children}
-      <WebsiteFooter />
+      <WebsiteFooter companyName={profile?.company || 'Firmenname'} />
       <WhatsAppButton />
     </div>
   )

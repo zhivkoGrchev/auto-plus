@@ -5,9 +5,10 @@ import { FaPhone } from 'react-icons/fa'
 
 interface WebsiteHeaderProps {
   profileSlug: string
+  companyName: string
 }
 
-export const WebsiteHeader = ({ profileSlug }: WebsiteHeaderProps) => {
+export const WebsiteHeader = ({ profileSlug, companyName }: WebsiteHeaderProps) => {
   const [menuOpen, setMenuOpen] = useState(false)
   const phoneNumber = '4915257539557' // <-- change to your number (without +)
   const message = 'Hallo, ich interessiere mich für Ihre Autos!'
@@ -16,7 +17,7 @@ export const WebsiteHeader = ({ profileSlug }: WebsiteHeaderProps) => {
     <header className="w-full bg-cyan-900 text-white shadow-md">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <a href={`/${profileSlug}`} className="flex items-center gap-2">
-          <span className="text-2xl font-bold tracking-wide">Firmenname</span>
+          <span className="text-2xl font-bold tracking-wide">{companyName}</span>
         </a>
 
         <nav className="hidden md:flex items-center gap-6 text-lg">
