@@ -1,8 +1,13 @@
 import React from 'react'
 import { FaWhatsapp } from 'react-icons/fa'
 
-export const WhatsAppButton = () => {
-  const phoneNumber = '4915257539557' // <-- change to your number (without +)
+interface WhatsAppButtonProps {
+  phoneNumber?: string | null
+}
+
+export const WhatsAppButton = ({ phoneNumber }: WhatsAppButtonProps) => {
+  if (!phoneNumber) return null
+
   const message = 'Hallo, ich interessiere mich für Ihre Autos!'
 
   return (

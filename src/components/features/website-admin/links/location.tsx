@@ -28,7 +28,9 @@ function LocationComponent({ location }: LocationProps) {
           <div>
             <h3 className="text-xl font-semibold mb-2">Adresse</h3>
             <p className="text-gray-50">{location.address}</p>
-            <p className="text-gray-50">{location.postcode} {location.city}</p>
+            <p className="text-gray-50">
+              {location.postcode} {location.city}
+            </p>
           </div>
           <div>
             <h3 className="text-xl font-semibold mb-2">Kontakt</h3>

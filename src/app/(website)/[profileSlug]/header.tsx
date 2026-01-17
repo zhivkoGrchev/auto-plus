@@ -6,11 +6,11 @@ import { FaPhone } from 'react-icons/fa'
 interface WebsiteHeaderProps {
   profileSlug: string
   companyName: string
+  phoneNumber?: string | null
 }
 
-export const WebsiteHeader = ({ profileSlug, companyName }: WebsiteHeaderProps) => {
+export const WebsiteHeader = ({ profileSlug, companyName, phoneNumber }: WebsiteHeaderProps) => {
   const [menuOpen, setMenuOpen] = useState(false)
-  const phoneNumber = '4915257539557' // <-- change to your number (without +)
   const message = 'Hallo, ich interessiere mich für Ihre Autos!'
 
   return (
@@ -30,13 +30,17 @@ export const WebsiteHeader = ({ profileSlug, companyName }: WebsiteHeaderProps) 
           <a href={`/${profileSlug}/contact`} className="hover:text-cyan-200 transition">
             Kontakt
           </a>
-          <a
-            href={`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`}
-            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full flex items-center gap-2 transition transform hover:scale-105"
-          >
-            <FaPhone size={16} />
-            Jetzt anrufen
-          </a>
+          {phoneNumber && (
+            <a
+              href={`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full flex items-center gap-2 transition transform hover:scale-105"
+            >
+              <FaPhone size={16} />
+              Jetzt anrufen
+            </a>
+          )}
         </nav>
 
         {/* Mobile toggle */}
@@ -56,13 +60,17 @@ export const WebsiteHeader = ({ profileSlug, companyName }: WebsiteHeaderProps) 
           <a href={`/${profileSlug}/contact`} className="block hover:text-cyan-200 transition">
             Kontakt
           </a>
-          <a
-            href={`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`}
-            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full flex items-center gap-2 transition transform hover:scale-105"
-          >
-            <FaPhone size={16} />
-            Jetzt anrufen
-          </a>
+          {phoneNumber && (
+            <a
+              href={`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full flex items-center gap-2 transition transform hover:scale-105"
+            >
+              <FaPhone size={16} />
+              Jetzt anrufen
+            </a>
+          )}
         </div>
       )}
     </header>
