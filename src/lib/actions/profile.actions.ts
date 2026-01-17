@@ -144,3 +144,26 @@ export const deleteLocation = async (id: string): Promise<Return<string>> => {
     await prisma.$disconnect()
   }
 }
+
+export const getMainLocationByProfileSlug = async (slug: string) => {
+  try {
+    const profile = await prisma.profile.findUnique({
+      where: { slug },
+      include: {
+        locations: {
+          where: { isMain: true },
+          take: 1
+        }
+      }
+    })
+    if (!profile) return { data: undefined, error: { message: 'Profile not found' } }
+    if (!profile.locations.length) return { data: undefined, error: { message: 'No main location found' } }
+    return { data: profile.locations[0], error: undefined }
+  } catch (error) {
+    const e = error as Error
+    console.error('Error fetching main location:', e.message)
+    return { data: undefined, error: { message: e.message } }
+  } finally {
+    await prisma.$disconnect()
+  }
+}
