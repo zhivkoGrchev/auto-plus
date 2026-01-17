@@ -2,8 +2,14 @@
 
 import { useState, useEffect } from 'react'
 import { getFormattedOpeningHours } from '@/lib/actions/opening-hours.actions'
+import type { Location } from '@/prisma/generated'
 
-export const WebsiteFooter = () => {
+interface WebsiteFooterProps {
+  companyName: string
+  location?: Location | null
+}
+
+export const WebsiteFooter = ({ companyName, location }: WebsiteFooterProps) => {
   const [openingHours, setOpeningHours] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(true)
 
@@ -26,8 +32,17 @@ export const WebsiteFooter = () => {
     <footer className="w-full bg-cyan-900 text-white mt-12">
       <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="flex-1">
-          <h3 className="text-xl font-semibold mb-3">Company Name</h3>
-          <p>Gebrauchtwagen zu verkaufen.</p>
+          <h3 className="text-xl font-semibold mb-3">{companyName}</h3>
+          {location ? (
+            <>
+              <p className="text-gray-50">{location.address}</p>
+              <p className="text-gray-50">
+                {location.postcode} {location.city}
+              </p>
+            </>
+          ) : (
+            <p className="text-gray-50">Gebrauchtwagen zu verkaufen.</p>
+          )}
         </div>
         <div className="flex-1">
           <h3 className="text-xl font-semibold mb-3">Schnellzugriff</h3>
@@ -60,7 +75,9 @@ export const WebsiteFooter = () => {
           )}
         </div>
       </div>
-      <div className="bg-cyan-900 py-4 text-center text-cyan-100 text-sm">© {new Date().getFullYear()} Autohaus Plus. All rights reserved.</div>
+      <div className="bg-cyan-900 py-4 text-center text-cyan-100 text-sm">
+        © {new Date().getFullYear()} {companyName}. All rights reserved.
+      </div>
     </footer>
   )
 }

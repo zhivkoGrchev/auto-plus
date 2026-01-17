@@ -19,8 +19,18 @@ export const getProfile = async (): Promise<Return<Profile>> => {
     const e = error as Error
     console.error('Error fetching profile:', e.message)
     return { data: undefined, error: { message: e.message } }
-  } finally {
-    await prisma.$disconnect()
+  }
+}
+
+export const getProfileBySlug = async (slug: string): Promise<Return<Profile>> => {
+  try {
+    const profile = await prisma.profile.findUnique({ where: { slug } })
+    if (!profile) return { data: undefined, error: { message: 'Profile not found' } }
+    return { data: profile, error: undefined }
+  } catch (error) {
+    const e = error as Error
+    console.error('Error fetching profile by slug:', e.message)
+    return { data: undefined, error: { message: e.message } }
   }
 }
 
@@ -35,8 +45,6 @@ export const getProfilesWithLocations = async (): Promise<Return<ProfileExtended
     const e = error as Error
     console.error('Error fetching profiles:', e.message)
     return { data: undefined, error: { message: e.message } }
-  } finally {
-    await prisma.$disconnect()
   }
 }
 
@@ -51,8 +59,6 @@ export const addProfileWithLocation = async ({ location: locationData, ...profil
     const e = error as Error
     console.error('Error creating profile:', e.message)
     return { data: undefined, error: { message: e.message } }
-  } finally {
-    await prisma.$disconnect()
   }
 }
 
@@ -66,8 +72,6 @@ export const editProfile = async (profileData: EditProfileData, id: string): Pro
     const e = error as Error
     console.error('Error updating profile:', e.message)
     return { data: undefined, error: { message: e.message } }
-  } finally {
-    await prisma.$disconnect()
   }
 }
 
@@ -81,8 +85,6 @@ export const deleteProfile = async (id: string): Promise<Return<string>> => {
     const e = error as Error
     console.error('Error deleting profile:', e.message)
     return { data: undefined, error: { message: e.message } }
-  } finally {
-    await prisma.$disconnect()
   }
 }
 
@@ -96,8 +98,6 @@ export const addLocation = async (locationData: AddLocationData, profileId: stri
     const e = error as Error
     console.error('Error creating location:', e.message)
     return { data: undefined, error: { message: e.message } }
-  } finally {
-    await prisma.$disconnect()
   }
 }
 
@@ -111,8 +111,6 @@ export const editLocation = async (locationData: EditLocationData, id: string): 
     const e = error as Error
     console.error('Error updating location:', e.message)
     return { data: undefined, error: { message: e.message } }
-  } finally {
-    await prisma.$disconnect()
   }
 }
 
@@ -126,7 +124,26 @@ export const deleteLocation = async (id: string): Promise<Return<string>> => {
     const e = error as Error
     console.error('Error deleting location:', e.message)
     return { data: undefined, error: { message: e.message } }
-  } finally {
-    await prisma.$disconnect()
+  }
+}
+
+export const getMainLocationByProfileSlug = async (slug: string) => {
+  try {
+    const profile = await prisma.profile.findUnique({
+      where: { slug },
+      include: {
+        locations: {
+          where: { isMain: true },
+          take: 1
+        }
+      }
+    })
+    if (!profile) return { data: undefined, error: { message: 'Profile not found' } }
+    if (!profile.locations.length) return { data: undefined, error: { message: 'No main location found' } }
+    return { data: profile.locations[0], error: undefined }
+  } catch (error) {
+    const e = error as Error
+    console.error('Error fetching main location:', e.message)
+    return { data: undefined, error: { message: e.message } }
   }
 }

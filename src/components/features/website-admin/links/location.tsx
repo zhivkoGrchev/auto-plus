@@ -1,13 +1,22 @@
 import React from 'react'
+import type { Location } from '@/prisma/generated'
 
-function Location() {
-  // You'll need to replace this with the actual coordinates of Hauptstraße 123
-  const address = 'Rainweg 79, Saalfeld, Germany'
+interface LocationProps {
+  location?: Location | null
+}
+
+function LocationComponent({ location }: LocationProps) {
+  if (!location) {
+    return (
+      <div className="max-w-4xl mx-auto p-6 text-center">
+        <h2 className="text-3xl font-bold mb-6">Unser Standort</h2>
+        <p className="text-gray-500">Keine Standortinformationen verfügbar.</p>
+      </div>
+    )
+  }
+
+  const address = `${location.address}, ${location.postcode} ${location.city}`
   const mapSrc = `https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${encodeURIComponent(address)}`
-
-  // Alternative: Use search without API key (less reliable)
-  const mapSrcNoKey =
-    'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2428.123!2d13.404954!3d52.520008!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTLCsDMxJzEyLjAiTiAxM8KwMjQnMTcuOCJF!5e0!3m2!1sen!2sde!4v1234567890123!5m2!1sen!2sde'
 
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -18,16 +27,23 @@ function Location() {
         <div className="space-y-4">
           <div>
             <h3 className="text-xl font-semibold mb-2">Adresse</h3>
-            <p className="text-gray-50 text-lg">Autohaus Plus</p>
-            <p className="text-gray-50">Hauptstraße 123</p>
-            <p className="text-gray-50">12345 Berlin, Germany</p>
+            <p className="text-gray-50">{location.address}</p>
+            <p className="text-gray-50">
+              {location.postcode} {location.city}
+            </p>
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold mb-2">Kontakt</h3>
+            <p className="text-gray-50">Ansprechpartner: {location.contactPerson}</p>
+            <p className="text-gray-50">Telefon: {location.phone}</p>
+            <p className="text-gray-50">E-Mail: {location.email}</p>
           </div>
         </div>
 
         {/* Map */}
         <div className="h-96">
           <iframe
-            src={mapSrcNoKey}
+            src={`https://maps.google.com/maps?q=${encodeURIComponent(address)}&output=embed`}
             width="100%"
             height="100%"
             style={{ border: 0 }}
@@ -35,7 +51,7 @@ function Location() {
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             className="rounded-lg shadow-lg"
-            title="Autohaus Plus Location Map"
+            title="Location Map"
           />
         </div>
       </div>
@@ -55,4 +71,4 @@ function Location() {
   )
 }
 
-export default Location
+export default LocationComponent
