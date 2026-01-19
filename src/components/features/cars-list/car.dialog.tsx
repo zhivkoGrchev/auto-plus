@@ -38,6 +38,8 @@ const INITIAL_FORM_DATA: AddCarData = {
   mileage: 0,
   vin: '',
   price: 0,
+  seats: null,
+  doors: null,
   description: '',
 } as const
 const POWER_CONVERSION_FACTOR = 1.35962
@@ -352,6 +354,20 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
                 {errors.price?.message && <span className="mx-2 text-red-600">{m(errors.price.message)}</span>}
               </fieldset>
               <fieldset className="flex flex-col gap-2">
+                <Label className="mx-2" htmlFor="seats">
+                  {t('seats')}
+                </Label>
+                <Input className="w-full" id="seats" type="number" placeholder="e.g. 5" {...register('seats')} />
+                {errors.seats?.message && <span className="mx-2 text-red-600">{m(errors.seats.message)}</span>}
+              </fieldset>
+              <fieldset className="flex flex-col gap-2">
+                <Label className="mx-2" htmlFor="doors">
+                  {t('doors')}
+                </Label>
+                <Input className="w-full" id="doors" type="number" placeholder="e.g. 4" {...register('doors')} />
+                {errors.doors?.message && <span className="mx-2 text-red-600">{m(errors.doors.message)}</span>}
+              </fieldset>
+              <fieldset className="flex flex-col gap-2 md:col-span-2">
                 <Label className="mx-2" htmlFor="description">
                   {t('desc')}
                 </Label>

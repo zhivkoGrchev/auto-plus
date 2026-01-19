@@ -169,6 +169,8 @@
     "mileage": "Mileage",
     "vin": "VIN",
     "price": "Price",
+    "seats": "Seats",
+    "doors": "Doors",
     "desc": "Description",
     "save": "Save",
     "actions": "Actions",

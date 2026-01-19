@@ -60,7 +60,7 @@ export default async function CarDetailsPage({ profileSlug, ...props }: PageProp
   }
 
   return (
-    <main className="printable mx-auto p-8 m-8 bg-background text-foreground border rounded-2xl shadow-lg print-reset">
+    <main className="printable max-w-7xl mx-auto p-8 m-8 bg-background text-foreground border rounded-2xl shadow-lg print-reset">
       {/* Title */}
       <header className="flex justify-between items-start mb-8">
         <div>
@@ -116,6 +116,14 @@ export default async function CarDetailsPage({ profileSlug, ...props }: PageProp
           <div className="flex justify-between border-b pb-2 gap-4">
             <span className="font-medium">{t('color')}</span>
             <span className="text-right">{car.color ?? '—'}</span>
+          </div>
+          <div className="flex justify-between border-b pb-2 gap-4">
+            <span className="font-medium">{t('seats')}</span>
+            <span className="text-right">{car.seats ?? '—'}</span>
+          </div>
+          <div className="flex justify-between border-b pb-2 gap-4">
+            <span className="font-medium">{t('doors')}</span>
+            <span className="text-right">{car.doors ?? '—'}</span>
           </div>
           <div className="flex justify-between border-b pb-2 gap-4">
             <span className="font-medium">{t('vin')}</span>

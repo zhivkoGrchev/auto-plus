@@ -37,6 +37,8 @@ model Car {
   vin             String?
   price           Float
   description     String?
+  seats           Int?
+  doors           Int?
   images          CarImage[]
   listedOnWebsite Boolean      @default(false)
   createdAt       DateTime     @default(now())

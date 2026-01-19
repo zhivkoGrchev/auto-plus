@@ -169,6 +169,8 @@
     "mileage": "Kilometerstand",
     "vin": "FIN",
     "price": "Preis",
+    "seats": "Sitzplätze",
+    "doors": "Türen",
     "desc": "Beschreibung",
     "save": "Speichern",
     "actions": "Aktionen",

@@ -18,9 +18,7 @@ export default async function RootLayout({ children, params }: LayoutProps) {
   return (
     <div className="min-h-screen w-screen flex flex-col antialiased">
       <WebsiteHeader profileSlug={profileSlug} companyName={profile?.company || 'Firmenname'} phoneNumber={location?.phone} />
-      <main className="flex-grow">
-        {children}
-      </main>
+      <main className="flex-grow">{children}</main>
       <WebsiteFooter companyName={profile?.company || 'Firmenname'} location={location} />
       <WhatsAppButton phoneNumber={location?.phone} />
     </div>

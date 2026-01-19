@@ -33,11 +33,38 @@ export const columns = (
   },
   {
     accessorKey: 'brand.name',
-    header: () => <div className="text-right">{t('brand')}</div>,
+    header: () => <div className="text-left">{t('brand')}</div>,
   },
   {
     accessorKey: 'model.name',
-    header: () => <div className="text-right">{t('model')}</div>,
+    header: () => <div className="text-left">{t('model')}</div>,
+  },
+  {
+    accessorKey: 'year',
+    header: ({ column }) => {
+      return (
+        <div className="text-right">
+          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+            {/* {t('year')} */}
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
+      )
+    },
+    cell: ({ row }) => {
+      const FirstRegistration = Number.parseFloat(row.getValue('year'))
+      const formatted = FirstRegistration
+      return <div className="text-right font-medium">{formatted}</div>
+    },
+  },
+  {
+    accessorKey: 'fuelType',
+    header: () => <div className="text-right">{t('fuelType')}</div>,
+    cell: ({ row }) => {
+      const fuelType = row.getValue('fuelType') as FuelType | null
+      const formatted = fuelType ? fuelType.charAt(0).toUpperCase() + fuelType.slice(1).toLowerCase() : '—'
+      return <div className="text-right font-medium">{formatted}</div>
+    },
   },
   {
     id: 'power',
@@ -56,39 +83,28 @@ export const columns = (
     },
   },
   {
-    accessorKey: 'fuelType',
-    header: () => <div className="text-right">{t('fuelType')}</div>,
-    cell: ({ row }) => {
-      const fuelType = row.getValue('fuelType') as FuelType | null
-      const formatted = fuelType ? fuelType.charAt(0).toUpperCase() + fuelType.slice(1).toLowerCase() : '—'
-      return <div className="text-right font-medium">{formatted}</div>
-    },
-  },
-  {
-    accessorKey: 'year',
-    header: ({ column }) => {
-      return (
-        <div className="text-right">
-          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-            {t('year')}
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
-      )
-    },
-    cell: ({ row }) => {
-      const FirstRegistration = Number.parseFloat(row.getValue('year'))
-      const formatted = FirstRegistration
-      return <div className="text-right font-medium">{formatted}</div>
-    },
-  },
-  {
     accessorKey: 'color',
     header: () => <div className="text-right">{t('color')}</div>,
     cell: ({ row }) => {
       const Color = row.getValue('color') as string
       const formatted = Color.charAt(0).toUpperCase() + Color.slice(1).toLowerCase()
       return <div className="text-right font-medium">{formatted}</div>
+    },
+  },
+  {
+    accessorKey: 'seats',
+    header: () => <div className="text-right">{t('seats')}</div>,
+    cell: ({ row }) => {
+      const seats = row.getValue('seats') as number | null
+      return <div className="text-right font-medium">{seats ?? '—'}</div>
+    },
+  },
+  {
+    accessorKey: 'doors',
+    header: () => <div className="text-right">{t('doors')}</div>,
+    cell: ({ row }) => {
+      const doors = row.getValue('doors') as number | null
+      return <div className="text-right font-medium">{doors ?? '—'}</div>
     },
   },
   {

@@ -17,6 +17,8 @@ export const AddCarSchema = z.object({
   vin: z.string().nullable(),
   price: z.coerce.number().int().min(1, 'message.requiredPrice'),
   description: z.string().nullable(),
+  seats: z.coerce.number().int().min(1).max(20).nullable(),
+  doors: z.coerce.number().int().min(1).max(10).nullable(),
 })
 
 export const EditCarSchema = AddCarSchema.partial()
