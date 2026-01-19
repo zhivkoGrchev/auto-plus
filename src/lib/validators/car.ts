@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { FuelType, Transmission } from '@/prisma/generated'
+import { FuelType, Transmission, VehicleType } from '@/prisma/generated'
 
 export const AddCarSchema = z.object({
   profileId: z.string().min(1, 'message.requiredProfile'),
@@ -17,6 +17,10 @@ export const AddCarSchema = z.object({
   vin: z.string().nullable(),
   price: z.coerce.number().int().min(1, 'message.requiredPrice'),
   description: z.string().nullable(),
+  seats: z.coerce.number().int().min(1).max(20).nullable(),
+  doors: z.coerce.number().int().min(1).max(10).nullable(),
+  vehicleType: z.enum(VehicleType).nullable(),
+  mot: z.coerce.date().nullable(),
 })
 
 export const EditCarSchema = AddCarSchema.partial()

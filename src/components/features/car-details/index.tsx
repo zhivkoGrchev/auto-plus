@@ -17,7 +17,7 @@ export default async function CarDetailsPage({ profileSlug, ...props }: PageProp
   const searchParams = await props.searchParams
   const { id } = params
   const source = searchParams?.source
-  const backLink = source === 'admin' ? '/admin' : source === 'embed' ? `/embed/${profileSlug}` : `/${profileSlug}`
+  const backLink = source === 'admin' ? '/admin/cars' : source === 'embed' ? `/embed/${profileSlug}` : `/${profileSlug}`
   const t = await getTranslations('CarDialog')
 
   const car = await prisma.car.findUnique({
@@ -60,7 +60,7 @@ export default async function CarDetailsPage({ profileSlug, ...props }: PageProp
   }
 
   return (
-    <main className="printable mx-auto p-8 m-8 bg-background text-foreground border rounded-2xl shadow-lg print-reset">
+    <main className="printable max-w-7xl mx-auto p-8 m-8 bg-background text-foreground border rounded-2xl shadow-lg print-reset">
       {/* Title */}
       <header className="flex justify-between items-start mb-8">
         <div>
@@ -87,47 +87,65 @@ export default async function CarDetailsPage({ profileSlug, ...props }: PageProp
 
         {/* Sidebar Details */}
         <aside className="space-y-4 text-sm">
-          <div className="flex justify-between border-b pb-2">
+          <div className="flex justify-between border-b pb-2 gap-4">
             <span className="font-medium">{t('power')}</span>
-            <span>
+            <span className="text-right">
               {car.powerKW ?? '—'} kW / {car.powerPS ?? '—'} PS
             </span>
           </div>
-          <div className="flex justify-between border-b pb-2">
+          <div className="flex justify-between border-b pb-2 gap-4">
             <span className="font-medium">{t('cubicCapacity')}</span>
-            <span>{car.cubicCapacity != null ? `${car.cubicCapacity.toLocaleString()} cm³` : '—'}</span>
+            <span className="text-right">{car.cubicCapacity != null ? `${car.cubicCapacity.toLocaleString()} cm³` : '—'}</span>
           </div>
-          <div className="flex justify-between border-b pb-2">
+          <div className="flex justify-between border-b pb-2 gap-4">
             <span className="font-medium">{t('year')}</span>
-            <span>{car.year ?? '—'}</span>
+            <span className="text-right">{car.year ?? '—'}</span>
           </div>
-          <div className="flex justify-between border-b pb-2">
+          <div className="flex justify-between border-b pb-2 gap-4">
             <span className="font-medium">{t('mileage')}</span>
-            <span>{car.mileage != null ? `${car.mileage.toLocaleString()} km` : '—'}</span>
+            <span className="text-right">{car.mileage != null ? `${car.mileage.toLocaleString()} km` : '—'}</span>
           </div>
-          <div className="flex justify-between border-b pb-2">
+          <div className="flex justify-between border-b pb-2 gap-4">
             <span className="font-medium">{t('fuelType')}</span>
-            <span>{car.fuelType ? t(car.fuelType) : '—'}</span>
+            <span className="text-right">{car.fuelType ? t(car.fuelType) : '—'}</span>
           </div>
-          <div className="flex justify-between border-b pb-2">
+          <div className="flex justify-between border-b pb-2 gap-4">
             <span className="font-medium">{t('transmission')}</span>
-            <span>{car.transmission ? t(car.transmission) : '—'}</span>
+            <span className="text-right">{car.transmission ? t(car.transmission) : '—'}</span>
           </div>
-          <div className="flex justify-between border-b pb-2">
+          <div className="flex justify-between border-b pb-2 gap-4">
             <span className="font-medium">{t('color')}</span>
-            <span>{car.color ?? '—'}</span>
+            <span className="text-right">{car.color ?? '—'}</span>
           </div>
-          <div className="flex justify-between border-b pb-2">
+          <div className="flex justify-between border-b pb-2 gap-4">
+            <span className="font-medium">{t('seats')}</span>
+            <span className="text-right">{car.seats ?? '—'}</span>
+          </div>
+          <div className="flex justify-between border-b pb-2 gap-4">
+            <span className="font-medium">{t('doors')}</span>
+            <span className="text-right">{car.doors ?? '—'}</span>
+          </div>
+          <div className="flex justify-between border-b pb-2 gap-4">
+            <span className="font-medium">{t('vehicleType')}</span>
+            <span className="text-right">{car.vehicleType ? t(car.vehicleType) : '—'}</span>
+          </div>
+          <div className="flex justify-between border-b pb-2 gap-4">
+            <span className="font-medium">{t('mot')}</span>
+            <span className="text-right">
+              {car.mot ? `${String(new Date(car.mot).getMonth() + 1).padStart(2, '0')}/${new Date(car.mot).getFullYear()}` : '—'}
+            </span>
+          </div>
+          <div className="flex justify-between border-b pb-2 gap-4">
             <span className="font-medium">{t('vin')}</span>
-            <span className="text-xs break-all">{car.vin ?? '—'}</span>
+            <span className="text-xs break-all text-right">{car.vin ?? '—'}</span>
           </div>
-          <div className="flex justify-between border-b pb-2 text-lg font-semibold">
+          <div className="flex justify-between border-b pb-2 text-lg font-semibold gap-4">
             <span>{t('price')}</span>
-            <span className="text-blue-600">{formatCurrency(car.price as number)}</span>
+            <span className="text-green-600 text-right">{formatCurrency(car.price as number)}</span>
           </div>
-          <div className="flex justify-between pt-4 text-xs text-muted-foreground">
+          <div className="flex justify-between pt-4 text-xs text-muted-foreground gap-4">
             <span>Created</span>
-            <span>{formatDate(car.createdAt)}</span>
+            <span className="text-right">{formatDate(car.createdAt)}</span>
           </div>
         </aside>
       </div>

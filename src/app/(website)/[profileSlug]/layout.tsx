@@ -16,9 +16,9 @@ export default async function RootLayout({ children, params }: LayoutProps) {
   const { data: location } = await getMainLocationByProfileSlug(profileSlug)
 
   return (
-    <div className="mx-auto w-screen flex flex-col antialiased">
+    <div className="min-h-screen w-screen flex flex-col antialiased">
       <WebsiteHeader profileSlug={profileSlug} companyName={profile?.company || 'Firmenname'} phoneNumber={location?.phone} />
-      {children}
+      <main className="flex-grow">{children}</main>
       <WebsiteFooter companyName={profile?.company || 'Firmenname'} location={location} />
       <WhatsAppButton phoneNumber={location?.phone} />
     </div>
