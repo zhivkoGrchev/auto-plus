@@ -5,12 +5,12 @@ import { prisma } from '@/prisma'
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { carId, imageUrl, imageHash, order } = body
+    const { carId, imageUrl, imageCid, order } = body
     const carImage = await prisma.carImage.create({
       data: {
         carId,
         imageUrl,
-        imageHash,
+        imageCid,
         order,
       },
     })

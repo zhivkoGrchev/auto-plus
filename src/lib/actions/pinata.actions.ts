@@ -1,14 +1,14 @@
 'use server'
 
-import type { GaleryImage } from '@/lib/types/galery'
+import type { ImageFile } from '@/lib/types/image'
 import { pinata } from '@/pinata'
 
-export async function uploadImage(formData: File): Promise<Return<GaleryImage>> {
+export async function uploadImage(formData: File): Promise<Return<ImageFile>> {
   try {
-    const { cid: imageHash } = await pinata.upload.public.file(formData)
-    const imageUrl = await pinata.gateways.public.convert(imageHash)
+    const { cid: imageCid } = await pinata.upload.public.file(formData)
+    const imageUrl = await pinata.gateways.public.convert(imageCid)
 
-    return { data: { imageUrl, imageHash }, error: undefined }
+    return { data: { imageUrl, imageCid, imageFile: null }, error: undefined }
   } catch (error) {
     const e = error as Error
     console.error('Image upload error: ', e.message)

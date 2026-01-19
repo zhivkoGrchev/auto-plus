@@ -3,6 +3,9 @@ import createNextIntlPlugin from 'next-intl/plugin'
 
 const nextConfig: NextConfig = {
   /* config options here */
+  images: {
+    remotePatterns: [new URL('https://**')],
+  },
 }
 
 const withNextIntl = createNextIntlPlugin('./src/lib/i18n/request.ts')
