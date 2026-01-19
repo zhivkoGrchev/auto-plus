@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl'
 import { type ComponentProps, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { EditGalery } from '@/components/features/cars-list/edit-galery'
+import { GaleryManager } from '@/components/features/cars-list/galery-manager'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
@@ -18,7 +18,7 @@ import { addCar, editCar, getCarBrands, getCarModelsByBrand } from '@/lib/action
 import { uploadImage } from '@/lib/actions/pinata.actions'
 import { COLORS } from '@/lib/constants/colors'
 import type { CarExtended } from '@/lib/types/car'
-import type { GaleryImage } from '@/lib/types/galery'
+import type { ImageFile } from '@/lib/types/image'
 import { getChangedFields } from '@/lib/utils'
 import { type AddCarData, type AddCarImageData, AddCarSchema, type EditCarData, EditCarSchema } from '@/lib/validators/car'
 import { type CarBrand, type CarModel, FuelType, Transmission, VehicleType } from '@/prisma/generated'
@@ -68,7 +68,7 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
     resolver: zodResolver(car ? EditCarSchema : AddCarSchema),
     defaultValues: INITIAL_FORM_DATA,
   })
-  const [carImages, setCarImages] = useState<GaleryImage[]>([])
+  const [carImages, setCarImages] = useState<ImageFile[]>([])
   const [carBrands, setCarBrands] = useState<CarBrand[]>([])
   const [carModels, setCarModels] = useState<CarModel[]>([])
   const [openPopoverColor, setOpenPopoverColor] = useState<boolean>(false)
@@ -112,7 +112,7 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
   useEffect(() => {
     if (car) {
       reset({ ...car, profileId, locationId })
-      setCarImages(car.images.map((item) => ({ imageUrl: item.imageUrl, imageHash: item.imageHash })))
+      setCarImages(car.images.map((item) => ({ imageUrl: item.imageUrl, imageCid: item.imageCid, imageFile: null })))
     } else {
       reset({ ...INITIAL_FORM_DATA, profileId, locationId })
       setCarImages([])
@@ -120,13 +120,11 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
   }, [car, profileId, locationId, reset])
 
   const handleAddImages = (files: File[]) => {
-    const images = files.map((item) => ({ imageUrl: URL.createObjectURL(item), imageHash: null, imageFile: item }))
+    const images = files.map((item) => ({ imageUrl: URL.createObjectURL(item), imageCid: null, imageFile: item }))
     setCarImages((prev) => [...prev, ...images])
   }
 
-  const handleDeleteImage = (key: number) => {
-    setCarImages((prev) => prev.filter((_, index) => index !== key))
-  }
+  const handleDeleteImage = (key: number) => setCarImages((prev) => prev.filter((_, index) => index !== key))
 
   const handleFormSubmit = async (formData: AddCarData | EditCarData) => {
     if (car) {
@@ -138,7 +136,7 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
       }
       toast.success(data.message)
     } else {
-      const images: GaleryImage[] = []
+      const images: ImageFile[] = []
       const addedImages: AddCarImageData[] = []
       for (const [index, item] of carImages.entries()) {
         if (item.imageFile) {
@@ -147,8 +145,8 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
             toast.error(error.message)
             continue
           }
-          images.push({ imageUrl: data.imageUrl, imageHash: data.imageHash })
-          addedImages.push({ imageUrl: data.imageUrl, imageHash: data.imageHash, order: index })
+          images.push({ imageUrl: data.imageUrl, imageCid: data.imageCid, imageFile: null })
+          addedImages.push({ imageUrl: data.imageUrl, imageCid: data.imageCid, order: index })
         } else images.push(item)
       }
       setCarImages(images)
@@ -172,7 +170,7 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
         </DialogHeader>
         <form onSubmit={handleSubmit(handleFormSubmit)}>
           <div className="flex flex-col gap-4 max-h-[80vh] overflow-y-auto">
-            <EditGalery images={carImages} onAddImages={handleAddImages} onDeleteImage={handleDeleteImage} />
+            <GaleryManager images={carImages} onAddImages={handleAddImages} onDeleteImage={handleDeleteImage} />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
               <fieldset className="flex flex-col gap-2">
                 <Label className="mx-2" htmlFor="brandId">

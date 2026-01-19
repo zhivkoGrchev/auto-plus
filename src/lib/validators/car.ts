@@ -27,7 +27,7 @@ export const EditCarSchema = AddCarSchema.partial()
 
 export const AddCarImageSchema = z.object({
   imageUrl: z.url(),
-  imageHash: z.string().nullable(),
+  imageCid: z.string().nullable(),
   order: z.number(),
 })
 

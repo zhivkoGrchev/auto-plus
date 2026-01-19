@@ -2,7 +2,7 @@
 
 import { Building, Loader, MapPinPen, Pencil, Trash } from 'lucide-react'
 import Image from 'next/image'
-import { useEffect, useState, useTransition } from 'react'
+import { useCallback, useEffect, useState, useTransition } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
@@ -19,7 +19,7 @@ export const ProfilesList = () => {
   const [openLocationsDialog, setOpenLocationsDialog] = useState<boolean>(false)
   const [isPending, startTransition] = useTransition()
 
-  const fetchProfiles = () => {
+  const fetchProfiles = useCallback(() => {
     startTransition(async () => {
       const { data, error } = await getProfilesWithLocations()
       if (error) {
@@ -28,9 +28,9 @@ export const ProfilesList = () => {
       }
       setProfiles(data)
     })
-  }
+  }, [])
 
-  useEffect(() => fetchProfiles(), [])
+  useEffect(() => fetchProfiles(), [fetchProfiles])
 
   const handleDeleteProfile = async (id: string) => {
     const { data, error } = await deleteProfile(id)
@@ -40,13 +40,6 @@ export const ProfilesList = () => {
     }
     fetchProfiles()
     toast.success(data)
-  }
-
-  const handleUpdate = async () => {
-    setOpenProfileDialog(false)
-    setOpenLocationsDialog(false)
-    setCurrentProfile(undefined)
-    fetchProfiles()
   }
 
   const openAddProfileDialog = () => {
@@ -120,8 +113,8 @@ export const ProfilesList = () => {
             <Card className="" key={item.id}>
               <CardContent className="flex flex-col gap-4">
                 <div className="flex items-center gap-4">
-                  <div className="p-2 flex flex-col justify-center items-center gap-2 rounded-xl border border-dashed">
-                    <Image src="/images/no-image.svg" width={96} height={96} alt="Logo" />
+                  <div className="p-2 flex flex-col justify-center items-center rounded-md border border-dashed">
+                    <Image src={item.imageUrl ? item.imageUrl : '/images/no-image.svg'} width={96} height={96} alt="Logo" />
                   </div>
                   <ul className="flex flex-col">
                     <li>
@@ -155,13 +148,13 @@ export const ProfilesList = () => {
         open={openProfileDialog}
         profile={currentProfile}
         onOpenChange={(value) => (!value ? closeProfileDialog() : setOpenProfileDialog(value))}
-        onUpdate={handleUpdate}
+        onUpdate={fetchProfiles}
       />
       <LocationsDialog
         open={openLocationsDialog}
         profile={currentProfile}
         onOpenChange={(value) => (!value ? closeLocationsDialog() : setOpenLocationsDialog(value))}
-        onUpdate={handleUpdate}
+        onUpdate={fetchProfiles}
       />
     </div>
   )

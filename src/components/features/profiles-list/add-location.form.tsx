@@ -29,6 +29,7 @@ export const AddLocationForm = ({ profileId, onUpdate }: AddLocationFormProps) =
   const m = useTranslations('Validations')
   const {
     register,
+    reset,
     watch,
     setValue,
     handleSubmit,
@@ -42,6 +43,7 @@ export const AddLocationForm = ({ profileId, onUpdate }: AddLocationFormProps) =
       return
     }
     onUpdate?.()
+    reset()
     toast.success(data)
   }
 

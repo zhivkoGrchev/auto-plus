@@ -73,23 +73,23 @@ export const EditLocationForm = ({ location, onUpdate }: EditLocationFormProps) 
         )}
       </TableCell>
       <TableCell>
-        <Input className="w-full" {...register('phone')} placeholder={location.phone} />
+        <Input className="w-full" {...register('phone')} />
         {errors.phone?.message && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{m(errors.phone.message)}</span>}
       </TableCell>
       <TableCell>
-        <Input className="w-full" {...register('email')} placeholder={location.email} />
+        <Input className="w-full" {...register('email')} />
         {errors.email?.message && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{m(errors.email.message)}</span>}
       </TableCell>
       <TableCell>
-        <Input className="w-full" {...register('address')} placeholder={location.address} />
+        <Input className="w-full" {...register('address')} />
         {errors.address?.message && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{m(errors.address.message)}</span>}
       </TableCell>
       <TableCell>
-        <Input className="w-full" {...register('city')} placeholder={location.city} />
+        <Input className="w-full" {...register('city')} />
         {errors.city?.message && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{m(errors.city.message)}</span>}
       </TableCell>
       <TableCell>
-        <Input className="w-full" {...register('postcode')} placeholder={location.postcode} />
+        <Input className="w-full" {...register('postcode')} />
         {errors.postcode?.message && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{m(errors.postcode.message)}</span>}
       </TableCell>
       <TableCell className="flex justify-end gap-2">
@@ -102,7 +102,7 @@ export const EditLocationForm = ({ location, onUpdate }: EditLocationFormProps) 
       </TableCell>
     </TableRow>
   ) : (
-    <TableRow key={location.id}>
+    <TableRow>
       <TableCell>
         <Switch checked={location.isMain} />
       </TableCell>

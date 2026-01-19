@@ -62,9 +62,9 @@ export async function deleteCar(id: string): Promise<Return<string>> {
     if (!car) return { data: undefined, error: { message: 'Car not found.' } }
 
     const cidsToDelete: string[] = []
-    //if (car.imageHash) cidsToDelete.push(car.imageHash)
+    //if (car.imageCid) cidsToDelete.push(car.imageCid)
     for (const image of car.images) {
-      if (image.imageHash) cidsToDelete.push(image.imageHash)
+      if (image.imageCid) cidsToDelete.push(image.imageCid)
     }
 
     await prisma.car.delete({ where: { id } })

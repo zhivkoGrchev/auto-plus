@@ -1,19 +1,20 @@
 import { Plus, Trash } from 'lucide-react'
+import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import type { ChangeEvent } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
-import type { GaleryImage } from '@/lib/types/galery'
+import type { ImageFile } from '@/lib/types/image'
 
-export interface EditGaleryProps {
-  images: GaleryImage[]
+export interface GaleryManagerProps {
+  images: ImageFile[]
   onAddImages: (files: File[]) => void
   onDeleteImage: (key: number) => void
 }
 
-export const EditGalery = ({ images, onAddImages, onDeleteImage }: EditGaleryProps) => {
-  const t = useTranslations('EditGalery')
+export const GaleryManager = ({ images, onAddImages, onDeleteImage }: GaleryManagerProps) => {
+  const t = useTranslations('GaleryManager')
   const handleAddImages = ({ target }: ChangeEvent<HTMLInputElement>) => {
     if (target.files?.length) {
       onAddImages([...target.files])
@@ -28,7 +29,7 @@ export const EditGalery = ({ images, onAddImages, onDeleteImage }: EditGaleryPro
       <div className="flex justify-center gap-2 flex-wrap">
         {images.map((item, index) => (
           <div className="relative" key={index}>
-            <img className="size-24 object-cover rounded-md border-2 border-neutral-300" src={item.imageUrl} alt={`Preview ${index + 1}`} />
+            <Image className="size-24 rounded-md border-2 border-neutral-300 object-cover" src={item.imageUrl} sizes="96px" alt={`Preview ${index + 1}`} />
             <Button className="absolute bottom-1 right-1 size-6 rounded" type="button" variant="destructive" size="sm" onClick={() => onDeleteImage(index)}>
               <Trash className="size-3" />
             </Button>

@@ -40,9 +40,26 @@ export const LocationsDialog = ({ open, profile, onOpenChange, onUpdate }: Locat
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {showCreateLocationForm && <AddLocationForm profileId={profile.id} onUpdate={onUpdate} />}
+                {showCreateLocationForm && (
+                  <AddLocationForm
+                    profileId={profile.id}
+                    onUpdate={() => {
+                      onOpenChange?.(false)
+                      onUpdate?.()
+                    }}
+                  />
+                )}
                 {profile.locations.length ? (
-                  profile.locations.map((item) => <EditLocationForm key={item.id} location={item} onUpdate={onUpdate} />)
+                  profile.locations.map((item) => (
+                    <EditLocationForm
+                      key={item.id}
+                      location={item}
+                      onUpdate={() => {
+                        onOpenChange?.(false)
+                        onUpdate?.()
+                      }}
+                    />
+                  ))
                 ) : (
                   <TableRow>
                     <TableCell colSpan={8} className="p-4 text-xl text-center">

@@ -68,7 +68,7 @@ model CarImage {
   carId     String   @db.Uuid
   car       Car      @relation(fields: [carId], references: [id], onDelete: Cascade)
   imageUrl  String
-  imageHash String? // IPFS hash from Pinata
+  imageCid  String?
   order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -164,8 +164,8 @@ model Profile {
   userId    String
   slug      String     @unique
   company   String?
-  logoUrl   String?
-  logoHash  String?
+  imageUrl  String
+  imageCid  String?
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   locations Location[]
