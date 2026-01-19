@@ -126,6 +126,16 @@ export default async function CarDetailsPage({ profileSlug, ...props }: PageProp
             <span className="text-right">{car.doors ?? '—'}</span>
           </div>
           <div className="flex justify-between border-b pb-2 gap-4">
+            <span className="font-medium">{t('vehicleType')}</span>
+            <span className="text-right">{car.vehicleType ? t(car.vehicleType) : '—'}</span>
+          </div>
+          <div className="flex justify-between border-b pb-2 gap-4">
+            <span className="font-medium">{t('mot')}</span>
+            <span className="text-right">
+              {car.mot ? `${String(new Date(car.mot).getMonth() + 1).padStart(2, '0')}/${new Date(car.mot).getFullYear()}` : '—'}
+            </span>
+          </div>
+          <div className="flex justify-between border-b pb-2 gap-4">
             <span className="font-medium">{t('vin')}</span>
             <span className="text-xs break-all text-right">{car.vin ?? '—'}</span>
           </div>

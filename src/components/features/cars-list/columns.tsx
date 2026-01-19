@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Switch } from '@/components/ui/switch'
 import type { CarExtended } from '@/lib/types/car'
-import type { FuelType } from '@/prisma/generated'
+import type { FuelType, VehicleType } from '@/prisma/generated'
 
 export const columns = (
   onEdit: (car: CarExtended) => void | Promise<void>,
@@ -105,6 +105,23 @@ export const columns = (
     cell: ({ row }) => {
       const doors = row.getValue('doors') as number | null
       return <div className="text-right font-medium">{doors ?? '—'}</div>
+    },
+  },
+  {
+    accessorKey: 'vehicleType',
+    header: () => <div className="text-right">{t('vehicleType')}</div>,
+    cell: ({ row }) => {
+      const vehicleType = row.getValue('vehicleType') as VehicleType | null
+      return <div className="text-right font-medium">{vehicleType ? t(vehicleType) : '—'}</div>
+    },
+  },
+  {
+    accessorKey: 'mot',
+    header: () => <div className="text-right">{t('mot')}</div>,
+    cell: ({ row }) => {
+      const mot = row.getValue('mot') as Date | null
+      const formatted = mot ? `${String(new Date(mot).getMonth() + 1).padStart(2, '0')}/${new Date(mot).getFullYear()}` : '—'
+      return <div className="text-right font-medium">{formatted}</div>
     },
   },
   {

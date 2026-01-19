@@ -20,6 +20,17 @@ enum Transmission {
   automatic
 }
 
+enum VehicleType {
+  convertible
+  compact
+  sedan
+  van
+  suv
+  stationWagon
+  coupe
+  other
+}
+
 model Car {
   id              String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   profileId       String       @db.Uuid
@@ -39,6 +50,8 @@ model Car {
   description     String?
   seats           Int?
   doors           Int?
+  vehicleType     VehicleType?
+  mot             DateTime?
   images          CarImage[]
   listedOnWebsite Boolean      @default(false)
   createdAt       DateTime     @default(now())

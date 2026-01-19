@@ -21,7 +21,7 @@ import type { CarExtended } from '@/lib/types/car'
 import type { GaleryImage } from '@/lib/types/galery'
 import { getChangedFields } from '@/lib/utils'
 import { type AddCarData, type AddCarImageData, AddCarSchema, type EditCarData, EditCarSchema } from '@/lib/validators/car'
-import { type CarBrand, type CarModel, FuelType, Transmission } from '@/prisma/generated'
+import { type CarBrand, type CarModel, FuelType, Transmission, VehicleType } from '@/prisma/generated'
 
 const INITIAL_FORM_DATA: AddCarData = {
   profileId: '',
@@ -40,6 +40,8 @@ const INITIAL_FORM_DATA: AddCarData = {
   price: 0,
   seats: null,
   doors: null,
+  vehicleType: null,
+  mot: null,
   description: '',
 } as const
 const POWER_CONVERSION_FACTOR = 1.35962
@@ -366,6 +368,72 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
                 </Label>
                 <Input className="w-full" id="doors" type="number" placeholder="e.g. 4" {...register('doors')} />
                 {errors.doors?.message && <span className="mx-2 text-red-600">{m(errors.doors.message)}</span>}
+              </fieldset>
+              <fieldset className="flex flex-col gap-2">
+                <Label className="mx-2" htmlFor="vehicleType">
+                  {t('vehicleType')}
+                </Label>
+                <Select value={watch('vehicleType') || ''} onValueChange={(value) => setValue('vehicleType', value as VehicleType)}>
+                  <SelectTrigger className="w-full" aria-label="Vehicle Type">
+                    <SelectValue id="vehicleType" placeholder={t('selectVehicleType')}>
+                      {watch('vehicleType') ? t(getValues('vehicleType') || 'selectVehicleType') : t('selectVehicleType')}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.keys(VehicleType).map((item) => (
+                      <SelectItem key={item} value={item}>
+                        {t(item)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {errors.vehicleType?.message && <span className="mx-2 text-red-600">{m(errors.vehicleType.message)}</span>}
+              </fieldset>
+              <fieldset className="flex flex-col gap-2">
+                <Label className="mx-2" htmlFor="mot">
+                  {t('mot')}
+                </Label>
+                <div className="flex gap-2">
+                  <Select
+                    value={watch('mot') ? String(new Date(watch('mot')).getMonth() + 1).padStart(2, '0') : ''}
+                    onValueChange={(month) => {
+                      const currentMot = watch('mot')
+                      const year = currentMot ? new Date(currentMot).getFullYear() : new Date().getFullYear()
+                      setValue('mot', new Date(year, parseInt(month) - 1, 1))
+                    }}
+                  >
+                    <SelectTrigger className="w-1/2" aria-label="MOT Month">
+                      <SelectValue placeholder="MM" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Array.from({ length: 12 }, (_, i) => i + 1).map((month) => (
+                        <SelectItem key={month} value={String(month).padStart(2, '0')}>
+                          {String(month).padStart(2, '0')}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Select
+                    value={watch('mot') ? String(new Date(watch('mot')).getFullYear()) : ''}
+                    onValueChange={(year) => {
+                      const currentMot = watch('mot')
+                      const month = currentMot ? new Date(currentMot).getMonth() : new Date().getMonth()
+                      setValue('mot', new Date(parseInt(year), month, 1))
+                    }}
+                  >
+                    <SelectTrigger className="w-1/2" aria-label="MOT Year">
+                      <SelectValue placeholder="YYYY" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Array.from({ length: 3 }, (_, i) => new Date().getFullYear() + i).map((year) => (
+                        <SelectItem key={year} value={String(year)}>
+                          {year}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                {errors.mot?.message && <span className="mx-2 text-red-600">{m(errors.mot.message)}</span>}
               </fieldset>
               <fieldset className="flex flex-col gap-2 md:col-span-2">
                 <Label className="mx-2" htmlFor="description">
