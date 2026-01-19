@@ -27,6 +27,9 @@ export const WebsiteHeader = ({ profileSlug, companyName, phoneNumber }: Website
           <a href={`/${profileSlug}/location`} className="hover:text-cyan-200 transition">
             Standort
           </a>
+          <a href={`/${profileSlug}/opening-hours`} className="hover:text-cyan-200 transition">
+            Öffnungszeiten
+          </a>
           <a href={`/${profileSlug}/contact`} className="hover:text-cyan-200 transition">
             Kontakt
           </a>
@@ -56,6 +59,9 @@ export const WebsiteHeader = ({ profileSlug, companyName, phoneNumber }: Website
           </a>
           <a href={`/${profileSlug}/location`} className="block hover:text-cyan-200 transition">
             Standort
+          </a>
+          <a href={`/${profileSlug}/opening-hours`} className="block hover:text-cyan-200 transition">
+            Öffnungszeiten
           </a>
           <a href={`/${profileSlug}/contact`} className="block hover:text-cyan-200 transition">
             Kontakt

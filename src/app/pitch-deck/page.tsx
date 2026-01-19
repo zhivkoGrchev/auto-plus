@@ -134,7 +134,7 @@ const PitchDeck = () => {
               <li className="flex items-start">
                 <span className="text-cyan-600 mr-2">•</span>
                 <span>
-                  <strong>Primary:</strong> Small to medium-sized used car dealerships (15-75 vehicles)
+                  <strong>Primary:</strong> Small to medium-sized car dealerships (15-75 vehicles)
                 </span>
               </li>
               <li className="flex items-start">

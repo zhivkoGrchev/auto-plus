@@ -1,4 +1,10 @@
-function Contact() {
+import type { Location } from '@/prisma/generated'
+
+interface ContactProps {
+  location?: Location | null
+}
+
+function Contact({ location }: ContactProps) {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h2 className="text-3xl font-bold mb-8 text-center">Kontaktieren Sie uns</h2>
@@ -8,21 +14,25 @@ function Contact() {
         <div className="space-y-6">
           <div>
             <h3 className="text-xl font-semibold mb-4">Kontakt aufnehmen</h3>
-            <div className="space-y-3">
-              <div className="flex items-center space-x-3">
-                <div>
-                  <p className="font-medium">Telefon</p>
-                  <p className="text-cyan-50">+49 123 456 789</p>
+            {location ? (
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3">
+                  <div>
+                    <p className="font-medium">Telefon</p>
+                    <p className="text-cyan-50">{location.phone}</p>
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex items-center space-x-3">
-                <div>
-                  <p className="font-medium">E-mail</p>
-                  <p className="text-cyan-50">info@autohaus-plus.de</p>
+                <div className="flex items-center space-x-3">
+                  <div>
+                    <p className="font-medium">E-mail</p>
+                    <p className="text-cyan-50">{location.email}</p>
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <p className="text-gray-500">Keine Kontaktinformationen verfügbar.</p>
+            )}
           </div>
         </div>
 
