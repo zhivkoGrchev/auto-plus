@@ -17,6 +17,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { addCar, editCar, getCarBrands, getCarModelsByBrand } from '@/lib/actions/car.actions'
 import { uploadImage } from '@/lib/actions/pinata.actions'
 import { COLORS } from '@/lib/constants/colors'
+import { MONTHS } from '@/lib/constants/date'
 import type { CarExtended } from '@/lib/types/car'
 import type { ImageFile } from '@/lib/types/image'
 import { getChangedFields } from '@/lib/utils'
@@ -161,6 +162,8 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
     reset()
   }
 
+  const currentDate = new Date()
+  const currentMot = watch('mot')
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-160">
@@ -374,7 +377,7 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
                 <Select value={watch('vehicleType') || ''} onValueChange={(value) => setValue('vehicleType', value as VehicleType)}>
                   <SelectTrigger className="w-full" aria-label="Vehicle Type">
                     <SelectValue id="vehicleType" placeholder={t('selectVehicleType')}>
-                      {watch('vehicleType') ? t(getValues('vehicleType') || 'selectVehicleType') : t('selectVehicleType')}
+                      {t(getValues('vehicleType') || 'selectVehicleType')}
                     </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
@@ -393,37 +396,35 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
                 </Label>
                 <div className="flex gap-2">
                   <Select
-                    value={watch('mot') ? String(new Date(watch('mot')).getMonth() + 1).padStart(2, '0') : ''}
+                    value={currentMot ? String((currentMot as Date).getMonth() + 1).padStart(2, '0') : ''}
                     onValueChange={(month) => {
-                      const currentMot = watch('mot')
-                      const year = currentMot ? new Date(currentMot).getFullYear() : new Date().getFullYear()
-                      setValue('mot', new Date(year, parseInt(month) - 1, 1))
+                      const year = currentMot ? (currentMot as Date).getFullYear() : currentDate.getFullYear()
+                      setValue('mot', new Date(year, parseInt(month, 10) - 1, 1))
                     }}
                   >
                     <SelectTrigger className="w-1/2" aria-label="MOT Month">
                       <SelectValue placeholder="MM" />
                     </SelectTrigger>
                     <SelectContent>
-                      {Array.from({ length: 12 }, (_, i) => i + 1).map((month) => (
-                        <SelectItem key={month} value={String(month).padStart(2, '0')}>
-                          {String(month).padStart(2, '0')}
+                      {MONTHS.map((month) => (
+                        <SelectItem key={month.name} value={month.value}>
+                          {month.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                   <Select
-                    value={watch('mot') ? String(new Date(watch('mot')).getFullYear()) : ''}
+                    value={currentMot ? String((currentMot as Date).getFullYear()) : ''}
                     onValueChange={(year) => {
-                      const currentMot = watch('mot')
-                      const month = currentMot ? new Date(currentMot).getMonth() : new Date().getMonth()
-                      setValue('mot', new Date(parseInt(year), month, 1))
+                      const month = currentMot ? (currentMot as Date).getMonth() : currentDate.getMonth()
+                      setValue('mot', new Date(parseInt(year, 10), month, 1))
                     }}
                   >
                     <SelectTrigger className="w-1/2" aria-label="MOT Year">
                       <SelectValue placeholder="YYYY" />
                     </SelectTrigger>
                     <SelectContent>
-                      {Array.from({ length: 3 }, (_, i) => new Date().getFullYear() + i).map((year) => (
+                      {Array.from({ length: 3 }, (_, i) => currentDate.getFullYear() + i).map((year) => (
                         <SelectItem key={year} value={String(year)}>
                           {year}
                         </SelectItem>
