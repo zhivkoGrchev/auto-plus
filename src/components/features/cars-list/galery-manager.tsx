@@ -28,8 +28,8 @@ export const GaleryManager = ({ images, onAddImages, onDeleteImage }: GaleryMana
       <h5>{t('title')}</h5>
       <div className="flex justify-center gap-2 flex-wrap">
         {images.map((item, index) => (
-          <div className="relative" key={index}>
-            <Image className="size-24 rounded-md border-2 border-neutral-300 object-cover" src={item.imageUrl} sizes="96px" alt={`Preview ${index + 1}`} />
+          <div className="relative size-24 rounded-md border-2 border-neutral-300" key={index}>
+            <Image className="object-cover" src={item.imageUrl} width={96} height={96} alt={`Preview ${index + 1}`} />
             <Button className="absolute bottom-1 right-1 size-6 rounded" type="button" variant="destructive" size="sm" onClick={() => onDeleteImage(index)}>
               <Trash className="size-3" />
             </Button>
