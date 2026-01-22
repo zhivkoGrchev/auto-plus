@@ -195,7 +195,10 @@ export const CarsList = () => {
                 )) || <div className="flex justify-center">Select Profile</div>}
               </SelectContent>
             </Select>
-            <Button onClick={() => openAddCarDialog()}>
+            <Button
+              onClick={() => openAddCarDialog()}
+              className="text-white bg-cyan-600 hover:bg-cyan-700 dark:bg-cyan-950 dark:hover:bg-cyan-850 border border-cyan-600"
+            >
               <Plus />
               {t('addCarButton')}
             </Button>

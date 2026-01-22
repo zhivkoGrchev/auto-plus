@@ -28,7 +28,7 @@ export const GaleryManager = ({ images, onAddImages, onDeleteImage }: GaleryMana
       <h5>{t('title')}</h5>
       <div className="flex justify-center gap-2 flex-wrap">
         {images.map((item, index) => (
-          <div className="relative size-24 rounded-md border-2 border-neutral-300" key={index}>
+          <div className="relative size-24 rounded-md border-2 border-cyan-600" key={index}>
             <Image className="object-cover" src={item.imageUrl} width={96} height={96} alt={`Preview ${index + 1}`} />
             <Button className="absolute bottom-1 right-1 size-6 rounded" type="button" variant="destructive" size="sm" onClick={() => onDeleteImage(index)}>
               <Trash className="size-3" />
@@ -36,7 +36,7 @@ export const GaleryManager = ({ images, onAddImages, onDeleteImage }: GaleryMana
             {index === 0 && <span className="absolute bottom-1 left-1 px-2.5 py-1 rounded bg-blue-500 text-white text-xs">Main</span>}
           </div>
         ))}
-        <Label className="size-24 flex flex-col justify-center items-center gap-2 rounded-md border-2 border-dashed border-neutral-700 dark:border-neutral-300 cursor-pointer bg-cyan-100 hover:bg-cyan-200 dark:bg-cyan-900 dark:hover:bg-cyan-800">
+        <Label className="size-24 flex flex-col justify-center items-center gap-2 rounded-md border-2 border-dashed border-cyan-600 dark:border-cyan-600 cursor-pointer bg-cyan-100 hover:bg-cyan-200 dark:bg-cyan-900 dark:hover:bg-cyan-800">
           <Plus className="size-8 text-neutral-700 dark:text-neutral-300" />
           <input className="hidden" id="carImage" type="file" accept="image/*" multiple onChange={handleAddImages} />
         </Label>

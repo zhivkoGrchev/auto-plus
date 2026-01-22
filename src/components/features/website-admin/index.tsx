@@ -163,7 +163,13 @@ export const WebsiteAdmin = ({ profileSlug }: WebsiteAdminProps) => {
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <h2 className="text-2xl font-bold">{t('title-page')}</h2>
               <div className="flex items-center gap-2">
-                <Button variant="default" size="sm" asChild disabled={!profileSlug}>
+                <Button
+                  variant="default"
+                  size="sm"
+                  asChild
+                  disabled={!profileSlug}
+                  className="text-white bg-cyan-600 hover:bg-cyan-700 dark:bg-cyan-900 dark:hover:bg-cyan-800 border border-cyan-600"
+                >
                   <a
                     href={profileSlug ? `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/${profileSlug}` : '#'}
                     target="_blank"

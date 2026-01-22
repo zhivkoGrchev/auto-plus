@@ -23,7 +23,7 @@ export const LocaleTool = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" disabled={isPending}>
+        <Button variant="outline" size="icon" disabled={isPending} className="dark:bg-cyan-950">
           <Globe className="h-4 w-4" />
           <span className="sr-only">{t('label')}</span>
         </Button>

@@ -109,13 +109,15 @@ export function CarsTable({ data, onEdit, onDelete, onToggleListing }: CarsTable
         </DropdownMenu>
       </div>
 
-      <div className="overflow-hidden rounded-md border">
+      <div className="overflow-hidden rounded-md border border-cyan-600">
         <Table>
-          <TableHeader className="bg-cyan-900">
+          <TableHeader className="bg-cyan-600 dark:bg-cyan-900">
             {table.getHeaderGroups().map((hg) => (
-              <TableRow key={hg.id}>
+              <TableRow key={hg.id} className="hover:bg-cyan-600 dark:hover:bg-cyan-900">
                 {hg.headers.map((h) => (
-                  <TableHead key={h.id}>{h.isPlaceholder ? null : flexRender(h.column.columnDef.header, h.getContext())}</TableHead>
+                  <TableHead key={h.id} className="text-white">
+                    {h.isPlaceholder ? null : flexRender(h.column.columnDef.header, h.getContext())}
+                  </TableHead>
                 ))}
               </TableRow>
             ))}
@@ -148,10 +150,22 @@ export function CarsTable({ data, onEdit, onDelete, onToggleListing }: CarsTable
         </div>
         */}
         <div className="flex items-center justify-end space-x-2">
-          <Button variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+            className="border-cyan-600 text-cyan-600 hover:bg-cyan-600 hover:text-white"
+          >
             {t('pervious')}
           </Button>
-          <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+            className="border-cyan-600 text-cyan-600 hover:bg-cyan-600 hover:text-white"
+          >
             {t('next')}
           </Button>
         </div>

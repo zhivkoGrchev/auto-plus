@@ -442,7 +442,11 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
               </fieldset>
             </div>
             <div className="flex justify-end gap-2">
-              <Button type="submit" disabled={isSubmitting}>
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="text-white bg-cyan-600 hover:bg-cyan-700 dark:bg-cyan-900 dark:hover:bg-cyan-800 border border-cyan-600"
+              >
                 {isSubmitting ? <Loader className="animate-spin" /> : <Check />}
                 {t('save')}
               </Button>

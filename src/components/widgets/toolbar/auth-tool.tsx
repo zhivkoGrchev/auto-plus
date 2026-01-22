@@ -41,14 +41,14 @@ export const AuthTool = () => {
 
   if (isPending) {
     return (
-      <Button variant="outline" disabled>
+      <Button variant="outline" disabled className="dark:bg-cyan-950">
         <Loader className="animate-spin" /> Loading ...
       </Button>
     )
   }
 
   return !session?.user ? (
-    <Button variant="outline" asChild>
+    <Button variant="outline" asChild className="dark:bg-cyan-950">
       <Link href="/auth/sign-in">
         <LogIn />
         {t('sign-in')}
@@ -58,7 +58,9 @@ export const AuthTool = () => {
     <>
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline">{session.user.name}</Button>
+          <Button variant="outline" className="dark:bg-cyan-950">
+            {session.user.name}
+          </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel className="p-2 flex flex-col items-center gap-2">
