@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import type { ImageFile } from '@/lib/types/image'
+import { resizeImage } from '@/lib/utils'
 
 export interface GaleryManagerProps {
   images: ImageFile[]
@@ -15,9 +16,11 @@ export interface GaleryManagerProps {
 
 export const GaleryManager = ({ images, onAddImages, onDeleteImage }: GaleryManagerProps) => {
   const t = useTranslations('GaleryManager')
-  const handleAddImages = ({ target }: ChangeEvent<HTMLInputElement>) => {
+  const handleAddImages = async ({ target }: ChangeEvent<HTMLInputElement>) => {
     if (target.files?.length) {
-      onAddImages([...target.files])
+      const promises = Array.from(target.files).map((file) => resizeImage(file))
+      const files = await Promise.all(promises)
+      onAddImages(files)
       return
     }
     toast.error('Invalid files')
