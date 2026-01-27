@@ -5,6 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 enum FuelType {
