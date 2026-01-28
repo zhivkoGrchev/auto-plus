@@ -42,7 +42,6 @@ jobs:
       - name: Run database migrations
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          SHADOW_DATABASE_URL: ${{ secrets.SHADOW_DATABASE_URL }}
         run: npx prisma migrate deploy
 
       - name: Build
