@@ -1,13 +1,13 @@
-import { APP_NAME } from '@/lib/constants'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
-import { FaFacebook, FaTwitter, FaLinkedin, FaPhone, FaEnvelope } from 'react-icons/fa'
+import { FaEnvelope, FaFacebook, FaLinkedin, FaPhone, FaTwitter } from 'react-icons/fa'
+import { APP_NAME } from '@/lib/constants'
 
 export const Footer = () => {
   const t = useTranslations('Footer')
 
   return (
-    <footer className="bg-cyan-700 text-neutral-50 dark:bg-cyan-900 py-12">
+    <footer className="py-12 bg-footer text-footer-foreground border-t">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}

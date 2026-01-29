@@ -78,7 +78,7 @@ export const ProfilesList = () => {
         return (
           <div className="flex flex-col gap-2">
             <div className="flex flex-col">
-              <h5 className="px-4 py-2 text-xl font-bold">Location</h5>
+              <h5 className="px-4 py-2 text-xl font-bold">Main location</h5>
               <ul className="p-4 rounded-xl border bg-cyan-50 dark:bg-cyan-950">
                 <li>Address: {location.address}</li>
                 <li>City: {location.city}</li>
@@ -103,7 +103,7 @@ export const ProfilesList = () => {
   return (
     <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
       <div className="flex justify-end">
-        <Button className="bg-cyan-700 text-cyan-50 hover:bg-cyan-800 hover:cursor-pointer" onClick={() => openAddProfileDialog()}>
+        <Button onClick={() => openAddProfileDialog()}>
           <Building /> Add profile
         </Button>
       </div>
@@ -128,13 +128,13 @@ export const ProfilesList = () => {
                 {renderMainLocation(item.locations)}
               </CardContent>
               <CardFooter className="flex justify-end gap-2">
-                <Button className="bg-cyan-700 text-cyan-50 hover:bg-cyan-800 hover:cursor-pointer" onClick={() => openEditLocationsDialog(item)}>
+                <Button variant="secondary" onClick={() => openEditLocationsDialog(item)}>
                   <MapPinPen /> Locations
                 </Button>
-                <Button className="bg-cyan-700 text-cyan-50 hover:bg-cyan-800 hover:cursor-pointer" onClick={() => openEditProfileDialog(item)}>
+                <Button variant="secondary" onClick={() => openEditProfileDialog(item)}>
                   <Pencil /> Edit profile
                 </Button>
-                <Button variant="destructive" onClick={() => handleDeleteProfile(item.id)} className="hover:cursor-pointer">
+                <Button variant="destructive" onClick={() => handleDeleteProfile(item.id)}>
                   <Trash />
                 </Button>
               </CardFooter>

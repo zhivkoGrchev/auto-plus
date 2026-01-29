@@ -1,12 +1,12 @@
 'use client'
 
-import { useTransition } from 'react'
+import { Check, Globe } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
-import { Globe, Check } from 'lucide-react'
-import { setUserLocale } from '@/services/locale'
-import type { Locale } from '@/lib/config/locale'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { useTransition } from 'react'
 import { Button } from '@/components/ui/button'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import type { Locale } from '@/lib/config/locale'
+import { setUserLocale } from '@/services/locale'
 
 export const LocaleTool = () => {
   const [isPending, startTransition] = useTransition()
