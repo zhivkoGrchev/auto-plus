@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { AuthTool } from './auth-tool'
@@ -12,7 +12,7 @@ export const ToolBar = () => {
   const [open, setOpen] = useState(false)
 
   return (
-    <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
+    <div className="flex items-center gap-2 sm:gap-3 md:gap-4 text-foreground">
       {/* Always visible: AuthTool */}
       <AuthTool />
 
@@ -26,7 +26,7 @@ export const ToolBar = () => {
       <div className="lg:hidden">
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
-            <Button variant="outline" size="icon" className="text-cyan-50 border-cyan-50 hover:bg-cyan-800" aria-label="Open menu">
+            <Button variant="outline" size="icon" className="border-cyan-50 hover:bg-cyan-800" aria-label="Open menu">
               {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
           </SheetTrigger>

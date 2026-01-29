@@ -1,12 +1,12 @@
 'use client'
 
-import { useTheme } from 'next-themes'
 import { useTranslations } from 'next-intl'
+import { useTheme } from 'next-themes'
+import { BsSun } from 'react-icons/bs'
 import { FaRegMoon } from 'react-icons/fa'
 import { LuCheck } from 'react-icons/lu'
-import { BsSun } from 'react-icons/bs'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { THEME } from '@/lib/config/theme'
 
 export const ThemeTool = () => {

@@ -1,14 +1,15 @@
 'use client'
 
+import { KeyRound, Loader, LogIn, LogOut, UserPen } from 'lucide-react'
 import Link from 'next/link'
-import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
+import { useState } from 'react'
 import { toast } from 'sonner'
-import { KeyRound, Loader, LogIn, LogOut, UserPen } from 'lucide-react'
-import { signOut, useSession } from '@/lib/auth/client'
-import { UserDialog } from '@/components/features/auth/user.dialog'
 import { PasswordDialog } from '@/components/features/auth/password.dialog'
+import { UserDialog } from '@/components/features/auth/user.dialog'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,8 +19,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
+import { signOut, useSession } from '@/lib/auth/client'
 
 export const AuthTool = () => {
   const [openEditUserDialog, setOpenEditUserDialog] = useState(false)
