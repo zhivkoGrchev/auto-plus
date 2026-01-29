@@ -1,4 +1,4 @@
-name: Deploy to Vercel (dev)
+name: Deploy to Vercel (dev) + Supabase
 
 on:
   push:
@@ -9,9 +9,11 @@ permissions:
   contents: read
 
 env:
+  # Vercel
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
   VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+  # App / Third-party
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
   BETTER_AUTH_URL: ${{ secrets.BETTER_AUTH_URL }}
   BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
@@ -19,6 +21,9 @@ env:
   PINATA_GATEWAY: ${{ secrets.PINATA_GATEWAY }}
   NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
   NEXT_TELEMETRY_DISABLED: 1
+  # Supabase (add these secrets to your repo)
+  SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+  SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
 
 jobs:
   deploy:
@@ -39,7 +44,7 @@ jobs:
       - name: Pull Vercel environment
         run: npx vercel pull --yes --environment=preview --token=${{ env.VERCEL_TOKEN }}
 
-      - name: Run database migrations
+      - name: Run database migrations (Prisma)
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: npx prisma migrate deploy
@@ -47,5 +52,31 @@ jobs:
       - name: Build
         run: npm run build
 
+      # --- Supabase CLI setup & deploy ---
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Link Supabase project
+        run: supabase link --project-ref ${{ env.SUPABASE_PROJECT_ID }}
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ env.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Deploy Supabase DB migrations
+        run: |
+          # Push migration files in supabase/migrations to the linked project
+          supabase db push --project-ref ${{ env.SUPABASE_PROJECT_ID }}
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ env.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Deploy Supabase Edge Functions
+        run: |
+          # Deploy all functions in supabase/functions; or specify individual functions
+          supabase functions deploy --project-ref ${{ env.SUPABASE_PROJECT_ID }}
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ env.SUPABASE_ACCESS_TOKEN }}
+
+      # --- Vercel deploy last (uses build artifacts) ---
       - name: Deploy to Vercel
         run: npx vercel deploy --prebuilt --prod --yes --token=${{ env.VERCEL_TOKEN }}
