@@ -39,7 +39,7 @@ jobs:
       - name: Setup Supabase CLI
         uses: supabase/setup-cli@v1
         with:
-          version: latest
+          version: v1.62.0
 
       - name: Link Supabase project
         run: supabase link --project-ref ${{ env.SUPABASE_PROJECT_ID }}
@@ -47,14 +47,14 @@ jobs:
           SUPABASE_ACCESS_TOKEN: ${{ env.SUPABASE_ACCESS_TOKEN }}
 
       - name: Deploy Supabase DB migrations
-        run: supabase db push --project-ref ${{ env.SUPABASE_PROJECT_ID }}
+        run: supabase db push
         env:
           SUPABASE_ACCESS_TOKEN: ${{ env.SUPABASE_ACCESS_TOKEN }}
 
       - name: Deploy Supabase Edge Functions
         run: |
           # Deploy all functions (or list names to deploy selectively)
-          supabase functions deploy --project-ref ${{ env.SUPABASE_PROJECT_ID }}
+          supabase functions deploy
         env:
           SUPABASE_ACCESS_TOKEN: ${{ env.SUPABASE_ACCESS_TOKEN }}
 
