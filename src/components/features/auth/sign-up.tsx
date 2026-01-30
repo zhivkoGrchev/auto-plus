@@ -1,19 +1,19 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Loader, UserPlus } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
-import { Loader, UserPlus } from 'lucide-react'
-import { signUp } from '@/lib/actions/auth.actions'
-import { useSession } from '@/lib/auth/client'
-import { useSignUpSchema, type SignUpData } from '@/lib/validators/auth'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Button } from '@/components/ui/button'
+import { signUp } from '@/lib/actions/auth.actions'
+import { useSession } from '@/lib/auth/client'
+import { type SignUpData, useSignUpSchema } from '@/lib/validators/auth'
 
 const initialFormData: SignUpData = {
   name: '',

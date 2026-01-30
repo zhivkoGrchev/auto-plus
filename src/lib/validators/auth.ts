@@ -24,35 +24,23 @@ export const useSignInSchema = () => {
   })
 }
 
-export const useEditUserSchema = () => {
-  const t = useTranslations('AuthValidations')
-  return z.object({
-    name: z
-      .string()
-      .transform((v) => (v === '' ? undefined : v))
-      .optional(),
-    email: z
-      .string()
-      .transform((v) => (v === '' ? undefined : v))
-      .pipe(z.email(t('email')).optional()),
-  })
-}
+export const EditUserSchema = z.object({
+  name: z.string().optional(),
+  email: z.email('invalidEmail').optional(),
+})
 
-export const useChangePasswordSchema = () => {
-  const t = useTranslations('AuthValidations')
-  return z
-    .object({
-      currentPassword: z.string().min(8, t('password')),
-      newPassword: z.string().min(8, t('password')),
-      confirmPassword: z.string().min(8, t('password')),
-    })
-    .refine((data) => data.newPassword === data.confirmPassword, {
-      message: t('confirmPassword'),
-      path: ['confirmPassword'],
-    })
-}
+export const ChangePasswordSchema = z
+  .object({
+    currentPassword: z.string().min(8, 'minPassword'),
+    newPassword: z.string().min(8, 'minPassword'),
+    confirmPassword: z.string().min(8, 'minPassword'),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: 'confirmPassword',
+    path: ['confirmPassword'],
+  })
 
 export type SignUpData = z.infer<ReturnType<typeof useSignUpSchema>>
 export type SignInData = z.infer<ReturnType<typeof useSignInSchema>>
-export type EditUserData = z.infer<ReturnType<typeof useEditUserSchema>>
-export type ChangePasswordData = z.infer<ReturnType<typeof useChangePasswordSchema>>
+export type EditUserData = z.infer<typeof EditUserSchema>
+export type ChangePasswordData = z.infer<typeof ChangePasswordSchema>
