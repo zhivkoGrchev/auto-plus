@@ -75,3 +75,10 @@ export const normalize = (s: unknown) =>
     .normalize('NFD')
     .replace(/\p{M}/gu, '')
     .trim()
+
+export const formatName = (name: string) => {
+  const parts = name.trim().split(/\s+/)
+  if (parts.length > 1) return parts[0][0].toUpperCase() + parts[1][0].toUpperCase()
+  else if (parts.length === 1) return parts[0][0].toUpperCase() + parts[0][1].toLowerCase()
+  else return ''
+}

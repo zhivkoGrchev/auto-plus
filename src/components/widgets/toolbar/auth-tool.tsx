@@ -20,6 +20,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { signOut, useSession } from '@/lib/auth/client'
+import { formatName } from '@/lib/utils'
 
 export const AuthTool = () => {
   const [openEditUserDialog, setOpenEditUserDialog] = useState(false)
@@ -63,7 +64,7 @@ export const AuthTool = () => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel className="p-2 flex flex-col items-center gap-2">
             <Avatar>
-              <AvatarFallback>SU</AvatarFallback>
+              <AvatarFallback>{formatName(session.user.name)}</AvatarFallback>
               {session.user.image && <AvatarImage src={session.user.image} />}
             </Avatar>
             <h5 className="text-sm font-bold">
