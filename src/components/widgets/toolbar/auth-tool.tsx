@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { signOut, useSession } from '@/lib/auth/client'
 import { formatName } from '@/lib/utils'
+import type { User } from '@/prisma/generated'
 
 export const AuthTool = () => {
   const [openEditUserDialog, setOpenEditUserDialog] = useState(false)
@@ -88,7 +89,7 @@ export const AuthTool = () => {
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
-      <UserDialog open={openEditUserDialog} onOpenChange={setOpenEditUserDialog} onUpdate={() => refetch()} />
+      <UserDialog open={openEditUserDialog} user={session.user as User} onOpenChange={setOpenEditUserDialog} onUpdate={() => refetch()} />
       <PasswordDialog open={openChangePasswordDialog} onOpenChange={setOpenChangePasswordDialog} onUpdate={() => refetch()} />
     </>
   )

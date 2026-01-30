@@ -1,36 +1,36 @@
-import type { ComponentProps } from 'react'
-import { useTranslations } from 'next-intl'
-import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { toast } from 'sonner'
 import { Check, Loader } from 'lucide-react'
-import { editUser } from '@/lib/actions/auth.actions'
-import { useEditUserSchema, type EditUserData } from '@/lib/validators/auth'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
+import { useTranslations } from 'next-intl'
+import type { ComponentProps } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
-
-const initialFormData: EditUserData = {
-  name: '',
-  email: '',
-} as const
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { editUser } from '@/lib/actions/auth.actions'
+import { getChangedFields } from '@/lib/utils'
+import { type EditUserData, EditUserSchema } from '@/lib/validators/auth'
+import type { User } from '@/prisma/generated'
 
 export interface UserDialogProps extends ComponentProps<typeof Dialog> {
+  user: User
   onUpdate?: () => void
 }
 
-export const UserDialog = ({ open, onOpenChange, onUpdate }: UserDialogProps) => {
+export const UserDialog = ({ open, user, onOpenChange, onUpdate }: UserDialogProps) => {
+  const initialFormData: EditUserData = { name: user.name, email: user.email }
   const t = useTranslations('UserDialog')
-  const schema = useEditUserSchema()
+  const e = useTranslations('Validations.message')
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<EditUserData>({ defaultValues: initialFormData, resolver: zodResolver(schema) }) //TODO solve the typing problem
+  } = useForm<EditUserData>({ defaultValues: initialFormData, resolver: zodResolver(EditUserSchema) })
 
   const handleFormSubmit = async (formData: EditUserData) => {
-    const { data, error } = await editUser(formData)
+    const finalFormData = getChangedFields<EditUserData>(initialFormData, formData)
+    const { data, error } = await editUser(finalFormData)
     if (error) {
       toast.error(error.message)
       return
@@ -54,12 +54,11 @@ export const UserDialog = ({ open, onOpenChange, onUpdate }: UserDialogProps) =>
                 {t('name')}
               </Label>
               <Input id="name" {...register('name')} />
-              {errors.name && <span className="col-start-2 mx-2 text-xs text-red-600">{errors.name.message}</span>}
               <Label className="self-center" htmlFor="email">
                 {t('email')}
               </Label>
               <Input id="email" {...register('email')} />
-              {errors.email && <span className="col-start-2 mx-2 text-xs text-red-600">{errors.email.message}</span>}
+              {errors.email?.message && <span className="col-start-2 mx-2 text-xs text-red-600">{e(errors.email.message)}</span>}
             </div>
             <div className="flex justify-end">
               <Button type="submit" disabled={isSubmitting}>

@@ -1,20 +1,20 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Loader, LogIn } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { toast } from 'sonner'
-import { Loader, LogIn } from 'lucide-react'
 import { FaGoogle } from 'react-icons/fa'
+import { toast } from 'sonner'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { signIn } from '@/lib/actions/auth.actions'
 import { useSession } from '@/lib/auth/client'
-import { useSignInSchema, type SignInData } from '@/lib/validators/auth'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
+import { type SignInData, useSignInSchema } from '@/lib/validators/auth'
 
 const initialFormData: SignInData = {
   email: '',
