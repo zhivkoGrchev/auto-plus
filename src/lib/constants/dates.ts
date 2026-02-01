@@ -11,4 +11,4 @@ export const MONTHS = [
   { name: 'October', value: '10' },
   { name: 'November', value: '11' },
   { name: 'December', value: '12' },
-]
+] as const

@@ -13,9 +13,9 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { signUp } from '@/lib/actions/auth.actions'
 import { useSession } from '@/lib/auth/client'
-import { type SignUpData, useSignUpSchema } from '@/lib/validators/auth'
+import { type SignUpData, SignUpSchema } from '@/lib/validators/auth'
 
-const initialFormData: SignUpData = {
+const INITIAL_FORM_DATA: SignUpData = {
   name: '',
   email: '',
   password: '',
@@ -24,14 +24,14 @@ const initialFormData: SignUpData = {
 
 export const SignUp = () => {
   const t = useTranslations('SignUpPage')
+  const e = useTranslations('Validation.errors')
   const router = useRouter()
   const { refetch } = useSession()
-  const schema = useSignUpSchema()
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<SignUpData>({ defaultValues: initialFormData, resolver: zodResolver(schema) })
+  } = useForm<SignUpData>({ defaultValues: INITIAL_FORM_DATA, resolver: zodResolver(SignUpSchema) })
 
   const handleFormSubmit = async (formData: SignUpData) => {
     const { data, error } = await signUp(formData)
@@ -56,28 +56,28 @@ export const SignUp = () => {
             {t('name')}
           </Label>
           <Input id="name" {...register('name')} />
-          {errors.name && <span className="mx-2 text-xs text-red-600">{errors.name.message}</span>}
+          {errors.name?.message && <span className="mx-2 text-xs text-red-600">{e(errors.name.message)}</span>}
         </fieldset>
         <fieldset className="flex flex-col gap-2">
           <Label className="mx-2" htmlFor="email">
             {t('email')}
           </Label>
           <Input id="email" {...register('email')} />
-          {errors.email && <span className=" mx-2 text-xs text-red-600">{errors.email.message}</span>}
+          {errors.email?.message && <span className=" mx-2 text-xs text-red-600">{e(errors.email.message)}</span>}
         </fieldset>
         <fieldset className="flex flex-col gap-2">
           <Label className="mx-2" htmlFor="password">
             {t('password')}
           </Label>
           <Input id="password" type="password" {...register('password')} />
-          {errors.password && <span className="mx-2 text-xs text-red-600">{errors.password.message}</span>}
+          {errors.password?.message && <span className="mx-2 text-xs text-red-600">{e(errors.password.message)}</span>}
         </fieldset>
         <fieldset className="flex flex-col gap-2">
           <Label className="mx-2" htmlFor="confirmPassword">
             {t('confirmPassword')}
           </Label>
           <Input id="confirmPassword" type="password" {...register('confirmPassword')} />
-          {errors.confirmPassword && <span className="mx-2 text-xs text-red-600">{errors.confirmPassword.message}</span>}
+          {errors.confirmPassword?.message && <span className="mx-2 text-xs text-red-600">{e(errors.confirmPassword.message)}</span>}
         </fieldset>
       </CardContent>
       <CardFooter className="flex flex-col items-stretch gap-4">

@@ -17,7 +17,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { addCar, editCar, getCarBrands, getCarModelsByBrand } from '@/lib/actions/car.actions'
 import { uploadImage } from '@/lib/actions/pinata.actions'
 import { COLORS } from '@/lib/constants/colors'
-import { MONTHS } from '@/lib/constants/date'
+import { MONTHS } from '@/lib/constants/dates'
 import type { CarExtended } from '@/lib/types/car'
 import type { ImageFile } from '@/lib/types/image'
 import { getChangedFields } from '@/lib/utils'
@@ -56,7 +56,7 @@ interface CarDialogProps extends ComponentProps<typeof Dialog> {
 
 export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUpdate }: CarDialogProps) => {
   const t = useTranslations('CarDialog')
-  const m = useTranslations('Validations')
+  const e = useTranslations('Validation.errors')
   const {
     register,
     reset,
@@ -197,7 +197,7 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
                     ))}
                   </SelectContent>
                 </Select>
-                {errors.brandId?.message && <span className="mx-2 text-red-600">{m(errors.brandId.message)}</span>}
+                {errors.brandId?.message && <span className="mx-2 text-red-600">{e(errors.brandId.message)}</span>}
               </fieldset>
               <fieldset className="flex flex-col gap-2">
                 <Label className="mx-2" htmlFor="modelId">
@@ -219,7 +219,7 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
                     )}
                   </SelectContent>
                 </Select>
-                {errors.modelId?.message && <span className="mx-2 text-red-600">{m(errors.modelId.message)}</span>}
+                {errors.modelId?.message && <span className="mx-2 text-red-600">{e(errors.modelId.message)}</span>}
               </fieldset>
               <fieldset className="flex flex-col gap-2">
                 <Label className="mx-2" htmlFor="power">
@@ -249,21 +249,21 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
                     })}
                   />
                 </div>
-                {errors.powerKW?.message && <span className="mx-2 text-red-600">{m(errors.powerKW.message)}</span>}
+                {errors.powerKW?.message && <span className="mx-2 text-red-600">{e(errors.powerKW.message)}</span>}
               </fieldset>
               <fieldset className="flex flex-col gap-2">
                 <Label className="mx-2" htmlFor="cubicCapacity">
                   Cubic Capacity (cm³)
                 </Label>
                 <Input id="cubicCapacity" placeholder="e.g. 2000" {...register('cubicCapacity')} />
-                {errors.cubicCapacity?.message && <span className="mx-2 text-red-600">{m(errors.cubicCapacity.message)}</span>}
+                {errors.cubicCapacity?.message && <span className="mx-2 text-red-600">{e(errors.cubicCapacity.message)}</span>}
               </fieldset>
               <fieldset className="flex flex-col gap-2">
                 <Label className="mx-2" htmlFor="year">
                   {t('year')}
                 </Label>
                 <Input className="w-full" id="year" {...register('year')} />
-                {errors.year?.message && <span className="mx-2 text-red-600">{m(errors.year.message)}</span>}
+                {errors.year?.message && <span className="mx-2 text-red-600">{e(errors.year.message)}</span>}
               </fieldset>
               <fieldset className="flex flex-col gap-2">
                 <Label className="mx-2" htmlFor="color">
@@ -293,7 +293,7 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
                     </PopoverContent>
                   </Popover>
                 </div>
-                {errors.color?.message && <span className="mx-2 text-red-600">{m(errors.color.message)}</span>}
+                {errors.color?.message && <span className="mx-2 text-red-600">{e(errors.color.message)}</span>}
               </fieldset>
               <fieldset className="flex flex-col gap-2">
                 <Label className="mx-2" htmlFor="transmission">
@@ -313,7 +313,7 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
                     ))}
                   </SelectContent>
                 </Select>
-                {errors.transmission?.message && <span className="mx-2 text-red-600">{m(errors.transmission.message)}</span>}
+                {errors.transmission?.message && <span className="mx-2 text-red-600">{e(errors.transmission.message)}</span>}
               </fieldset>
               <fieldset className="flex flex-col gap-2">
                 <Label className="mx-2" htmlFor="fuelType">
@@ -333,14 +333,14 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
                     ))}
                   </SelectContent>
                 </Select>
-                {errors.fuelType?.message && <span className="mx-2 text-red-600">{m(errors.fuelType.message)}</span>}
+                {errors.fuelType?.message && <span className="mx-2 text-red-600">{e(errors.fuelType.message)}</span>}
               </fieldset>
               <fieldset className="flex flex-col gap-2">
                 <Label className="mx-2" htmlFor="mileage">
                   {t('mileage')}
                 </Label>
                 <Input className="w-full" id="mileage" {...register('mileage')} />
-                {errors.mileage?.message && <span className="mx-2 text-red-600">{m(errors.mileage.message)}</span>}
+                {errors.mileage?.message && <span className="mx-2 text-red-600">{e(errors.mileage.message)}</span>}
               </fieldset>
               <fieldset className="flex flex-col gap-2">
                 <Label className="mx-2" htmlFor="vin">
@@ -354,21 +354,21 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
                   <span className="ml-1">€</span>
                 </Label>
                 <Input className="w-full" id="price" {...register('price')} />
-                {errors.price?.message && <span className="mx-2 text-red-600">{m(errors.price.message)}</span>}
+                {errors.price?.message && <span className="mx-2 text-red-600">{e(errors.price.message)}</span>}
               </fieldset>
               <fieldset className="flex flex-col gap-2">
                 <Label className="mx-2" htmlFor="seats">
                   {t('seats')}
                 </Label>
                 <Input className="w-full" id="seats" type="number" placeholder="e.g. 5" {...register('seats')} />
-                {errors.seats?.message && <span className="mx-2 text-red-600">{m(errors.seats.message)}</span>}
+                {errors.seats?.message && <span className="mx-2 text-red-600">{e(errors.seats.message)}</span>}
               </fieldset>
               <fieldset className="flex flex-col gap-2">
                 <Label className="mx-2" htmlFor="doors">
                   {t('doors')}
                 </Label>
                 <Input className="w-full" id="doors" type="number" placeholder="e.g. 4" {...register('doors')} />
-                {errors.doors?.message && <span className="mx-2 text-red-600">{m(errors.doors.message)}</span>}
+                {errors.doors?.message && <span className="mx-2 text-red-600">{e(errors.doors.message)}</span>}
               </fieldset>
               <fieldset className="flex flex-col gap-2">
                 <Label className="mx-2" htmlFor="vehicleType">
@@ -388,7 +388,7 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
                     ))}
                   </SelectContent>
                 </Select>
-                {errors.vehicleType?.message && <span className="mx-2 text-red-600">{m(errors.vehicleType.message)}</span>}
+                {errors.vehicleType?.message && <span className="mx-2 text-red-600">{e(errors.vehicleType.message)}</span>}
               </fieldset>
               <fieldset className="flex flex-col gap-2">
                 <Label className="mx-2" htmlFor="mot">
@@ -432,7 +432,7 @@ export const CarDialog = ({ open, car, profileId, locationId, onOpenChange, onUp
                     </SelectContent>
                   </Select>
                 </div>
-                {errors.mot?.message && <span className="mx-2 text-red-600">{m(errors.mot.message)}</span>}
+                {errors.mot?.message && <span className="mx-2 text-red-600">{e(errors.mot.message)}</span>}
               </fieldset>
               <fieldset className="flex flex-col gap-2 md:col-span-2">
                 <Label className="mx-2" htmlFor="description">
