@@ -23,7 +23,7 @@ export interface PasswordDialogProps extends ComponentProps<typeof Dialog> {
 
 export const PasswordDialog = ({ open, onOpenChange, onUpdate }: PasswordDialogProps) => {
   const t = useTranslations('PasswordDialog')
-  const e = useTranslations('Validations.message')
+  const e = useTranslations('Validation.errors')
   const {
     register,
     reset,

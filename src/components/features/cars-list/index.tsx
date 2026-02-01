@@ -17,6 +17,7 @@ import { CarDialog } from './car.dialog'
 import { CarsTable } from './cars.table'
 
 export const CarsList = () => {
+  const t = useTranslations('CarDialog')
   const [profiles, setProfiles] = useState<ProfileExtended[]>([])
   const [locations, setLocations] = useState<Location[]>([])
   const [currentProfileId, setCurrentProfileId] = useState<string | undefined>()
@@ -25,7 +26,6 @@ export const CarsList = () => {
   const [editingCar, setEditingCar] = useState<CarExtended | undefined>()
   const [openCarDialog, setOpenCarDialog] = useState<boolean>(false)
   const [isPending, startTransition] = useTransition()
-  const t = useTranslations('CarDialog')
   const router = useRouter()
 
   useEffect(() => {

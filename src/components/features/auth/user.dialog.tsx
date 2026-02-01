@@ -21,7 +21,7 @@ export interface UserDialogProps extends ComponentProps<typeof Dialog> {
 export const UserDialog = ({ open, user, onOpenChange, onUpdate }: UserDialogProps) => {
   const initialFormData: EditUserData = { name: user.name, email: user.email }
   const t = useTranslations('UserDialog')
-  const e = useTranslations('Validations.message')
+  const e = useTranslations('Validation.errors')
   const {
     register,
     handleSubmit,

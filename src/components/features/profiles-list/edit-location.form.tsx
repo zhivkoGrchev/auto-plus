@@ -19,7 +19,7 @@ export interface EditLocationFormProps {
 }
 
 export const EditLocationForm = ({ location, onUpdate }: EditLocationFormProps) => {
-  const m = useTranslations('Validations')
+  const e = useTranslations('Validation.errors')
   const [isEditing, setEditing] = useState(false)
   const {
     register,
@@ -69,28 +69,28 @@ export const EditLocationForm = ({ location, onUpdate }: EditLocationFormProps) 
       <TableCell>
         <Input className="w-full" {...register('contactPerson')} placeholder={location.contactPerson} />
         {errors.contactPerson?.message && (
-          <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{m(errors.contactPerson.message)}</span>
+          <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{e(errors.contactPerson.message)}</span>
         )}
       </TableCell>
       <TableCell>
         <Input className="w-full" {...register('phone')} />
-        {errors.phone?.message && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{m(errors.phone.message)}</span>}
+        {errors.phone?.message && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{e(errors.phone.message)}</span>}
       </TableCell>
       <TableCell>
         <Input className="w-full" {...register('email')} />
-        {errors.email?.message && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{m(errors.email.message)}</span>}
+        {errors.email?.message && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{e(errors.email.message)}</span>}
       </TableCell>
       <TableCell>
         <Input className="w-full" {...register('address')} />
-        {errors.address?.message && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{m(errors.address.message)}</span>}
+        {errors.address?.message && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{e(errors.address.message)}</span>}
       </TableCell>
       <TableCell>
         <Input className="w-full" {...register('city')} />
-        {errors.city?.message && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{m(errors.city.message)}</span>}
+        {errors.city?.message && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{e(errors.city.message)}</span>}
       </TableCell>
       <TableCell>
         <Input className="w-full" {...register('postcode')} />
-        {errors.postcode?.message && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{m(errors.postcode.message)}</span>}
+        {errors.postcode?.message && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{e(errors.postcode.message)}</span>}
       </TableCell>
       <TableCell className="flex justify-end gap-2">
         <Button onClick={handleSubmit(handleFormSubmit)} disabled={isSubmitting}>

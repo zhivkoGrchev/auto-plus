@@ -14,23 +14,23 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { signIn } from '@/lib/actions/auth.actions'
 import { useSession } from '@/lib/auth/client'
-import { type SignInData, useSignInSchema } from '@/lib/validators/auth'
+import { type SignInData, SignInSchema } from '@/lib/validators/auth'
 
-const initialFormData: SignInData = {
+const INITIAL_FORM_DATA: SignInData = {
   email: '',
   password: '',
 } as const
 
 export const SignIn = () => {
   const t = useTranslations('SignInPage')
+  const e = useTranslations('Validation.errors')
   const router = useRouter()
   const { refetch } = useSession()
-  const schema = useSignInSchema()
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<SignInData>({ defaultValues: initialFormData, resolver: zodResolver(schema) })
+  } = useForm<SignInData>({ defaultValues: INITIAL_FORM_DATA, resolver: zodResolver(SignInSchema) })
 
   const handleFormSubmit = async (formData: SignInData) => {
     const { data, error } = await signIn(formData)
@@ -61,14 +61,14 @@ export const SignIn = () => {
             {t('email')}
           </Label>
           <Input id="email" {...register('email')} />
-          {errors.email && <span className="mx-2 text-xs text-red-600">{errors.email.message}</span>}
+          {errors.email?.message && <span className="mx-2 text-xs text-red-600">{e(errors.email.message)}</span>}
         </fieldset>
         <fieldset className="flex flex-col gap-2">
           <Label className="mx-2" htmlFor="password">
             {t('password')}
           </Label>
           <Input id="password" type="password" {...register('password')} />
-          {errors.password && <span className="mx-2 text-xs text-red-600">{errors.password.message}</span>}
+          {errors.password?.message && <span className="mx-2 text-xs text-red-600">{e(errors.password.message)}</span>}
         </fieldset>
       </CardContent>
       <CardFooter className="flex flex-col items-stretch gap-4">

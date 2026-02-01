@@ -50,7 +50,7 @@ export const ProfileDialog = ({ open, profile, onOpenChange, onUpdate }: Profile
   const initialLogoData = isAdd ? INITIAL_LOGO_DATA : { imageUrl: profile.imageUrl, imageCid: profile.imageCid, imageFile: null }
 
   const t = useTranslations('ProfileDialog')
-  const m = useTranslations('Validations')
+  const e = useTranslations('Validation.errors')
   const [logo, setLogo] = useState<ImageFile>(initialLogoData)
 
   const {
@@ -132,7 +132,7 @@ export const ProfileDialog = ({ open, profile, onOpenChange, onUpdate }: Profile
                   {t('slug')}
                 </Label>
                 <Input id="slug" {...register('slug')} />
-                {errors.slug?.message && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{m(errors.slug.message)}</span>}
+                {errors.slug?.message && <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{e(errors.slug.message)}</span>}
               </div>
               <LogoManager logo={logo} onAddLogo={handleAddLogo} onDeleteLogo={handleDeleteLogo} />
             </div>
@@ -145,21 +145,21 @@ export const ProfileDialog = ({ open, profile, onOpenChange, onUpdate }: Profile
                   </Label>
                   <Input id="address" {...registerWithLocation('location.address')} />
                   {errorsWithLocation.location?.address?.message && (
-                    <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{m(errorsWithLocation.location.address.message)}</span>
+                    <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{e(errorsWithLocation.location.address.message)}</span>
                   )}
                   <Label className="self-center" htmlFor="city">
                     {t('location.city')}
                   </Label>
                   <Input id="city" {...registerWithLocation('location.city')} />
                   {errorsWithLocation.location?.city?.message && (
-                    <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{m(errorsWithLocation.location.city.message)}</span>
+                    <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{e(errorsWithLocation.location.city.message)}</span>
                   )}
                   <Label className="self-center" htmlFor="postcode">
                     {t('location.postcode')}
                   </Label>
                   <Input id="postcode" {...registerWithLocation('location.postcode')} />
                   {errorsWithLocation.location?.postcode?.message && (
-                    <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{m(errorsWithLocation.location.postcode.message)}</span>
+                    <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{e(errorsWithLocation.location.postcode.message)}</span>
                   )}
                 </div>
                 <div className="grid grid-cols-[auto_1fr] gap-2">
@@ -170,7 +170,7 @@ export const ProfileDialog = ({ open, profile, onOpenChange, onUpdate }: Profile
                   <Input id="contactPerson" {...registerWithLocation('location.contactPerson')} />
                   {errorsWithLocation.location?.contactPerson?.message && (
                     <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">
-                      {m(errorsWithLocation.location.contactPerson.message)}
+                      {e(errorsWithLocation.location.contactPerson.message)}
                     </span>
                   )}
                   <Label className="self-center" htmlFor="phone">
@@ -178,14 +178,14 @@ export const ProfileDialog = ({ open, profile, onOpenChange, onUpdate }: Profile
                   </Label>
                   <Input id="phone" {...registerWithLocation('location.phone')} />
                   {errorsWithLocation.location?.phone?.message && (
-                    <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{m(errorsWithLocation.location.phone.message)}</span>
+                    <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{e(errorsWithLocation.location.phone.message)}</span>
                   )}
                   <Label className="self-center" htmlFor="email">
                     {t('location.email')}
                   </Label>
                   <Input id="email" {...registerWithLocation('location.email')} />
                   {errorsWithLocation.location?.email?.message && (
-                    <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{m(errorsWithLocation.location.email.message)}</span>
+                    <span className="col-start-2 mx-2 flex items-center gap-2 text-xs text-red-600">{e(errorsWithLocation.location.email.message)}</span>
                   )}
                 </div>
               </>

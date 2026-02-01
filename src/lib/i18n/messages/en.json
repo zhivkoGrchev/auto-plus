@@ -225,14 +225,8 @@
     "description": "",
     "save": "Save"
   },
-  "AuthValidations": {
-    "name": "Name is required",
-    "email": "Invalid E-Mail",
-    "password": "Password must contain at least 8 characters",
-    "confirmPassword": "Passwords not a match"
-  },
-  "Validations": {
-    "message": {
+  "Validation": {
+    "errors": {
       "requiredName": "Name is required",
       "minPassword": "Password must contain at least 8 characters",
       "confirmPassword": "Passwords not a match",
