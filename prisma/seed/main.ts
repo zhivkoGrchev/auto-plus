@@ -4,7 +4,8 @@ import { PrismaClient } from '@/prisma/generated'
 import data from './data'
 
 async function main() {
-  const adapter = new PrismaPg({ connectionString: `${process.env.DATABASE_URL}` })
+  const connectionString = `${process.env.DATABASE_DIRECT_URL}`
+  const adapter = new PrismaPg({ connectionString })
   const prisma = new PrismaClient({ adapter })
 
   try {
