@@ -44,6 +44,11 @@ To apply schema changes to the database, run migrations:
 ```bash
 npx prisma migrate dev
 ```
+or
+```bash
+npm run db:migrate-dev
+```
+```
 
 This will create and apply migrations in the development environment.
 
@@ -51,10 +56,14 @@ This will create and apply migrations in the development environment.
 
 To seed the database with initial data for `CarBrand` and `CarModel` models, run the following command:
 
-```bash
-npx tsx ./prisma/seed/main.ts
 ```
-
+```bash
+npx prisma db seed
+```
+or
+```bash
+npm run db:seed
+```
 This script will populate the database with predefined car makes and models.
 
 ### Modifying the Database Without Creating a New Migration

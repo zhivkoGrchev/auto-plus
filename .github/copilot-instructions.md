@@ -27,7 +27,7 @@
 
 ## Environment
 
-- Required env: `DATABASE_URL`, `BETTER_AUTH_URL`, `PINATA_JWT`, `PINATA_GATEWAY`, `NEXT_PUBLIC_APP_URL` (for embed/links).
+- Required env: `DATABASE_URL`, `DATABASE_DIRECT_URL`, `BETTER_AUTH_URL`, `PINATA_JWT`, `PINATA_GATEWAY`, `NEXT_PUBLIC_APP_URL` (for embed/links).
 - Pinata uploads rely on JWT/gateway; deleting cars should unpin associated CIDs.
 
 ## Testing/QA hints
