@@ -1,8 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
-import heroImgLandscape from '/public/images/bg-image.jpg'
-import heroImgPortrait from '/public/images/bg-image-p.png'
 import { Button } from '../ui/button'
 
 export const Hero = () => {
@@ -12,12 +10,12 @@ export const Hero = () => {
     <div className="hero relative h-screen w-full flex flex-col items-center justify-center text-foreground">
       {/* Landscape image - show on tablet and desktop */}
       <div className="absolute inset-0 -z-10 hidden sm:block">
-        <Image src={heroImgLandscape} alt={t('imgAlt')} fill style={{ objectFit: 'cover' }} priority />
+        <Image src="/images/bg-image.jpg" alt={t('imgAlt')} fill style={{ objectFit: 'cover' }} priority />
       </div>
 
       {/* Portrait image - show only on mobile */}
       <div className="absolute inset-0 -z-10 block sm:hidden">
-        <Image src={heroImgPortrait} alt={t('imgAlt')} fill style={{ objectFit: 'cover' }} priority />
+        <Image src="/images/bg-image-p.png" alt={t('imgAlt')} fill style={{ objectFit: 'cover' }} priority />
       </div>
 
       <div className="mt-20 sm:mt-32 md:mt-40 mb-auto px-4 sm:px-6 z-10 text-center max-w-4xl transform -translate-y-6 sm:-translate-y-8 md:-translate-y-10">
