@@ -1,0 +1,91 @@
+name: Vercel Deploy & DB Management
+
+on:
+  push:
+    branches: ['dev']
+
+  workflow_dispatch:
+    inputs:
+      run_migrate:
+        description: 'Run Database Migrations?'
+        type: boolean
+        default: true
+      run_seed:
+        description: 'Run Database Seeding?'
+        type: boolean
+        default: false
+
+env:
+  NEXT_TELEMETRY_DISABLED: 1
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    env:
+      IS_MANUAL: ${{ github.event_name == 'workflow_dispatch' }}
+      IS_PROD: ${{ github.ref == 'refs/heads/main' }}
+      RUN_SEEDING: ${{ vars.RUN_SEEDING }}
+      RUN_MIGRATIONS: ${{ vars.RUN_MIGRATIONS }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DATABASE_DIRECT_URL: ${{ secrets.DATABASE_DIRECT_URL }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      # --- DATABASE ---
+      - name: Run Prisma Migrations
+        if: |
+          (env.IS_MANUAL == 'true' && inputs.run_migrate == true) || 
+          (env.IS_MANUAL == 'false' && env.RUN_MIGRATIONS == true)
+        run: npm run db:migrate-deploy
+
+      - name: Run Prisma Seeding
+        if: |
+          (env.IS_MANUAL == 'true' && inputs.run_seed == true) ||
+          (env.IS_MANUAL == 'false' && env.RUN_SEEDING == true)
+        run: npm run db:seed
+
+      # --- VERCEL ---
+      - name: Install Vercel CLI
+        run: npm install --global vercel
+
+      # 1. Pull Env & Build (Production)
+      - name: Pull Vercel Env (Production)
+        if: env.IS_PROD == 'true'
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build Project (Production)
+        if: env.IS_PROD == 'true'
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy to Vercel (Production)
+        if: env.IS_PROD == 'true'
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      # 2. Pull Env & Build (Preview)
+      - name: Pull Vercel Env (Preview)
+        if: env.IS_PROD == 'false'
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build Project (Preview)
+        if: env.IS_PROD == 'false'
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy to Vercel (Preview)
+        if: env.IS_PROD == 'false'
+        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
