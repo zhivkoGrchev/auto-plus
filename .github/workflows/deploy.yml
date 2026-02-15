@@ -2,7 +2,7 @@ name: Vercel Deploy & DB Management
 
 on:
   push:
-    branches: ['dev']
+    branches: ['main', 'dev']
 
   workflow_dispatch:
     inputs:
