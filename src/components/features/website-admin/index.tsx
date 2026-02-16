@@ -164,11 +164,7 @@ export const WebsiteAdmin = ({ profileSlug }: WebsiteAdminProps) => {
               <h2 className="text-2xl font-bold">{t('title-page')}</h2>
               <div className="flex items-center gap-2">
                 <Button variant="default" size="sm" asChild disabled={!profileSlug}>
-                  <a
-                    href={profileSlug ? `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/${profileSlug}` : '#'}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <a href={profileSlug ? `${process.env.NEXT_PUBLIC_APP_URL || ''}/${profileSlug}` : '#'} target="_blank" rel="noopener noreferrer">
                     <ExternalLink className="h-4 w-4 mr-2" />
                     {t('openWebsiteButton')}
                   </a>
