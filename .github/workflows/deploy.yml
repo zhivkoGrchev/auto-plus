@@ -9,7 +9,7 @@ on:
       run_migrate:
         description: 'Run Database Migrations?'
         type: boolean
-        default: true
+        default: false
       run_seed:
         description: 'Run Database Seeding?'
         type: boolean
@@ -33,10 +33,6 @@ jobs:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-      BETTER_AUTH_URL: ${{ secrets.BETTER_AUTH_URL }}
-      BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
-      PINATA_JWT: ${{ secrets.PINATA_JWT }}
-      PINATA_GATEWAY: ${{ secrets.PINATA_GATEWAY }}
 
     steps:
       - name: Checkout code
