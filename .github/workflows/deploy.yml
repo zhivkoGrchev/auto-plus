@@ -29,7 +29,7 @@ jobs:
 
     env:
       IS_MANUAL: ${{ github.event_name == 'workflow_dispatch' }}
-      IS_PROD: ${{ github.ref == 'refs/heads/main' }} || ${{ github.event_name == 'workflow_dispatch' }} && ${{ inputs.is_prod == true }}
+      IS_PROD: ${{ github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch' && inputs.is_prod == true }}
       RUN_SEEDING: ${{ vars.RUN_SEEDING }}
       RUN_MIGRATIONS: ${{ vars.RUN_MIGRATIONS }}
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
