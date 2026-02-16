@@ -55,9 +55,9 @@ export function CarGrid({ cars, theme = 'light', profileSlug }: CarGridProps) {
             >
               {/* Car Image */}
               <div className={`relative h-56 overflow-hidden ${isDark ? 'bg-gray-900/50' : 'bg-gray-100'}`}>
-                {car.imageUrl ? (
+                {car.images[0].imageUrl ? (
                   <img
-                    src={car.imageUrl}
+                    src={car.images[0].imageUrl}
                     alt={`${car.brand?.name} ${car.model?.name}`}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                   />

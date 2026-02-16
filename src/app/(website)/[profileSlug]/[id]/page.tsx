@@ -10,5 +10,6 @@ interface PageProps {
 
 export default async function CarDetailsWebsite(props: PageProps) {
   const params = await props.params
-  return <CarDetailsPage profileSlug={params.profileSlug} params={Promise.resolve({ id: params.id })} searchParams={props.searchParams} />
+  const resolvedSearchParams = await props.searchParams
+  return <CarDetailsPage profileSlug={params.profileSlug} id={params.id} searchParams={resolvedSearchParams} />
 }

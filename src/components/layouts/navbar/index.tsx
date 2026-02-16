@@ -1,8 +1,9 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import type { HTMLAttributes } from 'react'
 import { APP_NAME } from '@/lib/constants'
 
-export const Navbar = ({ children }: LayoutProps) => {
+export const Navbar = ({ children }: HTMLAttributes<HTMLDivElement>) => {
   return (
     <nav className="container mx-auto p-4 sm:p-6 flex justify-between items-center">
       <Link href="/" className="flex items-center gap-2 shrink-0">

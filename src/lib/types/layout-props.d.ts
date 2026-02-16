@@ -1,1 +1,3 @@
-declare type LayoutProps = Readonly<{ children: React.ReactNode }>
+declare interface AppLayoutProps {
+  children: React.ReactNode
+}

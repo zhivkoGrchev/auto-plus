@@ -16,7 +16,7 @@ export const CarCard = async ({ profileSlug }: CarCardProps) => {
 
   if (!profile) {
     return (
-      <main className="flex-grow max-w-6xl mx-auto p-6">
+      <main className="grow max-w-6xl mx-auto p-6">
         <div className="text-center text-cyan-50">
           <p>Profile not found</p>
         </div>
@@ -32,13 +32,14 @@ export const CarCard = async ({ profileSlug }: CarCardProps) => {
     include: {
       brand: true,
       model: true,
+      images: true,
     },
     orderBy: { createdAt: 'desc' },
   })
 
   if (cars.length === 0) {
     return (
-      <main className="flex-grow max-w-6xl mx-auto p-6">
+      <main className="grow max-w-6xl mx-auto p-6">
         <div className="text-center text-cyan-50">
           <p>Keine Fahrzeuge verfügbar</p>
         </div>
@@ -47,13 +48,13 @@ export const CarCard = async ({ profileSlug }: CarCardProps) => {
   }
 
   return (
-    <main id="cars" className="flex-grow max-w-6xl mx-auto p-6">
+    <main id="cars" className="grow max-w-6xl mx-auto p-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {cars.map((car) => (
           <div key={car.id} className="bg-cyan-900 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition">
             <div className="w-full h-48 bg-cyan-800 flex items-center justify-center">
               <span className="text-cyan-50 text-sm">
-                {car.imageUrl ? <img src={car.imageUrl} alt="Car" className="w-full h-48 object-cover" /> : <span>No image available</span>}
+                {car.images[0].imageUrl ? <img src={car.images[0].imageUrl} alt="Car" className="w-full h-48 object-cover" /> : <span>No image available</span>}
               </span>
             </div>
             <div className="p-4">

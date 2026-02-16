@@ -5,17 +5,12 @@ import { prisma } from '@/prisma'
 import CarGallery from './car-gallery'
 
 interface PageProps {
-  profileSlug: string
-  params: Promise<{
-    id: string
-  }>
-  searchParams?: Promise<{ source?: string }>
+  profileSlug?: string
+  id: string
+  searchParams?: { source?: string }
 }
 
-export default async function CarDetailsPage({ profileSlug, ...props }: PageProps) {
-  const params = await props.params
-  const searchParams = await props.searchParams
-  const { id } = params
+export default async function CarDetailsPage({ profileSlug, id, searchParams }: PageProps) {
   const source = searchParams?.source
   const backLink = source === 'admin' ? '/admin/cars' : source === 'embed' ? `/embed/${profileSlug}` : `/${profileSlug}`
   const t = await getTranslations('CarDialog')
@@ -75,7 +70,7 @@ export default async function CarDetailsPage({ profileSlug, ...props }: PageProp
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
         {/* Gallery and Description */}
         <div className="md:col-span-2 space-y-6">
-          <CarGallery images={car.images} mainImageUrl={car.imageUrl} carName={`${car.brand?.name} ${car.model?.name}`} />
+          <CarGallery images={car.images} mainImageUrl={car.images[0].imageUrl} carName={`${car.brand?.name} ${car.model?.name}`} />
 
           {car.description && (
             <div>
