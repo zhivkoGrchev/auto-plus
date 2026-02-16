@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default async function RootLayout({ children }: LayoutProps) {
+export default async function RootLayout({ children }: AppLayoutProps) {
   const locale = await getLocale()
 
   return (

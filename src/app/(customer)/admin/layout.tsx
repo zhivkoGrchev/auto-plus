@@ -4,7 +4,7 @@ import { Navbar } from '@/components/layouts/navbar'
 import { MenuBar } from '@/components/widgets/menubar'
 import { ToolBar } from '@/components/widgets/toolbar'
 
-export default function CustomerAdminLayout({ children }: LayoutProps) {
+export default function CustomerAdminLayout({ children }: AppLayoutProps) {
   return (
     <>
       <Header>

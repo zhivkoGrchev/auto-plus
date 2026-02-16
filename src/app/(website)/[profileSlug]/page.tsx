@@ -1,9 +1,7 @@
 import { CarCard } from './car-card'
 
 interface PageProps {
-  params: {
-    profileSlug: string
-  }
+  params: Promise<{ profileSlug: string }>
 }
 
 export default async function WebsiteHomePage(props: PageProps) {

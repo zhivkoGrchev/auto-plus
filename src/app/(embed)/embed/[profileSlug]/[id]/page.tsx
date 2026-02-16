@@ -10,9 +10,10 @@ interface PageProps {
 
 export default async function CarDetailsEmbed(props: PageProps) {
   const params = await props.params
+  const resolvedSearchParams = await props.searchParams
   return (
     <div className="flex grow">
-      <CarDetailsPage profileSlug={params.profileSlug} params={Promise.resolve({ id: params.id })} searchParams={props.searchParams} />
+      <CarDetailsPage profileSlug={params.profileSlug} id={params.id} searchParams={resolvedSearchParams} />
     </div>
   )
 }

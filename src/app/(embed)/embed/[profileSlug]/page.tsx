@@ -36,6 +36,7 @@ export default async function EmbedPage({ params, searchParams }: PageProps) {
     include: {
       brand: true,
       model: true,
+      images: true,
     },
     orderBy: { createdAt: 'desc' },
   })

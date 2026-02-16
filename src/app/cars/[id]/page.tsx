@@ -6,5 +6,5 @@ interface PageProps {
 
 export default async function CarDetailsAdmin(props: PageProps) {
   const params = await props.params
-  return <CarDetailsPage params={{ id: params.id }} searchParams={{ source: 'admin' }} />
+  return <CarDetailsPage id={params.id} searchParams={{ source: 'admin' }} />
 }
