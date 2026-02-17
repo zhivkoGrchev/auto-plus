@@ -28,8 +28,8 @@ jobs:
     timeout-minutes: 30
 
     env:
-      IS_MANUAL: ${{ github.event_name == 'workflow_dispatch' }}
       IS_PROD: ${{ github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch' && inputs.is_prod == true }}
+      IS_MANUAL: ${{ github.event_name == 'workflow_dispatch' }}
       RUN_SEEDING: ${{ vars.RUN_SEEDING }}
       RUN_MIGRATIONS: ${{ vars.RUN_MIGRATIONS }}
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
@@ -37,8 +37,6 @@ jobs:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-      BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
-      BETTER_AUTH_BASE_URL: ${{ secrets.BETTER_AUTH_BASE_URL }}
 
     steps:
       - name: Checkout code
