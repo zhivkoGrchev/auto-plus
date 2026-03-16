@@ -111,7 +111,7 @@ export function CarsTable({ data, onEdit, onDelete, onToggleListing }: CarsTable
 
       <div className="overflow-hidden rounded-md border">
         <Table>
-          <TableHeader className="bg-cyan-900">
+          <TableHeader className="bg-primary">
             {table.getHeaderGroups().map((hg) => (
               <TableRow key={hg.id}>
                 {hg.headers.map((h) => (
