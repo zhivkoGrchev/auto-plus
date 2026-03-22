@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import type { OpeningHoursData, OpeningHoursDB, TimeSlot } from '@/lib/interfaces/opening-hours'
+import type { OpeningHoursData, OpeningHoursDB, TimeSlot } from '@/lib/types/time'
 import { prisma } from '@/prisma'
 
 // Helper function to convert UI format to DB format
