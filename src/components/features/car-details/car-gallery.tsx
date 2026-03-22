@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import { ChevronLeft, ChevronRight, Maximize2, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 interface CarImage {
   id: string
@@ -11,12 +11,11 @@ interface CarImage {
 
 interface CarGalleryProps {
   images: CarImage[]
-  mainImageUrl?: string | null
   carName: string
 }
 
-export default function CarGallery({ images, mainImageUrl, carName }: CarGalleryProps) {
-  const allImages = [...(mainImageUrl ? [{ id: 'main', imageUrl: mainImageUrl, order: -1 }] : []), ...images.sort((a, b) => a.order - b.order)]
+export default function CarGallery({ images, carName }: CarGalleryProps) {
+  const allImages = images.sort((a, b) => a.order - b.order)
 
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [isFullscreen, setIsFullscreen] = useState(false)
@@ -117,7 +116,7 @@ export default function CarGallery({ images, mainImageUrl, carName }: CarGallery
                   setIsImageLoading(true)
                   setSelectedIndex(index)
                 }}
-                className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
+                className={`shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
                   index === selectedIndex
                     ? 'border-blue-500 ring-2 ring-blue-200 dark:ring-blue-800'
                     : 'border-gray-200 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-500'
@@ -186,7 +185,7 @@ export default function CarGallery({ images, mainImageUrl, carName }: CarGallery
                   type="button"
                   key={image.id}
                   onClick={() => setSelectedIndex(index)}
-                  className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
+                  className={`shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
                     index === selectedIndex ? 'border-white ring-2 ring-white/50' : 'border-white/30 hover:border-white/50'
                   }`}
                 >

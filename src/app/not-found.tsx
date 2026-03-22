@@ -2,7 +2,7 @@
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 
-const NotFoundPage = () => {
+export default function NotFoundPage() {
   const router = useRouter()
 
   return (
@@ -15,5 +15,3 @@ const NotFoundPage = () => {
     </div>
   )
 }
-
-export default NotFoundPage

@@ -134,9 +134,9 @@ export const getMainLocationByProfileSlug = async (slug: string) => {
       include: {
         locations: {
           where: { isMain: true },
-          take: 1
-        }
-      }
+          take: 1,
+        },
+      },
     })
     if (!profile) return { data: undefined, error: { message: 'Profile not found' } }
     if (!profile.locations.length) return { data: undefined, error: { message: 'No main location found' } }
