@@ -9,8 +9,8 @@ export const Footer = ({ profile }: FooterProps) => {
   const location = profile.locations.find((item) => item.isMain)
 
   return (
-    <footer className="w-full bg-cyan-900 text-white mt-12">
-      <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-2 gap-8">
+    <footer className="p-8 flex flex-col gap-8 bg-cyan-900 text-white">
+      <div className="container mx-auto flex flex-col md:flex-row gap-8">
         <div className="flex-1">
           <h3 className="text-xl font-semibold mb-3">{company}</h3>
           {location ? (
@@ -40,8 +40,8 @@ export const Footer = ({ profile }: FooterProps) => {
           </ul>
         </div>
       </div>
-      <div className="bg-cyan-900 py-4 text-center text-cyan-100 text-sm">
-        © &copy; {new Date().getFullYear()} {company}. All rights reserved.
+      <div className="text-center text-sm text-cyan-100">
+        &copy; {new Date().getFullYear()} {company}. All rights reserved.
       </div>
     </footer>
   )

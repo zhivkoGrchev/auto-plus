@@ -1,8 +1,9 @@
-import OpeningHours from '@/components/features/website/opening-hours'
+import { OpeningHours } from '@/components/features/website/opening-hours'
 
 export default function OpeningHoursPage() {
   return (
-    <div className="max-w-7xl mx-auto px-6 py-16">
+    <div className="container mx-auto grow flex flex-col gap-8">
+      <h2 className="text-center text-3xl font-bold">Öffnungszeiten</h2>
       <OpeningHours />
     </div>
   )
