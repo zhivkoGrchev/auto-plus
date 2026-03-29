@@ -6,7 +6,7 @@ import { useTransition } from 'react'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import type { Locale } from '@/lib/config/locale'
-import { setUserLocale } from '@/services/locale'
+import { setUserLocale } from '@/services/locale.service'
 
 export const LocaleTool = () => {
   const [isPending, startTransition] = useTransition()
