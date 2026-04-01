@@ -16,3 +16,18 @@ export const getCarsByProfileId = async (id: string): Promise<Return<CarExtended
     return { data: undefined, error: { message: e.message } }
   }
 }
+
+export const getCarById = async (id: string): Promise<Return<CarExtended>> => {
+  try {
+    const car = await prisma.car.findUnique({
+      where: { id },
+      include: { brand: true, model: true, images: { orderBy: { order: 'asc' } } },
+    })
+    if (!car) return { data: undefined, error: { message: 'Car not found' } }
+    return { data: car, error: undefined }
+  } catch (error) {
+    const e = error as Error
+    console.error('Error fetching car by id:', e.message)
+    return { data: undefined, error: { message: e.message } }
+  }
+}

@@ -1,5 +1,5 @@
-import { CarsList } from '@/components/features/cars-list'
+import { CarList } from '@/components/features/car-list'
 
 export default async function CarsPage() {
-  return <CarsList />
+  return <CarList />
 }

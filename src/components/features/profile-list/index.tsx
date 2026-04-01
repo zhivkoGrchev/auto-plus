@@ -12,7 +12,7 @@ import type { Location } from '@/prisma/generated'
 import { LocationsDialog } from './locations.dialog'
 import { ProfileDialog } from './profile.dialog'
 
-export const ProfilesList = () => {
+export const ProfileList = () => {
   const [profiles, setProfiles] = useState<ProfileExtended[] | undefined>(undefined)
   const [currentProfile, setCurrentProfile] = useState<ProfileExtended | undefined>()
   const [openProfileDialog, setOpenProfileDialog] = useState<boolean>(false)

@@ -1,30 +1,24 @@
 import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
 import PrintButton from '@/components/features/car-details/print-button'
-import { prisma } from '@/prisma'
+import { formatCurrency, formatDate } from '@/lib/utils'
+import { getCarById } from '@/services/car.service'
 import CarGallery from './car-gallery'
 
-interface PageProps {
+interface CarDetailsProps {
   id: string
   slug?: string
-  searchParams?: { source?: string }
+  options?: { source?: string }
 }
 
-export default async function CarDetailsPage({ slug, id, searchParams }: PageProps) {
-  const source = searchParams?.source
+export default async function CarDetails({ id, slug, options }: CarDetailsProps) {
+  const source = options?.source
   const backLink = source === 'admin' ? '/admin/cars' : source === 'embed' ? `/embed/${slug}` : `/${slug}`
   const t = await getTranslations('CarDialog')
 
-  const car = await prisma.car.findUnique({
-    where: { id },
-    include: {
-      brand: true,
-      model: true,
-      images: { orderBy: { order: 'asc' } },
-    },
-  })
+  const { data: car, error } = await getCarById(id)
 
-  if (!car) {
+  if (error) {
     return (
       <div className="p-6 max-w-4xl mx-auto">
         <h2 className="text-xl font-semibold">Car not found</h2>
@@ -34,24 +28,6 @@ export default async function CarDetailsPage({ slug, id, searchParams }: PagePro
         </Link>
       </div>
     )
-  }
-
-  const formatCurrency = (v: number | null | undefined) =>
-    v == null
-      ? '—'
-      : new Intl.NumberFormat('de-DE', {
-          style: 'currency',
-          currency: 'EUR',
-          maximumFractionDigits: 0,
-        }).format(v)
-
-  const formatDate = (d: any) => {
-    if (!d) return '—'
-    try {
-      return new Date(d).toLocaleDateString('en-GB')
-    } catch {
-      return String(d)
-    }
   }
 
   return (

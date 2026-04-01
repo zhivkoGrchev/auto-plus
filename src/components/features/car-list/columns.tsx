@@ -168,7 +168,7 @@ export const columns = (
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem asChild>
-              <Link href={`/cars/${row.original.id}`}>
+              <Link href={`/admin/car/${row.original.id}`}>
                 <FileText />
                 Details
               </Link>
