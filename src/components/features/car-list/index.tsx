@@ -16,7 +16,7 @@ import type { Location } from '@/prisma/generated'
 import { CarDialog } from './car.dialog'
 import { CarsTable } from './cars.table'
 
-export const CarsList = () => {
+export const CarList = () => {
   const t = useTranslations('CarDialog')
   const [profiles, setProfiles] = useState<ProfileExtended[]>([])
   const [locations, setLocations] = useState<Location[]>([])

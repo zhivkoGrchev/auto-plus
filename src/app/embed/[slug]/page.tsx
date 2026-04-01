@@ -1,5 +1,6 @@
-import { CarGrid } from '@/components/features/embed/car-grid'
-import { prisma } from '@/prisma'
+import { CarList } from '@/components/features/embed/car-list'
+import { getCarsByProfileId } from '@/services/car.service'
+import { getProfileExtendedBySlug } from '@/services/profile.service'
 
 interface PageProps {
   params: Promise<{
@@ -10,17 +11,13 @@ interface PageProps {
   }>
 }
 
-export default async function EmbedPage({ params, searchParams }: PageProps) {
-  const { slug } = await params
-  const resolvedSearchParams = await searchParams
-  const theme = resolvedSearchParams?.theme || 'light'
+export default async function EmbedPage(props: PageProps) {
+  const { slug } = await props.params
+  const searchParams = await props.searchParams
+  const theme = searchParams?.theme || 'light'
 
-  // Find profile by slug
-  const profile = await prisma.profile.findUnique({
-    where: { slug },
-  })
-
-  if (!profile) {
+  const { data: profile, error } = await getProfileExtendedBySlug(slug)
+  if (error) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
@@ -31,19 +28,7 @@ export default async function EmbedPage({ params, searchParams }: PageProps) {
     )
   }
 
-  // Get listed cars for this profile
-  const cars = await prisma.car.findMany({
-    where: {
-      profileId: profile.id,
-      listedOnWebsite: true,
-    },
-    include: {
-      brand: true,
-      model: true,
-      images: true,
-    },
-    orderBy: { createdAt: 'desc' },
-  })
+  const { data: cars } = await getCarsByProfileId(profile.id)
 
-  return <CarGrid cars={cars} theme={theme} slug={slug} />
+  return <CarList cars={cars} slug={slug} theme={theme} />
 }

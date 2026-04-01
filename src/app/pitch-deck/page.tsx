@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
 import { ChevronLeft, ChevronRight, Moon, Sun } from 'lucide-react'
 import Image from 'next/image'
+import { useState } from 'react'
 
-const PitchDeck = () => {
+export default function PitchDeck() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [darkMode, setDarkMode] = useState(false)
 
@@ -24,7 +24,7 @@ const PitchDeck = () => {
       subtitle: 'The Complete Cloud Solution for Car Dealerships',
       content: (darkMode) => (
         <div className="text-center space-y-6">
-          <div className="text-6xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Auto Plus</div>
+          <div className="text-6xl font-bold bg-linear-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Auto Plus</div>
           <div className={`text-2xl ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
             The all-in-one cloud platform that turns car inventory chaos into streamlined success. Showcase vehicles beautifully online, all without the
             technical headache.
@@ -115,15 +115,15 @@ const PitchDeck = () => {
       content: (darkMode) => (
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-gradient-to-br from-cyan-600 to-blue-600 text-white p-8 rounded-lg text-center">
+            <div className="bg-linear-to-br from-cyan-600 to-blue-600 text-white p-8 rounded-lg text-center">
               <div className="text-4xl font-bold mb-2">€50B+</div>
               <div className="text-lg">European Car Market (Annual)</div>
             </div>
-            <div className="bg-gradient-to-br from-blue-600 to-indigo-600 text-white p-8 rounded-lg text-center">
+            <div className="bg-linear-to-br from-blue-600 to-indigo-600 text-white p-8 rounded-lg text-center">
               <div className="text-4xl font-bold mb-2">35,000+</div>
               <div className="text-lg">Car Dealers in Germany</div>
             </div>
-            <div className="bg-gradient-to-br from-indigo-600 to-purple-600 text-white p-8 rounded-lg text-center">
+            <div className="bg-linear-to-br from-indigo-600 to-purple-600 text-white p-8 rounded-lg text-center">
               <div className="text-4xl font-bold mb-2">12%</div>
               <div className="text-lg">Annual Market Growth</div>
             </div>
@@ -242,28 +242,28 @@ const PitchDeck = () => {
             <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>12-Month Roadmap</h3>
             <div className="space-y-4">
               <div className="flex items-start">
-                <div className="bg-cyan-600 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4 flex-shrink-0">Q1</div>
+                <div className="bg-cyan-600 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4 shrink-0">Q1</div>
                 <div className="flex-1">
                   <h4 className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Beta Launch & Initial Customers</h4>
                   <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>Onboard 10 pilot dealerships, gather feedback, iterate on features</p>
                 </div>
               </div>
               <div className="flex items-start">
-                <div className="bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4 flex-shrink-0">Q2</div>
+                <div className="bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4 shrink-0">Q2</div>
                 <div className="flex-1">
                   <h4 className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Marketing & Growth</h4>
                   <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>Launch marketing campaigns, reach 50 paying customers, MRR: €5,000+</p>
                 </div>
               </div>
               <div className="flex items-start">
-                <div className="bg-indigo-600 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4 flex-shrink-0">Q3</div>
+                <div className="bg-indigo-600 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4 shrink-0">Q3</div>
                 <div className="flex-1">
                   <h4 className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Feature Expansion</h4>
                   <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>Add marketplace integration, mobile app, advanced reporting. 150 customers</p>
                 </div>
               </div>
               <div className="flex items-start">
-                <div className="bg-purple-600 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4 flex-shrink-0">Q4</div>
+                <div className="bg-purple-600 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4 shrink-0">Q4</div>
                 <div className="flex-1">
                   <h4 className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Scale & Expansion</h4>
                   <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>Reach 300+ customers, MRR: €35,000, prepare for Series A</p>
@@ -529,7 +529,7 @@ const PitchDeck = () => {
           {/* 2. SPECIAL PARTNER (NEW SECTION) */}
           <div className={`p-6 rounded-xl border-2 border-dashed ${darkMode ? 'bg-gray-800/40 border-gray-600' : 'bg-gray-50 border-gray-300'}`}>
             <div className="flex flex-col md:flex-row items-center gap-6">
-              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-indigo-500 relative flex-shrink-0">
+              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-indigo-500 relative shrink-0">
                 <Image src="/images/gjorgi.jpg" alt="Gjorgi Gjorgiev" fill className="object-cover" />
               </div>
               <div className="text-center md:text-left">
@@ -544,7 +544,7 @@ const PitchDeck = () => {
           </div>
           <div className={`p-6 rounded-xl border-2 border-dashed ${darkMode ? 'bg-gray-800/40 border-gray-600' : 'bg-gray-50 border-gray-300'}`}>
             <div className="flex flex-col md:flex-row items-center gap-6">
-              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-indigo-500 relative flex-shrink-0">
+              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-indigo-500 relative shrink-0">
                 <Image src="/images/dejan.jpg" alt="Gjorgi Gjorgiev" fill className="object-cover" />
               </div>
               <div className="text-center md:text-left">
@@ -606,7 +606,7 @@ const PitchDeck = () => {
       title: 'Investment Opportunity',
       content: (darkMode) => (
         <div className="space-y-8">
-          <div className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white p-8 rounded-lg text-center">
+          <div className="bg-linear-to-r from-cyan-600 to-blue-600 text-white p-8 rounded-lg text-center">
             <h2 className="text-4xl font-bold mb-4">€180,000 Seed Round</h2>
             <p className="text-xl">Convertible Note or 20% Equity</p>
           </div>
@@ -688,7 +688,7 @@ const PitchDeck = () => {
       title: "Let's Transform Car Dealerships Together",
       content: (darkMode) => (
         <div className="text-center space-y-8 animate-in fade-in duration-700">
-          <div className="text-5xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Join Our Journey</div>
+          <div className="text-5xl font-bold bg-linear-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Join Our Journey</div>
 
           <div className={`max-w-2xl mx-auto space-y-6 text-lg ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
             <p>Auto Plus is positioned to capture a significant share of the €50B+ European car market with our modern, cloud-based platform.</p>
@@ -723,8 +723,8 @@ const PitchDeck = () => {
                 rel="noopener noreferrer"
                 className={`flex items-center gap-2 px-8 py-4 rounded-full font-bold text-lg transition-all transform hover:scale-105 shadow-xl ${
                   darkMode
-                    ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white hover:shadow-cyan-500/30'
-                    : 'bg-gradient-to-r from-cyan-600 to-blue-700 text-white hover:shadow-blue-500/30'
+                    ? 'bg-linear-to-r from-cyan-500 to-blue-600 text-white hover:shadow-cyan-500/30'
+                    : 'bg-linear-to-r from-cyan-600 to-blue-700 text-white hover:shadow-blue-500/30'
                 }`}
               >
                 <span>Open the Project</span>
@@ -747,7 +747,7 @@ const PitchDeck = () => {
   return (
     <div
       className={`min-h-screen flex flex-col transition-colors duration-300 ${
-        darkMode ? 'bg-gradient-to-br from-gray-900 to-gray-800' : 'bg-gradient-to-br from-gray-50 to-gray-100'
+        darkMode ? 'bg-linear-to-br from-gray-900 to-gray-800' : 'bg-linear-to-br from-gray-50 to-gray-100'
       }`}
     >
       <div className="flex-1 flex flex-col max-w-6xl mx-auto w-full p-8">
@@ -827,5 +827,3 @@ const PitchDeck = () => {
     </div>
   )
 }
-
-export default PitchDeck

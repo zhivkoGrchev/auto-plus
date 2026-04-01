@@ -82,3 +82,21 @@ export const formatName = (name: string) => {
   else if (parts.length === 1) return parts[0][0].toUpperCase() + parts[0][1].toLowerCase()
   else return ''
 }
+
+export const formatCurrency = (currency?: number) =>
+  currency
+    ? new Intl.NumberFormat('de-DE', {
+        style: 'currency',
+        currency: 'EUR',
+        maximumFractionDigits: 0,
+      }).format(currency)
+    : '—'
+
+export const formatDate = (date?: number | string | Date) => {
+  if (!date) return '—'
+  try {
+    return new Date(date).toLocaleDateString('en-GB')
+  } catch {
+    return String(date)
+  }
+}

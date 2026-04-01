@@ -1,8 +1,8 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { FaPrint } from 'react-icons/fa'
 import { useTranslations } from 'next-intl'
+import { FaPrint } from 'react-icons/fa'
+import { Button } from '@/components/ui/button'
 
 export default function PrintButton() {
   const t = useTranslations('CarDialog')

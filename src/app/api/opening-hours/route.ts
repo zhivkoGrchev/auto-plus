@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
 import { getOpeningHours, saveOpeningHours } from '@/lib/actions/opening-hours.actions'
 
 type ApiResponse = {
@@ -12,17 +12,14 @@ type ApiResponse = {
 export async function GET(): Promise<NextResponse<ApiResponse>> {
   try {
     const data = await getOpeningHours()
-    
+
     return NextResponse.json({
       success: true,
-      data
+      data,
     })
   } catch (error: any) {
     console.error('API Error fetching opening hours:', error)
-    return NextResponse.json(
-      { success: false, error: error.message || 'Failed to fetch opening hours' },
-      { status: 500 }
-    )
+    return NextResponse.json({ success: false, error: error.message || 'Failed to fetch opening hours' }, { status: 500 })
   }
 }
 
@@ -30,25 +27,19 @@ export async function GET(): Promise<NextResponse<ApiResponse>> {
 export async function POST(request: NextRequest): Promise<NextResponse<ApiResponse>> {
   try {
     const data = await request.json()
-    
+
     const result = await saveOpeningHours(data)
-    
+
     if (!result.success) {
-      return NextResponse.json(
-        { success: false, error: result.errors?.form?.[0] || 'Failed to save opening hours' },
-        { status: 400 }
-      )
+      return NextResponse.json({ success: false, error: result.errors?.form?.[0] || 'Failed to save opening hours' }, { status: 400 })
     }
-    
+
     return NextResponse.json({
       success: true,
-      data: { message: 'Opening hours saved successfully' }
+      data: { message: 'Opening hours saved successfully' },
     })
   } catch (error: any) {
     console.error('API Error saving opening hours:', error)
-    return NextResponse.json(
-      { success: false, error: error.message || 'Failed to save opening hours' },
-      { status: 500 }
-    )
+    return NextResponse.json({ success: false, error: error.message || 'Failed to save opening hours' }, { status: 500 })
   }
 }

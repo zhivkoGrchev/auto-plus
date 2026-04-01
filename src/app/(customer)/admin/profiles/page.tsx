@@ -1,5 +1,5 @@
-import { ProfilesList } from '@/components/features/profiles-list'
+import { ProfileList } from '@/components/features/profile-list'
 
 export default async function ProfilesPage() {
-  return <ProfilesList />
+  return <ProfileList />
 }

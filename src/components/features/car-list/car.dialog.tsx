@@ -6,7 +6,6 @@ import { useTranslations } from 'next-intl'
 import { type ComponentProps, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { GaleryManager } from '@/components/features/cars-list/galery-manager'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
@@ -23,6 +22,7 @@ import type { ImageFile } from '@/lib/types/image'
 import { getChangedFields } from '@/lib/utils'
 import { type AddCarData, type AddCarImageData, AddCarSchema, type EditCarData, EditCarSchema } from '@/lib/validators/car'
 import { type CarBrand, type CarModel, FuelType, Transmission, VehicleType } from '@/prisma/generated'
+import { GaleryManager } from './galery-manager'
 
 const INITIAL_FORM_DATA: AddCarData = {
   profileId: '',

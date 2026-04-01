@@ -1,4 +1,4 @@
-import CarDetailsPage from '@/components/features/car-details'
+import CarDetails from '@/components/features/car-details'
 
 interface PageProps {
   params: Promise<{
@@ -10,8 +10,8 @@ interface PageProps {
   }>
 }
 
-export default async function CarDetailsWebsite(props: PageProps) {
-  const params = await props.params
-  const resolvedSearchParams = await props.searchParams
-  return <CarDetailsPage slug={params.slug} id={params.id} searchParams={resolvedSearchParams} />
+export default async function CarDetailsPage(props: PageProps) {
+  const { slug, id } = await props.params
+  const options = await props.searchParams
+  return <CarDetails id={id} slug={slug} options={options} />
 }

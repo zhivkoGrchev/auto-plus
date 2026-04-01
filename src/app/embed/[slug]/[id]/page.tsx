@@ -1,4 +1,4 @@
-import CarDetailsPage from '@/components/features/car-details'
+import CarDetails from '@/components/features/car-details'
 
 interface PageProps {
   params: Promise<{
@@ -12,10 +12,10 @@ interface PageProps {
 
 export default async function CarDetailsEmbed(props: PageProps) {
   const params = await props.params
-  const resolvedSearchParams = await props.searchParams
+  const options = await props.searchParams
   return (
     <div className="flex grow">
-      <CarDetailsPage slug={params.slug} id={params.id} searchParams={resolvedSearchParams} />
+      <CarDetails id={params.id} slug={params.slug} options={options} />
     </div>
   )
 }

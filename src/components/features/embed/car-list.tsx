@@ -1,15 +1,15 @@
 import type { CarExtended } from '@/lib/types/car'
 
-interface CarGridProps {
-  cars: CarExtended[]
-  theme?: 'light' | 'dark'
+interface CarListProps {
+  cars?: CarExtended[]
   slug: string
+  theme?: 'light' | 'dark'
 }
 
-export function CarGrid({ cars, theme = 'light', slug }: CarGridProps) {
+export function CarList({ cars, theme = 'light', slug }: CarListProps) {
   const isDark = theme === 'dark'
 
-  if (cars.length === 0) {
+  if (!cars || cars.length === 0) {
     return (
       <div
         className={`flex items-center justify-center min-h-screen ${isDark ? 'bg-linear-to-br from-gray-900 via-gray-900 to-gray-800 text-white' : 'bg-linear-to-br from-gray-50 via-white to-gray-100 text-gray-900'}`}
