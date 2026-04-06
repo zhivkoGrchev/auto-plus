@@ -19,11 +19,9 @@ export default async function EmbedPage(props: PageProps) {
   const { data: profile, error } = await getProfileExtendedBySlug(slug)
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-800">Profile not found</h2>
-          <p className="text-gray-600 mt-2">The requested dealer profile does not exist.</p>
-        </div>
+      <div className="grow flex flex-col justify-center items-center text-center gap-2 bg-white">
+        <h2 className="text-2xl font-bold text-gray-800">Profile not found</h2>
+        <p className="text-gray-600">The requested dealer profile does not exist.</p>
       </div>
     )
   }
