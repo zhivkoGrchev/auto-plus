@@ -1,6 +1,6 @@
 'use client'
 
-import { Building, Loader, MapPinPen, Pencil, Trash } from 'lucide-react'
+import { Building, ImageOff, Loader, MapPinPen, Pencil, Trash } from 'lucide-react'
 import Image from 'next/image'
 import { useCallback, useEffect, useState, useTransition } from 'react'
 import { toast } from 'sonner'
@@ -113,8 +113,8 @@ export const ProfileList = () => {
             <Card className="" key={item.id}>
               <CardContent className="flex flex-col gap-4">
                 <div className="flex items-center gap-4">
-                  <div className="p-2 flex flex-col justify-center items-center rounded-md border border-dashed">
-                    <Image src={item.imageUrl ? item.imageUrl : '/images/no-image.svg'} width={96} height={96} alt="Logo" />
+                  <div className="flex flex-col justify-center items-center rounded-md overflow-hidden">
+                    {item.imageUrl ? <Image src={item.imageUrl} width={96} height={96} alt="Logo" /> : <ImageOff className="size-20 text-gray-700" />}
                   </div>
                   <ul className="flex flex-col">
                     <li>
