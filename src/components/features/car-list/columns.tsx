@@ -1,5 +1,6 @@
 'use client'
 
+import type { FuelType, VehicleType } from '@prisma-client'
 import type { ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown, FileText, MoreHorizontal, Pencil, Trash } from 'lucide-react'
 import Link from 'next/link'
@@ -7,8 +8,7 @@ import type { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Switch } from '@/components/ui/switch'
-import type { CarExtended } from '@/lib/types/car'
-import type { FuelType, VehicleType } from '@/prisma/generated'
+import type { CarExtended } from '@/types/car'
 
 export const columns = (
   onEdit: (car: CarExtended) => void | Promise<void>,

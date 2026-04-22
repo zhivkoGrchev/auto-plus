@@ -4,7 +4,7 @@ import type { ChangeEvent } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
-import type { ImageFile } from '@/lib/types/image'
+import type { ImageFile } from '@/types/image'
 
 export interface LogoManagerProps {
   logo: ImageFile

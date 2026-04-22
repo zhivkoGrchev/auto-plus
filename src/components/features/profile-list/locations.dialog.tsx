@@ -4,7 +4,7 @@ import { type ComponentProps, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import type { ProfileExtended } from '@/lib/types/profile'
+import type { ProfileExtended } from '@/types/profile'
 import { AddLocationForm } from './add-location.form'
 import { EditLocationForm } from './edit-location.form'
 

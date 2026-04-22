@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
 import PrintButton from '@/components/features/car-details/print-button'
 import { formatCurrency, formatDate } from '@/lib/utils'
-import { getCarById } from '@/services/car.service'
+import { getCarById } from '@/server/services/car.service'
 import CarGallery from './car-gallery'
 
 interface CarDetailsProps {

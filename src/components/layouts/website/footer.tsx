@@ -1,4 +1,4 @@
-import type { ProfileExtended } from '@/lib/types/profile'
+import type { ProfileExtended } from '@/types/profile'
 
 interface FooterProps {
   profile: ProfileExtended

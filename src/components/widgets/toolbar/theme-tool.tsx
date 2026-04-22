@@ -7,7 +7,7 @@ import { FaRegMoon } from 'react-icons/fa'
 import { LuCheck } from 'react-icons/lu'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { THEME } from '@/lib/config/theme'
+import { THEME } from '@/config/theme'
 
 export const ThemeTool = () => {
   const { theme, setTheme } = useTheme()

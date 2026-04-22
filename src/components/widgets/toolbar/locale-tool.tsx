@@ -5,8 +5,8 @@ import { useLocale, useTranslations } from 'next-intl'
 import { useTransition } from 'react'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import type { Locale } from '@/lib/config/locale'
-import { setUserLocale } from '@/services/locale.service'
+import type { Locale } from '@/config/locale'
+import { setUserLocale } from '@/server/actions/locale.actions'
 
 export const LocaleTool = () => {
   const [isPending, startTransition] = useTransition()

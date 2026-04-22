@@ -1,5 +1,6 @@
 'use client'
 
+import type { User } from '@prisma-client'
 import { KeyRound, Loader, LogIn, LogOut, UserPen } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -21,7 +22,6 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { signOut, useSession } from '@/lib/auth/client'
 import { formatName } from '@/lib/utils'
-import type { User } from '@/prisma/generated'
 
 export const AuthTool = () => {
   const [openEditUserDialog, setOpenEditUserDialog] = useState(false)

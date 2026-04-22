@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
-import { getOpeningHours, saveOpeningHours } from '@/lib/actions/opening-hours.actions'
+import { getOpeningHours, saveOpeningHours } from '@/server/actions/opening-hours.actions'
 
 type ApiResponse = {
   success: boolean

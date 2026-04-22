@@ -7,8 +7,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { TableCell, TableRow } from '@/components/ui/table'
-import { addLocation } from '@/lib/actions/profile.actions'
 import { type AddLocationData, AddLocationSchema } from '@/lib/validators/location'
+import { addLocation } from '@/server/actions/profile.actions'
 
 const INITIAL_FORM_DATA: AddLocationData = {
   contactPerson: '',

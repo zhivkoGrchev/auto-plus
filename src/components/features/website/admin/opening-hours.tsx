@@ -9,9 +9,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { getOpeningHours, saveOpeningHours } from '@/lib/actions/opening-hours.actions'
-import { DAYS } from '@/lib/constants/dates'
-import type { OpeningHoursData } from '@/lib/types/time'
+import { DAYS } from '@/constants/dates'
+import { getOpeningHours, saveOpeningHours } from '@/server/actions/opening-hours.actions'
+import type { OpeningHoursData } from '@/types/time'
 
 interface OpeningHoursProps {
   slug?: string | null

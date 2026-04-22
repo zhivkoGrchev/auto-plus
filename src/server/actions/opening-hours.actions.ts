@@ -1,8 +1,8 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import type { OpeningHoursData, OpeningHoursDB, TimeSlot } from '@/lib/types/time'
-import { prisma } from '@/prisma'
+import { prisma } from '@/server/db/prisma'
+import type { OpeningHoursData, OpeningHoursDB, TimeSlot } from '@/types/time'
 
 // Helper function to convert UI format to DB format
 function convertToDBFormat(data: OpeningHoursData) {
@@ -57,8 +57,6 @@ export async function getOpeningHours(): Promise<OpeningHoursData> {
     console.error('Error fetching opening hours:', error)
     // Return default schedule if error
     return convertToUIFormat(null)
-  } finally {
-    await prisma.$disconnect()
   }
 }
 
@@ -96,8 +94,6 @@ export async function saveOpeningHours(data: OpeningHoursData): Promise<{
       success: false,
       errors: { form: ['Failed to save opening hours. Please try again.'] },
     }
-  } finally {
-    await prisma.$disconnect()
   }
 }
 

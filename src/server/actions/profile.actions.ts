@@ -1,12 +1,12 @@
 'use server'
 
+import type { Profile } from '@prisma-client'
 import { headers } from 'next/headers'
 import { auth } from '@/lib/auth'
-import { prisma } from '@/prisma'
-import type { Profile } from '@/prisma/generated'
-import type { ProfileExtended } from '../types/profile'
-import type { AddLocationData, EditLocationData } from '../validators/location'
-import type { AddProfileWithLocationData, EditProfileData } from '../validators/profile'
+import type { AddLocationData, EditLocationData } from '@/lib/validators/location'
+import type { AddProfileWithLocationData, EditProfileData } from '@/lib/validators/profile'
+import { prisma } from '@/server/db/prisma'
+import type { ProfileExtended } from '@/types/profile'
 
 export const getProfile = async (): Promise<Return<Profile>> => {
   try {

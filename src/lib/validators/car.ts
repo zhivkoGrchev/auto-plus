@@ -1,5 +1,5 @@
+import { FuelType, Transmission, VehicleType } from '@prisma-client'
 import { z } from 'zod'
-import { FuelType, Transmission, VehicleType } from '@/prisma/generated'
 
 export const AddCarSchema = z.object({
   profileId: z.string().min(1, 'requiredProfile'),

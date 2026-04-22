@@ -1,6 +1,6 @@
 import { CarList } from '@/components/features/embed/car-list'
-import { getCarsByProfileId } from '@/services/car.service'
-import { getProfileExtendedBySlug } from '@/services/profile.service'
+import { getCarsByProfileId } from '@/server/services/car.service'
+import { getProfileExtendedBySlug } from '@/server/services/profile.service'
 
 interface PageProps {
   params: Promise<{

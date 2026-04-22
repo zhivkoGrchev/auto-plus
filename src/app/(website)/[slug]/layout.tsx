@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import { WhatsAppButton } from '@/components/features/website/whatsapp-button'
 import { Footer } from '@/components/layouts/website/footer'
 import { Header } from '@/components/layouts/website/header'
-import { getProfileExtendedBySlug } from '@/services/profile.service'
+import { getProfileExtendedBySlug } from '@/server/services/profile.service'
 
 interface WebsiteLayoutProps extends AppLayoutProps {
   params: Promise<{

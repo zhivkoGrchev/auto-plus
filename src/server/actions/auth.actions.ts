@@ -1,10 +1,10 @@
 'use server'
 
+import type { User } from '@prisma-client'
 import { headers } from 'next/headers'
 import { auth } from '@/lib/auth'
-import { prisma } from '@/prisma'
-import type { User } from '@/prisma/generated'
-import type { EditUserData, SignInData, SignUpData } from '../validators/auth'
+import type { EditUserData, SignInData, SignUpData } from '@/lib/validators/auth'
+import { prisma } from '@/server/db/prisma'
 
 export async function getCurrentUser(): Promise<Return<User>> {
   try {
@@ -21,8 +21,6 @@ export async function getCurrentUser(): Promise<Return<User>> {
     const e = error as Error
     console.error('Error fetching user:', e.message)
     return { data: undefined, error: { message: e.message || 'An unknown error occurred.' } }
-  } finally {
-    await prisma.$disconnect()
   }
 }
 
@@ -38,8 +36,6 @@ export const editUser = async (formData: EditUserData): Promise<Return<string>> 
     const e = error as Error
     console.error('Error editing user:', e.message)
     return { data: undefined, error: { message: e.message } }
-  } finally {
-    prisma.$disconnect()
   }
 }
 
@@ -51,8 +47,6 @@ export async function signIn({ email, password }: SignInData): Promise<Return<st
     const e = error as Error
     console.error('Error signing in:', e.message)
     return { data: undefined, error: { message: e.message || 'An unknown error occurred.' } }
-  } finally {
-    await prisma.$disconnect()
   }
 }
 
@@ -64,7 +58,5 @@ export async function signUp({ name, email, password }: SignUpData): Promise<Ret
     const e = error as Error
     console.error('Error signing up:', e.message)
     return { data: undefined, error: { message: e.message || 'An unknown error occurred.' } }
-  } finally {
-    await prisma.$disconnect()
   }
 }

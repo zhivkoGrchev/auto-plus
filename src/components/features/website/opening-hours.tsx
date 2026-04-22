@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { getFormattedOpeningHours } from '@/lib/actions/opening-hours.actions'
+import { getFormattedOpeningHours } from '@/server/actions/opening-hours.actions'
 
 const dayTranslations: Record<string, string> = {
   monday: 'Montag',

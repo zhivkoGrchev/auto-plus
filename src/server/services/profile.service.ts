@@ -1,6 +1,7 @@
+import 'server-only'
 import { cache } from 'react'
-import type { ProfileExtended } from '@/lib/types/profile'
-import { prisma } from '@/prisma'
+import { prisma } from '@/server/db/prisma'
+import type { ProfileExtended } from '@/types/profile'
 
 export const getProfileExtendedBySlug = cache(async (slug: string): Promise<Return<ProfileExtended>> => {
   try {
