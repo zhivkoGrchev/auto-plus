@@ -1,5 +1,4 @@
-'server only'
-
+import 'server-only'
 import { PinataSDK } from 'pinata'
 
 export const pinata = new PinataSDK({

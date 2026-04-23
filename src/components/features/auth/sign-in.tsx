@@ -12,9 +12,9 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { signIn } from '@/lib/actions/auth.actions'
 import { useSession } from '@/lib/auth/client'
 import { type SignInData, SignInSchema } from '@/lib/validators/auth'
+import { signIn } from '@/server/actions/auth.actions'
 
 const INITIAL_FORM_DATA: SignInData = {
   email: '',

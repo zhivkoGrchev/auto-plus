@@ -2,7 +2,7 @@ import { Menu, Phone } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
-import type { ProfileExtended } from '@/lib/types/profile'
+import type { ProfileExtended } from '@/types/profile'
 
 interface MenubarProps {
   profile: ProfileExtended

@@ -1,4 +1,4 @@
-import type { Location } from '@/prisma/generated'
+import type { Location } from '@prisma-client'
 
 interface LocationInfoProps {
   location?: Location

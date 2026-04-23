@@ -18,8 +18,8 @@ import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMe
 import { Input } from '@/components/ui/input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { useDebouncedValue } from '@/lib/hooks/debounced-value'
-import type { CarExtended } from '@/lib/types/car'
 import { normalize } from '@/lib/utils'
+import type { CarExtended } from '@/types/car'
 import { columns } from './columns'
 
 export interface CarsTableProps {

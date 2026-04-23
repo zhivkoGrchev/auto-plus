@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { FaEnvelope, FaFacebook, FaLinkedin, FaPhone, FaTwitter } from 'react-icons/fa'
-import { APP_NAME } from '@/lib/constants'
+import { APP_NAME } from '@/constants'
 
 export const Footer = () => {
   const t = useTranslations('Footer')

@@ -1,5 +1,5 @@
-import type { ProfileExtended } from '@/lib/types/profile'
-import { getCarsByProfileId } from '@/services/car.service'
+import { getCarsByProfileId } from '@/server/services/car.service'
+import type { ProfileExtended } from '@/types/profile'
 import { CarCard } from './car.card'
 
 interface CarListProps {

@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import { LocationInfo } from '@/components/features/website/location-info'
-import { getProfileExtendedBySlug } from '@/services/profile.service'
+import { getProfileExtendedBySlug } from '@/server/services/profile.service'
 
 interface LocationPageProps {
   params: Promise<{

@@ -1,14 +1,14 @@
 'use client'
 
+import type { Location } from '@prisma-client'
 import { Building, ImageOff, Loader, MapPinPen, Pencil, Trash } from 'lucide-react'
 import Image from 'next/image'
 import { useCallback, useEffect, useState, useTransition } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
-import { deleteProfile, getProfilesWithLocations } from '@/lib/actions/profile.actions'
-import type { ProfileExtended } from '@/lib/types/profile'
-import type { Location } from '@/prisma/generated'
+import { deleteProfile, getProfilesWithLocations } from '@/server/actions/profile.actions'
+import type { ProfileExtended } from '@/types/profile'
 import { LocationsDialog } from './locations.dialog'
 import { ProfileDialog } from './profile.dialog'
 

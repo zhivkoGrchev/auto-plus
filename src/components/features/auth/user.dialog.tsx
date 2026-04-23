@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import type { User } from '@prisma-client'
 import { Check, Loader } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import type { ComponentProps } from 'react'
@@ -8,10 +9,9 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { editUser } from '@/lib/actions/auth.actions'
 import { getChangedFields } from '@/lib/utils'
 import { type EditUserData, EditUserSchema } from '@/lib/validators/auth'
-import type { User } from '@/prisma/generated'
+import { editUser } from '@/server/actions/auth.actions'
 
 export interface UserDialogProps extends ComponentProps<typeof Dialog> {
   user: User

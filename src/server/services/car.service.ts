@@ -1,5 +1,6 @@
-import type { CarExtended } from '@/lib/types/car'
-import { prisma } from '@/prisma'
+import 'server-only'
+import { prisma } from '@/server/db/prisma'
+import type { CarExtended } from '@/types/car'
 
 export const getCarsByProfileId = async (id: string): Promise<Return<CarExtended[]>> => {
   try {

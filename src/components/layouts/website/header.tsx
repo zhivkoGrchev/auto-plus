@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { MenuBar } from '@/components/widgets/website/menubar'
-import type { ProfileExtended } from '@/lib/types/profile'
+import type { ProfileExtended } from '@/types/profile'
 
 interface HeaderProps {
   profile: ProfileExtended

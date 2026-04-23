@@ -4,8 +4,8 @@ import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getTranslations } from 'next-intl/server'
 import { ThemeProvider } from 'next-themes'
 import { Toaster } from '@/components/ui/sonner'
-import { defaultTheme } from '@/lib/config/theme'
-import { APP_NAME } from '@/lib/constants'
+import { defaultTheme } from '@/config/theme'
+import { APP_NAME } from '@/constants'
 import './globals.css'
 
 const fontNunitoSans = Nunito_Sans({

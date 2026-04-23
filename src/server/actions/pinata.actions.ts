@@ -1,7 +1,7 @@
 'use server'
 
-import type { ImageFile } from '@/lib/types/image'
-import { pinata } from '@/pinata'
+import { pinata } from '@/server/storage/pinata'
+import type { ImageFile } from '@/types/image'
 
 export async function uploadImage(formData: File): Promise<Return<ImageFile>> {
   try {

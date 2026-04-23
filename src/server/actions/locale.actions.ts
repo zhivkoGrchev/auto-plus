@@ -1,10 +1,8 @@
 'use server'
 
 import { cookies } from 'next/headers'
-import { defaultLocale, type Locale } from '@/lib/config/locale'
+import { defaultLocale, type Locale } from '@/config/locale'
 
-// Locale is read from a cookie.
-// We can also read it from database.
 const COOKIE_NAME = 'NEXT_LOCALE'
 
 export async function getUserLocale() {

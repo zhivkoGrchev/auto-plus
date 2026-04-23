@@ -1,7 +1,7 @@
 import { ImageOff } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import type { CarExtended } from '@/lib/types/car'
+import type { CarExtended } from '@/types/car'
 
 interface CarCardProps {
   car: CarExtended

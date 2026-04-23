@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import type { Location } from '@prisma-client'
 import { Check, Loader, MapPinMinus, MapPinPen, X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
@@ -8,10 +9,9 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { TableCell, TableRow } from '@/components/ui/table'
-import { deleteLocation, editLocation } from '@/lib/actions/profile.actions'
 import { getChangedFields } from '@/lib/utils'
 import { type EditLocationData, EditLocationSchema } from '@/lib/validators/location'
-import type { Location } from '@/prisma/generated'
+import { deleteLocation, editLocation } from '@/server/actions/profile.actions'
 
 export interface EditLocationFormProps {
   location: Location

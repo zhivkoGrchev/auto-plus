@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardAction, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import type { CarExtended } from '@/lib/types/car'
+import type { CarExtended } from '@/types/car'
 
 interface CarListProps {
   cars?: CarExtended[]

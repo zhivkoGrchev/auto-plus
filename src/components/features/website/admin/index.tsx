@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { getCarsCount, getCarsTotalPrice } from '@/lib/actions/car.actions'
+import { getCarsCount, getCarsTotalPrice } from '@/server/actions/car.actions'
 import { DeveloperTools } from './developer-tools'
 import { OpeningHours } from './opening-hours'
 

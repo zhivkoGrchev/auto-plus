@@ -1,9 +1,9 @@
 'use server'
 
-import type { CarExtended } from '@/lib/types/car'
+import type { CarBrand, CarModel } from '@prisma-client'
 import type { AddCarData, AddCarImageData, EditCarData } from '@/lib/validators/car'
-import { prisma } from '@/prisma'
-import type { CarBrand, CarModel } from '@/prisma/generated'
+import { prisma } from '@/server/db/prisma'
+import type { CarExtended } from '@/types/car'
 import { deleteImage } from './pinata.actions'
 import { getProfile } from './profile.actions'
 
@@ -20,8 +20,6 @@ export async function getCars(profileId: string, locationId: string): Promise<Re
     const e = error as Error
     console.error('Error fetching cars:', e.message)
     return { data: undefined, error: { message: e.message } }
-  } finally {
-    await prisma.$disconnect()
   }
 }
 
@@ -35,8 +33,6 @@ export async function addCar(formData: AddCarData, images: AddCarImageData[]): P
     const e = error as Error
     console.error('Error creating car:', e.message)
     return { data: undefined, error: { message: 'An unexpected error occurred. Please try again.' } }
-  } finally {
-    await prisma.$disconnect()
   }
 }
 
@@ -51,8 +47,6 @@ export async function editCar(carId: string, formData: EditCarData): Promise<Ret
     const e = error as Error
     console.error('Error updating car:', e.message)
     return { data: undefined, error: { message: 'Failed to update car. Please try again.' } }
-  } finally {
-    await prisma.$disconnect()
   }
 }
 
@@ -77,8 +71,6 @@ export async function deleteCar(id: string): Promise<Return<string>> {
     const e: Error = error as Error
     console.error('Error deleting car:', e.message)
     return { data: undefined, error: { message: 'Failed to delete car.' } }
-  } finally {
-    await prisma.$disconnect()
   }
 }
 
@@ -90,8 +82,6 @@ export async function toggleCarListing(carId: string, isListed: boolean): Promis
     const e = error as Error
     console.error('Error toggling car listing:', e.message)
     return { data: undefined, error: { message: 'Failed to update listing status' } }
-  } finally {
-    await prisma.$disconnect()
   }
 }
 
@@ -103,8 +93,6 @@ export async function getCarBrands(): Promise<Return<CarBrand[]>> {
     const e = error as Error
     console.error('Error fetching car brands:', e.message)
     return { data: undefined, error: { message: e.message } }
-  } finally {
-    await prisma.$disconnect()
   }
 }
 
@@ -116,8 +104,6 @@ export async function getCarModelsByBrand(brandId: string): Promise<Return<CarMo
     const e = error as Error
     console.error('Error fetching car models by brand:', error)
     return { data: undefined, error: { message: e.message } }
-  } finally {
-    await prisma.$disconnect()
   }
 }
 
@@ -131,8 +117,6 @@ export async function getCarsCount(): Promise<Return<number>> {
     const e = error as Error
     console.error('Error counting cars:', e.message)
     return { data: undefined, error: { message: e.message } }
-  } finally {
-    await prisma.$disconnect()
   }
 }
 
@@ -149,7 +133,5 @@ export async function getCarsTotalPrice(): Promise<Return<number>> {
     const e = error as Error
     console.error('Error calculating total car price:', e.message)
     return { data: undefined, error: { message: e.message } }
-  } finally {
-    await prisma.$disconnect()
   }
 }
