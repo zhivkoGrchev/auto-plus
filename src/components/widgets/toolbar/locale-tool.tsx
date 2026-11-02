@@ -37,6 +37,10 @@ export const LocaleTool = () => {
           {t('de')}
           {locale === 'de' && <Check className="h-4 w-4" />}
         </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => onChange('mk')} className="flex justify-between">
+          {t('mk')}
+          {locale === 'mk' && <Check className="h-4 w-4" />}
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )
