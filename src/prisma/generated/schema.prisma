@@ -1,0 +1,220 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/prisma/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum FuelType {
+  diesel
+  petrol
+  gas
+  electric
+  hybrid
+}
+
+enum Transmission {
+  manual
+  automatic
+}
+
+enum VehicleType {
+  convertible
+  compact
+  sedan
+  van
+  suv
+  stationWagon
+  coupe
+  other
+}
+
+model Car {
+  id              String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  profileId       String       @db.Uuid
+  locationId      String       @db.Uuid
+  brandId         String       @db.Uuid
+  modelId         String       @db.Uuid
+  powerKW         Int
+  powerPS         Int
+  cubicCapacity   Int
+  year            Int
+  color           String
+  transmission    Transmission
+  fuelType        FuelType
+  mileage         Float
+  vin             String?
+  price           Float
+  description     String?
+  seats           Int?
+  doors           Int?
+  vehicleType     VehicleType?
+  mot             DateTime?
+  images          CarImage[]
+  listedOnWebsite Boolean      @default(false)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  brand    CarBrand @relation(fields: [brandId], references: [id])
+  model    CarModel @relation(fields: [modelId], references: [id])
+  profile  Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  location Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+}
+
+model CarImage {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  carId     String   @db.Uuid
+  car       Car      @relation(fields: [carId], references: [id], onDelete: Cascade)
+  imageUrl  String
+  imageCid  String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([carId])
+  @@map("car_image")
+}
+
+model CarBrand {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cars      Car[]
+  carModels CarModel[]
+}
+
+model CarModel {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String
+  brandId   String   @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  brand CarBrand @relation(fields: [brandId], references: [id])
+  cars  Car[]
+}
+
+model User {
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  sessions      Session[]
+  accounts      Account[]
+  profiles      Profile[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+model Profile {
+  id        String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String
+  slug      String     @unique
+  company   String?
+  imageUrl  String
+  imageCid  String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  locations Location[]
+  cars      Car[]
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([slug])
+  @@map("profile")
+}
+
+model Location {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  profileId     String   @db.Uuid
+  contactPerson String
+  phone         String
+  email         String
+  address       String
+  city          String
+  postcode      String
+  isMain        Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  cars          Car[]
+
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@map("location")
+}
+
+model OpeningHours {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  // Store as JSON for flexibility - each day can have multiple time slots
+
+  monday    Json? // Example: [{"open":"09:00","close":"17:00"},{"open":"19:00","close":"22:00"}] or null if closed
+  tuesday   Json?
+  wednesday Json?
+  thursday  Json?
+  friday    Json?
+  saturday  Json?
+  sunday    Json?
+
+  // Metadata
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // If you want to support multiple locations/businesses in the future:
+  // businessName String @default("Main Location")
+
+  @@map("opening_hours")
+}
