@@ -14,7 +14,7 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@hookform/resolvers": "^5.2.2",
+    "@hookform/resolvers": "^7.0.1",
     "@neondatabase/serverless": "^1.0.1",
     "@prisma/adapter-neon": "^7.2.0",
     "@prisma/adapter-pg": "^7.2.0",
@@ -23,8 +23,8 @@
     "better-auth": "^1.3.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "lucide-react": "1.7",
-    "next": "^15.5.9",
+    "lucide-react": "1.67",
+    "next": "^16.4.4",
     "next-intl": "^4.1.0",
     "next-themes": "^0.4.6",
     "pinata": "^2.5.0",
@@ -52,6 +52,6 @@
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
     "tw-animate-css": "^1.3.6",
-    "typescript": "^5"
+    "typescript": "^5.9.3"
   }
 }
