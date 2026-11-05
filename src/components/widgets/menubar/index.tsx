@@ -21,7 +21,7 @@ export const MenuBar = () => {
           {t('myCars')}
         </Link>
         <Link className={`px-2 border-b-4 text-white ${pathname === '/admin/profiles' && 'border-cyan-400'}`} href="/admin/profiles" prefetch={false}>
-          {t('Profiles')}
+          {t('Profile')}
         </Link>
       </menu>
       <div className="lg:hidden flex">
@@ -43,7 +43,7 @@ export const MenuBar = () => {
                 {t('myCars')}
               </Link>
               <Link className={`px-2 border-l-4 text-white ${pathname === '/admin/profiles' && 'border-cyan-400'}`} href="/admin/profiles" prefetch={false}>
-                {t('Profiles')}
+                {t('Profile')}
               </Link>
             </menu>
           </SheetContent>

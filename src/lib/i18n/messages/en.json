@@ -45,7 +45,7 @@
   },
   "AdminPage": {
     "myCars": "My Cars",
-    "Profiles": "Profiles",
+    "Profile": "Profile",
     "websiteAdmin": "Website admin",
     "openWebsiteButton": "Open my Website",
     "saveChangesButton": "Save changes",
