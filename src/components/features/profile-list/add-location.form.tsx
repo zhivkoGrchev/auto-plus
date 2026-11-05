@@ -27,6 +27,7 @@ export interface AddLocationFormProps {
 
 export const AddLocationForm = ({ profileId, onUpdate }: AddLocationFormProps) => {
   const e = useTranslations('Validation.errors')
+  const t = useTranslations('ProfileDialog')
   const {
     register,
     reset,
@@ -80,7 +81,7 @@ export const AddLocationForm = ({ profileId, onUpdate }: AddLocationFormProps) =
       </TableCell>
       <TableCell className="flex justify-end gap-2">
         <Button className="w-full" onClick={handleSubmit(handleFormSubmit)} disabled={isSubmitting}>
-          {isSubmitting ? <Loader className="animate-spin" /> : <Check />} Save
+          {isSubmitting ? <Loader className="animate-spin" /> : <Check />} {t('save')}
         </Button>
       </TableCell>
     </TableRow>

@@ -14,29 +14,28 @@ export interface LocationsDialogProps extends ComponentProps<typeof Dialog> {
 }
 
 export const LocationsDialog = ({ open, profile, onOpenChange, onUpdate }: LocationsDialogProps) => {
-  const t = useTranslations('LocationsDialog')
+  const t = useTranslations('ProfileDialog')
   const [showCreateLocationForm, setShowCreateLocationForm] = useState(false)
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="min-w-4xl">
         <DialogHeader>
-          <DialogTitle>{t('title')}</DialogTitle>
-          <DialogDescription>{t('description')}</DialogDescription>
+          <DialogTitle>{t('location.title')}</DialogTitle>
+          <DialogDescription>{t('location.description')}</DialogDescription>
         </DialogHeader>
         <div className="w-full flex flex-col gap-4 overflow-hidden rounded-md border">
           {profile && (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Main</TableHead>
-                  <TableHead>Contact Person</TableHead>
-                  <TableHead>Phone number</TableHead>
-                  <TableHead>E-Mail</TableHead>
-                  <TableHead>Address</TableHead>
-                  <TableHead>City</TableHead>
-                  <TableHead>Postcode</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>{t('location.main')}</TableHead>
+                  <TableHead>{t('contactPerson')}</TableHead>
+                  <TableHead>{t('location.phone')}</TableHead>
+                  <TableHead>{t('location.email')}</TableHead>
+                  <TableHead>{t('location.address')}</TableHead>
+                  <TableHead>{t('location.city')}</TableHead>
+                  <TableHead>{t('location.postcode')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -63,7 +62,7 @@ export const LocationsDialog = ({ open, profile, onOpenChange, onUpdate }: Locat
                 ) : (
                   <TableRow>
                     <TableCell colSpan={8} className="p-4 text-xl text-center">
-                      There is no locations
+                      {t('noLocation')}
                     </TableCell>
                   </TableRow>
                 )}
@@ -74,10 +73,10 @@ export const LocationsDialog = ({ open, profile, onOpenChange, onUpdate }: Locat
         <DialogFooter>
           <Button variant="default" onClick={() => setShowCreateLocationForm((show) => !show)}>
             <MapPinPlus />
-            Add location
+            {t('add.location')}
           </Button>
           <DialogClose asChild>
-            <Button variant="destructive">Close</Button>
+            <Button variant="destructive">{t('close')}</Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>

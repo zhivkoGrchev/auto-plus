@@ -206,25 +206,37 @@
     "editProfile": "Profil bearbeiten"
   },
   "ProfileDialog": {
-    "add": { "title": "Neues Profil hinzufügen", "description": "Füllen Sie alle Felder aus" },
-    "edit": { "title": "Profil bearbeiten", "description": "Füllen Sie die Felder aus, die Sie ändern möchten" },
+    "noProfile": "Kein Profil. Bitte fügen Sie ein Profil hinzu.",
+    "noLocation": "Kein Standort. Bitte fügen Sie einen Standort hinzu.",
+    "loading": "Wird geladen",
+    "add": {
+      "profile": "Neues Profil hinzufügen",
+      "location": "Neuen Standort hinzufügen",
+      "description": "Füllen Sie alle Felder aus"
+    },
+    "edit": {
+      "profile": "Profil bearbeiten",
+      "location": "Standort bearbeiten",
+      "description": "Füllen Sie die Felder aus, die Sie ändern möchten"
+    },
     "slug": "Slug",
     "logo": "Firmenzeichen",
     "company": "Unternehmen",
+    "mainLocation": "Hauptstandort",
+    "contactPerson": "Ansprechpartner",
     "location": {
+      "main": "Hauptbüro",
+      "title": "Standort",
+      "description": "",
       "contactPerson": "Name",
-      "phone": "Phonenummer",
+      "phone": "Telefonnummer",
       "email": "E-Mail",
       "address": "Addresse",
       "city": "Stadt",
       "postcode": "Postcode"
     },
-    "save": "Speichern"
-  },
-  "LocationsDialog": {
-    "title": "Standort",
-    "description": "",
-    "save": "Speichern"
+    "save": "Speichern",
+    "close": "Schließen"
   },
   "Validation": {
     "errors": {

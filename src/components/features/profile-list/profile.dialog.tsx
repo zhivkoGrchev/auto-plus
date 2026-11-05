@@ -117,7 +117,7 @@ export const ProfileDialog = ({ open, profile, onOpenChange, onUpdate }: Profile
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{t(isAdd ? 'add.title' : 'edit.title')}</DialogTitle>
+          <DialogTitle>{t(isAdd ? 'add.profile' : 'edit.profile')}</DialogTitle>
           <DialogDescription>{t(isAdd ? 'add.description' : 'edit.description')}</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(handleFormSubmit)}>
@@ -139,7 +139,7 @@ export const ProfileDialog = ({ open, profile, onOpenChange, onUpdate }: Profile
             {isAdd && (
               <>
                 <div className="grid grid-cols-[auto_1fr] gap-2">
-                  <h3 className="col-start-2 mx-2 flex justify-center border-b text-lg">Location</h3>
+                  <h3 className="col-start-2 mx-2 flex justify-center border-b text-lg">{t('mainLocation')}</h3>
                   <Label className="self-center" htmlFor="address">
                     {t('location.address')}
                   </Label>
@@ -163,7 +163,7 @@ export const ProfileDialog = ({ open, profile, onOpenChange, onUpdate }: Profile
                   )}
                 </div>
                 <div className="grid grid-cols-[auto_1fr] gap-2">
-                  <h3 className="col-start-2 mx-2 flex justify-center border-b text-lg">Contact Person</h3>
+                  <h3 className="col-start-2 mx-2 flex justify-center border-b text-lg">{t('contactPerson')}</h3>
                   <Label className="self-center" htmlFor="contactPerson">
                     {t('location.contactPerson')}
                   </Label>

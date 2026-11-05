@@ -20,6 +20,7 @@ export interface EditLocationFormProps {
 
 export const EditLocationForm = ({ location, onUpdate }: EditLocationFormProps) => {
   const e = useTranslations('Validation.errors')
+  const t = useTranslations('LocationsDialog')
   const [isEditing, setEditing] = useState(false)
   const {
     register,
@@ -94,7 +95,7 @@ export const EditLocationForm = ({ location, onUpdate }: EditLocationFormProps) 
       </TableCell>
       <TableCell className="flex justify-end gap-2">
         <Button onClick={handleSubmit(handleFormSubmit)} disabled={isSubmitting}>
-          {isSubmitting ? <Loader className="animate-spin" /> : <Check />} Save
+          {isSubmitting ? <Loader className="animate-spin" /> : <Check />} {t('save')}
         </Button>
         <Button variant="destructive" onClick={() => setEditing(false)}>
           <X />
