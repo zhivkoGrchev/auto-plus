@@ -3,6 +3,7 @@
 import type { Location } from '@prisma-client'
 import { Building, ImageOff, Loader, MapPinPen, Pencil, Trash } from 'lucide-react'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 import { useCallback, useEffect, useState, useTransition } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -18,6 +19,7 @@ export const ProfileList = () => {
   const [openProfileDialog, setOpenProfileDialog] = useState<boolean>(false)
   const [openLocationsDialog, setOpenLocationsDialog] = useState<boolean>(false)
   const [isPending, startTransition] = useTransition()
+  const t = useTranslations('ProfileDialog')
 
   const fetchProfiles = useCallback(() => {
     startTransition(async () => {
@@ -66,7 +68,7 @@ export const ProfileList = () => {
   if (isPending) {
     return (
       <div className="flex flex-col justify-center items-center grow gap-4 text-5xl">
-        <Loader size="1em" className="animate-spin" /> Loading ...
+        <Loader size="1em" className="animate-spin" /> {t('loading')} ...
       </div>
     )
   }
@@ -78,33 +80,46 @@ export const ProfileList = () => {
         return (
           <div className="flex flex-col gap-2">
             <div className="flex flex-col">
-              <h5 className="px-4 py-2 text-xl font-bold">Main location</h5>
+              <h5 className="px-4 py-2 text-xl font-bold">{t('mainLocation')}</h5>
               <ul className="p-4 rounded-xl border bg-cyan-50 dark:bg-cyan-950">
-                <li>Address: {location.address}</li>
-                <li>City: {location.city}</li>
-                <li>Postcode: {location.postcode}</li>
+                <li>
+                  {t('location.address')}: {location.address}
+                </li>
+                <li>
+                  {t('location.city')}: {location.city}
+                </li>
+                <li>
+                  {t('location.postcode')}: {location.postcode}
+                </li>
               </ul>
             </div>
             <div className="flex flex-col">
-              <h5 className="px-4 py-2 text-xl font-bold">Contact person</h5>
+              <h5 className="px-4 py-2 text-xl font-bold">{t('contactPerson')}</h5>
               <ul className="p-4 rounded-xl border bg-cyan-50 dark:bg-cyan-950">
-                <li>Name: {location.contactPerson}</li>
-                <li>Phone: {location.phone}</li>
-                <li>E-Mail: {location.email}</li>
+                <li>
+                  {t('location.contactPerson')}: {location.contactPerson}
+                </li>
+                <li>
+                  {t('location.phone')}: {location.phone}
+                </li>
+                <li>
+                  {t('location.email')}: {location.email}
+                </li>
               </ul>
             </div>
           </div>
         )
       }
     }
-    return <div className="p-8 flex justify-center items-center rounded-xl border bg-cyan-100 dark:bg-cyan-900">There is no main location</div>
+    return <div className="p-8 flex justify-center items-center rounded-xl border bg-cyan-100 dark:bg-cyan-900">{t('noLocation')}</div>
   }
 
   return (
     <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
       <div className="flex justify-end">
         <Button onClick={() => openAddProfileDialog()}>
-          <Building /> Add profile
+          <Building />
+          {t('add.profile')}
         </Button>
       </div>
       <div className="grid grid-cols-2 gap-4">
@@ -118,9 +133,11 @@ export const ProfileList = () => {
                   </div>
                   <ul className="flex flex-col">
                     <li>
-                      Company: <span className="font-bold">{item.company}</span>
+                      {t('company')}: <span className="font-bold">{item.company}</span>
                     </li>
-                    <li>Slug: {item.slug}</li>
+                    <li>
+                      {t('slug')}: {item.slug}
+                    </li>
                     <li className="text-sm">Created: {item.createdAt.toDateString()}</li>
                     <li className="text-sm">Updated: {item.updatedAt.toDateString()}</li>
                   </ul>
@@ -129,10 +146,12 @@ export const ProfileList = () => {
               </CardContent>
               <CardFooter className="flex justify-end gap-2">
                 <Button variant="secondary" onClick={() => openEditLocationsDialog(item)}>
-                  <MapPinPen /> Locations
+                  <MapPinPen />
+                  {t('edit.location')}
                 </Button>
                 <Button variant="secondary" onClick={() => openEditProfileDialog(item)}>
-                  <Pencil /> Edit profile
+                  <Pencil />
+                  {t('edit.profile')}
                 </Button>
                 <Button variant="destructive" onClick={() => handleDeleteProfile(item.id)}>
                   <Trash />
@@ -141,7 +160,7 @@ export const ProfileList = () => {
             </Card>
           ))
         ) : (
-          <div className="p-8 col-span-2 flex flex-col justify-center items-center rounded-xl border">There is no Profiles</div>
+          <div className="p-8 col-span-2 flex flex-col justify-center items-center rounded-xl border">{t('noProfile')}</div>
         )}
       </div>
       <ProfileDialog

@@ -45,7 +45,7 @@
   },
   "AdminPage": {
     "myCars": "Моите автомобили",
-    "Profiles": "Профили",
+    "Profile": "Профил",
     "websiteAdmin": "Админ панел",
     "openWebsiteButton": "Отвори ја мојата веб-страница",
     "saveChangesButton": "Зачувај ги промените",
@@ -206,12 +206,28 @@
     "editProfile": "Уреди профил"
   },
   "ProfileDialog": {
-    "add": { "title": "Додади нов профил", "description": "Пополнете ги сите полиња." },
-    "edit": { "title": "Уреди профил", "description": "Пополнете ги полињата коишто сакате да ги промените." },
-    "slug": "Slug",
+    "noProfile": "Нема профил. Ве молиме додадете профил.",
+    "noLocation": "Нема локациja. Ве молиме додадете локација.",
+    "loading": "Се вчитува",
+    "add": {
+      "profile": "Додади нов профил",
+      "location": "Додади нова локација",
+      "description": "Пополнете ги сите полиња."
+    },
+    "edit": {
+      "profile": "Уреди профил",
+      "location": "Уреди локација",
+      "description": "Пополнете ги полињата коишто сакате да ги промените."
+    },
+    "slug": "Слаг",
     "logo": "Лого",
-    "company": "Компанија",
+    "company": "Име на фирма",
+    "mainLocation": "Седиште на фирма",
+    "contactPerson": "Лице за контакт",
     "location": {
+      "main": "Седиште",
+      "title": "Локации",
+      "description": "",
       "contactPerson": "Име",
       "phone": "Телефон",
       "email": "Е-пошта",
@@ -219,12 +235,8 @@
       "city": "Град",
       "postcode": "Поштенски код"
     },
-    "save": "Зачувај"
-  },
-  "LocationsDialog": {
-    "title": "Локации",
-    "description": "",
-    "save": "Зачувај"
+    "save": "Зачувај",
+    "close": "Затвори"
   },
   "Validation": {
     "errors": {

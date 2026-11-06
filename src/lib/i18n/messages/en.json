@@ -45,7 +45,7 @@
   },
   "AdminPage": {
     "myCars": "My Cars",
-    "Profiles": "Profiles",
+    "Profile": "Profile",
     "websiteAdmin": "Website admin",
     "openWebsiteButton": "Open my Website",
     "saveChangesButton": "Save changes",
@@ -206,25 +206,37 @@
     "editProfile": "Edit profile"
   },
   "ProfileDialog": {
-    "add": { "title": "Add new profile", "description": "Fill in all the fields" },
-    "edit": { "title": "Edit profile", "description": "Fill in the fields that you want to change" },
+    "noProfile": "No profile. Please add a profile.",
+    "noLocation": "No location. Please add a location.",
+    "loading": "Loading",
+    "add": {
+      "profile": "Add new profile",
+      "location": "Add new location",
+      "description": "Fill in all the fields"
+    },
+    "edit": {
+      "profile": "Edit profile",
+      "location": "Edit location",
+      "description": "Fill in the fields that you want to change"
+    },
     "slug": "Slug",
     "logo": "Logo",
-    "company": "Company",
+    "company": "Company name",
+    "mainLocation": "Main location",
+    "contactPerson": "Contact person",
     "location": {
+      "main": "Main office",
+      "title": "Locations",
+      "description": "",
       "contactPerson": "Name",
-      "phone": "Phone",
+      "phone": "Phone number",
       "email": "E-Mail",
       "address": "Address",
       "city": "City",
       "postcode": "Postcode"
     },
-    "save": "Save"
-  },
-  "LocationsDialog": {
-    "title": "Locations",
-    "description": "",
-    "save": "Save"
+    "save": "Save",
+    "close": "Close"
   },
   "Validation": {
     "errors": {
