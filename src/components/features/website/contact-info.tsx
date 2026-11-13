@@ -1,48 +1,55 @@
 import type { Location } from '@prisma-client'
+import { useTranslations } from 'next-intl'
 
 interface ContactInfoProps {
   location?: Location
 }
 
 export function ContactInfo({ location }: ContactInfoProps) {
+  const t = useTranslations('Website.contact')
   return (
     <>
-      <h2 className="text-3xl font-bold text-center">Kontaktieren Sie uns</h2>
-
+      <h2 className="text-3xl font-bold text-center">{t('title')}</h2>
+      <p className="text-lg text-center">{t('description')}</p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Contact Information */}
         <div className="space-y-6">
           <div>
-            <h3 className="text-xl font-semibold mb-4">Kontakt aufnehmen</h3>
+            <h3 className="text-xl font-semibold mb-4">{t('title1')}</h3>
             {location ? (
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
                   <div>
-                    <p className="font-medium">Telefon</p>
+                    <p className="font-medium">{t('contactPerson')}</p>
+                    <p className="text-cyan-50">{location.contactPerson}</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div>
+                    <p className="font-medium">{t('phone')}</p>
                     <p className="text-cyan-50">{location.phone}</p>
                   </div>
                 </div>
-
                 <div className="flex items-center space-x-3">
                   <div>
-                    <p className="font-medium">E-mail</p>
+                    <p className="font-medium">{t('email')}</p>
                     <p className="text-cyan-50">{location.email}</p>
                   </div>
                 </div>
               </div>
             ) : (
-              <p className="text-gray-500">Keine Kontaktinformationen verfügbar.</p>
+              <p className="text-gray-500">{t('message')}</p>
             )}
           </div>
         </div>
 
         {/* Contact Form */}
         <div>
-          <h3 className="text-xl font-semibold mb-4">Senden Sie uns eine Nachricht</h3>
+          <h3 className="text-xl font-semibold mb-4">{t('form.title')}</h3>
           <form className="space-y-4">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-cyan-50 mb-1">
-                Name
+                {t('form.name')}
               </label>
               <input
                 type="text"
@@ -55,7 +62,7 @@ export function ContactInfo({ location }: ContactInfoProps) {
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-cyan-50 mb-1">
-                E-mail
+                {t('form.email')}
               </label>
               <input
                 type="email"
@@ -68,7 +75,7 @@ export function ContactInfo({ location }: ContactInfoProps) {
 
             <div>
               <label htmlFor="phone" className="block text-sm font-medium text-cyan-50 mb-1">
-                Telefon (optional)
+                {t('form.phone')}
               </label>
               <input
                 type="tel"
@@ -80,7 +87,7 @@ export function ContactInfo({ location }: ContactInfoProps) {
 
             <div>
               <label htmlFor="message" className="block text-sm font-medium text-cyan-50 mb-1">
-                Nachricht
+                {t('form.message')}
               </label>
               <textarea
                 id="message"
@@ -95,7 +102,7 @@ export function ContactInfo({ location }: ContactInfoProps) {
               type="submit"
               className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              Nachricht senden
+              {t('form.button')}
             </button>
           </form>
         </div>

@@ -26,6 +26,71 @@
     "dark": "Dunkel",
     "system": "Systemisch"
   },
+  "Website": {
+    "home": {
+      "title": "Gebrauchtwagen",
+      "description": "Entdecken Sie unsere Auswahl an Fahrzeugen."
+    },
+    "location": {
+      "title": "Unser Standort",
+      "description": "Finden Sie uns in unserem Hauptbüro. Wir freuen uns, Sie willkommen zu heißen und Ihnen unsere Autos zu zeigen.",
+      "message": "Keine Standortinformationen verfügbar.",
+      "address": "Adresse",
+      "button": "Wegbeschreibung"
+    },
+    "openingHours": {
+      "title": "Öffnungszeiten",
+      "description": "Hier sind unsere Öffnungszeiten. Wir freuen uns, Sie zu unseren Geschäftszeiten begrüßen zu dürfen.",
+      "message": "Keine Öffnungszeiten verfügbar.",
+      "closed": "Geschlossen",
+      "loading": "Wird geladen...",
+      "days": {
+        "monday": "Montag",
+        "tuesday": "Dienstag",
+        "wednesday": "Mittwoch",
+        "thursday": "Donnerstag",
+        "friday": "Freitag",
+        "saturday": "Samstag",
+        "sunday": "Sonntag"
+      }
+    },
+    "contact": {
+      "title": "Kontaktieren Sie uns",
+      "description": "Wir freuen uns, von Ihnen zu hören. Bitte kontaktieren Sie uns über die untenstehenden Informationen.",
+      "message": "Keine Kontaktinformationen verfügbar.",
+      "title1": "Kontakt aufnehmen",
+      "contactPerson": "Ansprechpartner",
+      "phone": "Telefon",
+      "email": "E-mail",
+      "form": {
+        "title": "Senden Sie uns eine Nachricht",
+        "name": "Name",
+        "email": "E-mail",
+        "phone": "Telefon (optional)",
+        "message": "Nachricht",
+        "button": "Senden"
+      }
+    },
+    "navigation": {
+      "home": "Startseite",
+      "location": "Standort",
+      "openingHours": "Öffnungszeiten",
+      "contact": "Kontakt",
+      "callButton": "Jetzt anrufen",
+      "message": "Hallo, ich interessiere mich für Ihre Autos!"
+    },
+    "footer": {
+      "errorMessage": "Gebrauchtwagen zu verkaufen.",
+      "quickLinks": "Schnellzugriff",
+      "imprint": "Impressum",
+      "caseStudies": "Fallstudien",
+      "support": "Support",
+      "faq": "FAQ",
+      "privacyPolicy": "Datenschutzrichtlinie",
+      "termsOfService": "Nutzungsbedingungen",
+      "allRightsReserved": "Alle Rechte vorbehalten."
+    }
+  },
   "Footer": {
     "companyDescription": "Die komplette Cloud-Lösung für Gebrauchtwagenhändler und Fahrzeugparks.",
     "quickLinks": "Schnellzugriff",

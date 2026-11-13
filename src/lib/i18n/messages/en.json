@@ -26,6 +26,71 @@
     "dark": "Dark",
     "system": "System"
   },
+  "Website": {
+    "home": {
+      "title": "Used cars",
+      "description": "Discover our selection of vehicles."
+    },
+    "location": {
+      "title": "Location",
+      "description": "Find us at our main office. We are happy to welcome you and show you our cars.",
+      "message": "No location information available.",
+      "address": "Address",
+      "button": "Get directions"
+    },
+    "openingHours": {
+      "title": "Opening hours",
+      "description": "Check our opening hours. We are happy to welcome you.",
+      "message": "No opening hours available.",
+      "closed": "Closed",
+      "loading": "Loading...",
+      "days": {
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday"
+      }
+    },
+    "contact": {
+      "title": "Contact",
+      "description": "Get in touch with us. We are happy to answer your questions.",
+      "message": "No contact information available.",
+      "title1": "Contact us",
+      "contactPerson": "Contact person",
+      "phone": "Phone",
+      "email": "E-mail",
+      "form": {
+        "title": "Contact form",
+        "name": "Name",
+        "email": "E-mail",
+        "phone": "Phone (optional)",
+        "message": "Message",
+        "button": "Send message"
+      }
+    },
+    "navigation": {
+      "home": "Home",
+      "location": "Location",
+      "openingHours": "Opening hours",
+      "contact": "Contact",
+      "callButton": "Call us",
+      "message": "Hello, I'm interested in your cars!"
+    },
+    "footer": {
+      "errorMessage": "Used cars for sale.",
+      "quickLinks": "Quick Links",
+      "imprint": "Legal Notice",
+      "caseStudies": "Case Studies",
+      "support": "Support",
+      "faq": "FAQ",
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms of Service",
+      "allRightsReserved": "All rights reserved."
+    }
+  },
   "Footer": {
     "companyDescription": "The complete cloud solution for used car dealerships and vehicle parks.",
     "quickLinks": "Quick Links",

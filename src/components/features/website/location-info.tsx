@@ -1,15 +1,18 @@
 import type { Location } from '@prisma-client'
+import { useTranslations } from 'next-intl'
 
 interface LocationInfoProps {
   location?: Location
 }
 
 export function LocationInfo({ location }: LocationInfoProps) {
+  const t = useTranslations('Website.location')
+
   if (!location) {
     return (
       <div className="max-w-4xl mx-auto p-6 text-center">
-        <h2 className="text-3xl font-bold mb-6">Unser Standort</h2>
-        <p className="text-gray-500">Keine Standortinformationen verfügbar.</p>
+        <h2 className="text-3xl font-bold mb-6">{t('title')}</h2>
+        <p className="text-gray-500">{t('message')}</p>
       </div>
     )
   }
@@ -18,23 +21,17 @@ export function LocationInfo({ location }: LocationInfoProps) {
 
   return (
     <>
-      <h2 className="text-3xl font-bold text-center">Unser Standort</h2>
-
+      <h2 className="text-3xl font-bold text-center">{t('title')}</h2>
+      <p className="text-lg text-center">{t('description')}</p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Address Info */}
         <div className="space-y-4">
           <div>
-            <h3 className="text-xl font-semibold mb-2">Adresse</h3>
+            <h3 className="text-xl font-semibold mb-2">{t('address')}</h3>
             <p className="text-gray-50">{location.address}</p>
             <p className="text-gray-50">
               {location.postcode} {location.city}
             </p>
-          </div>
-          <div>
-            <h3 className="text-xl font-semibold mb-2">Kontakt</h3>
-            <p className="text-gray-50">Ansprechpartner: {location.contactPerson}</p>
-            <p className="text-gray-50">Telefon: {location.phone}</p>
-            <p className="text-gray-50">E-Mail: {location.email}</p>
           </div>
         </div>
 
@@ -62,7 +59,7 @@ export function LocationInfo({ location }: LocationInfoProps) {
           rel="noopener noreferrer"
           className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition"
         >
-          Wegbeschreibung
+          {t('button')}
         </a>
       </div>
     </>
