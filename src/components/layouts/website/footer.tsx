@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import type { ProfileExtended } from '@/types/profile'
 
 interface FooterProps {
@@ -5,6 +6,7 @@ interface FooterProps {
 }
 
 export const Footer = ({ profile }: FooterProps) => {
+  const t = useTranslations('Website.footer')
   const company = profile.company || 'Firmenname'
   const location = profile.locations.find((item) => item.isMain)
 
@@ -21,27 +23,52 @@ export const Footer = ({ profile }: FooterProps) => {
               </p>
             </>
           ) : (
-            <p className="text-gray-50">Gebrauchtwagen zu verkaufen.</p>
+            <p className="text-gray-50">{t('errorMessage')}</p>
           )}
         </div>
         <div className="flex-1">
-          <h3 className="text-xl font-semibold mb-3">Schnellzugriff</h3>
+          {/*<h3 className="text-xl font-semibold mb-3">{t('quickLinks')}</h3>*/}
           <ul className="space-y-2">
             <li>
               <a href="#home" className="hover:text-cyan-300 transition">
-                Impressum
+                {t('imprint')}
               </a>
             </li>
             <li>
               <a href="#cars" className="hover:text-cyan-300 transition">
-                Datenschutzrichtlinie
+                {t('privacyPolicy')}
+              </a>
+            </li>
+            <li>
+              <a href="#cars" className="hover:text-cyan-300 transition">
+                {t('termsOfService')}
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div className="flex-1">
+          {/*<h3 className="text-xl font-semibold mb-3">{t('quickLinks')}</h3>*/}
+          <ul className="space-y-2">
+            <li>
+              <a href="#home" className="hover:text-cyan-300 transition">
+                {t('support')}
+              </a>
+            </li>
+            <li>
+              <a href="#cars" className="hover:text-cyan-300 transition">
+                {t('faq')}
+              </a>
+            </li>
+            <li>
+              <a href="#cars" className="hover:text-cyan-300 transition">
+                {t('caseStudies')}
               </a>
             </li>
           </ul>
         </div>
       </div>
       <div className="text-center text-sm text-cyan-100">
-        &copy; {new Date().getFullYear()} {company}. All rights reserved.
+        &copy; {new Date().getFullYear()} {company}. {t('allRightsReserved')}
       </div>
     </footer>
   )
